@@ -68,9 +68,9 @@ class TCVAE():
 
             # self.embs = self.word_emb + self.scope_emb + self.pos_emb
             self.embs = tf.concat([self.word_emb, self.scope_emb, self.pos_emb], axis=2)
-            inputs = self.input_layer(self.embs)
+            inputs = self.input_layer(self.embs)  # [?,105,256]
 
-            self.query = tf.get_variable("w_Q", [1, self.num_units], dtype=tf.float32)
+            self.query = tf.get_variable("w_Q", [1, self.num_units], dtype=tf.float32) # [1,256]
             windows = tf.transpose(self.input_windows, [1, 0, 2])
             layers_outputs = []
 
@@ -111,7 +111,7 @@ class TCVAE():
                                                        reuse=tf.AUTO_REUSE
                                                        )
 
-                    post_outputs = post_outputs + post_inputs
+                    post_outputs = post_outputs + post_inputs # [?,?,256]
                     post_inputs = normalize(post_outputs)
 
                     post_outputs = feedforward(post_inputs, [self.num_units * 2, self.num_units],
@@ -145,6 +145,7 @@ class TCVAE():
                                                        scope="concentrate_attention",
                                                        reuse=tf.AUTO_REUSE
                                                        )
+            #Both Post_encode and Prior_encode is [?,256]
             # Posterior net
             post_mulogvar = tf.layers.dense(post_encode, self.latent_dim * 2, use_bias=False, name="post_fc")
             post_mu, post_logvar = tf.split(post_mulogvar, 2, axis=1)
@@ -152,7 +153,8 @@ class TCVAE():
             #Prior net -> Generator
             z = tf.random_normal(tf.shape(prior_encode))
             gen_input = tf.concat([prior_encode, z], axis=1)
-            fake_sample = generator(gen_input)
+
+            fake_sample = generator(gen_input) #[?,64]
 
             #prior_mulogvar = tf.layers.dense(tf.layers.dense(prior_encode, 256, activation=tf.nn.tanh),
                                              #self.latent_dim * 2, use_bias=False, name="prior_fc")
@@ -161,19 +163,27 @@ class TCVAE():
 
             #draw latent sample
             #if self.mode != tf.contrib.learn.ModeKeys.INFER:
-            latent_sample = sample_gaussian(post_mu, post_logvar)
+            latent_sample = sample_gaussian(post_mu, post_logvar) #[?,64]
             #else:
             #     latent_sample = sample_gaussian(prior_mu, prior_logvar)
 
             # true sample
             self.latent_sample = latent_sample
 
+            real_result = discriminator(latent_sample)
+            fake_result = discriminator(fake_sample)
+            disc_loss = tf.reduce_mean(tf.nn.sigmoid_cross_entropy_with_logits(logits=real_result, labels=tf.ones_like(
+                real_result)) + tf.nn.sigmoid_cross_entropy_with_logits(logits=fake_result, labels=tf.zeros_like(fake_result)))
 
-            latent_sample = tf.tile(tf.expand_dims(latent_sample, 1), [1, self.max_story_length, 1])
+            gen_loss = tf.reduce_mean(tf.nn.sigmoid_cross_entropy_with_logits(logits=fake_result, labels=tf.ones_like(fake_result)))
+
+
+
+            latent_sample = tf.tile(tf.expand_dims(fake_sample, 1), [1, self.max_story_length, 1])
             inputs = tf.concat([inputs, latent_sample], axis=2)
-            inputs = tf.layers.dense(inputs, self.num_units, activation=tf.tanh, use_bias=False, name="last")
+            inputs = tf.layers.dense(inputs, self.num_units, activation=tf.tanh, use_bias=False, name="last") #[?,105,256]
 
-            self.logits = self.output_layer(inputs)
+            self.logits = self.output_layer(inputs) #[?,105,20000]
             self.s = self.logits
             self.sample_id = tf.argmax(self.logits, axis=2)
             # self.sample_id = tf.argmax(self.weight_probs, axis=2)
@@ -186,15 +196,20 @@ class TCVAE():
                 self.total_loss = tf.reduce_sum(crossent * self.weights)
 
                 kl_weights = tf.minimum(tf.to_float(self.global_step) / 20000, 1.0)
-                kld = gaussian_kld(post_mu, post_logvar, prior_mu, prior_logvar)
-                self.loss = tf.reduce_mean(crossent * self.weights) + tf.reduce_mean(kld) * kl_weights
-
+                #kld = gaussian_kld(post_mu, post_logvar, prior_mu, prior_logvar)
+                #self.loss = tf.reduce_mean(crossent * self.weights) + tf.reduce_mean(kld) * kl_weights
+                self.loss = tf.reduce_mean(crossent * self.weights)
         if self.mode == tf.contrib.learn.ModeKeys.TRAIN:
             with tf.variable_scope("train_op") as scope:
                 optimizer = tf.train.AdamOptimizer(0.0001, beta1=0.9, beta2=0.99, epsilon=1e-9)
                 gradients, v = zip(*optimizer.compute_gradients(self.loss))
                 gradients, _ = tf.clip_by_global_norm(gradients, 5.0)
                 self.train_op = optimizer.apply_gradients(zip(gradients, v), global_step=self.global_step)
+
+            gen_step = tf.train.RMSPropOptimizer(learning_rate=0.001).minimize(gen_loss
+                                                                               )  # G Train step
+            disc_step = tf.train.RMSPropOptimizer(learning_rate=0.001).minimize(disc_loss
+                                                                                )  # D Train step
 
         self.saver = tf.train.Saver(tf.global_variables())
 
