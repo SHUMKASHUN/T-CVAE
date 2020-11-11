@@ -178,8 +178,11 @@ class TCVAE():
             gen_loss = tf.reduce_mean(tf.nn.sigmoid_cross_entropy_with_logits(logits=fake_result, labels=tf.ones_like(fake_result)))
 
 
+            if self.mode != tf.contrib.learn.ModeKeys.INFER:
+                latent_sample = tf.tile(tf.expand_dims(latent_sample, 1), [1, self.max_story_length, 1])
+            else:
+                latent_sample = tf.tile(tf.expand_dims(fake_sample, 1), [1, self.max_story_length, 1])
 
-            latent_sample = tf.tile(tf.expand_dims(fake_sample, 1), [1, self.max_story_length, 1])
             inputs = tf.concat([inputs, latent_sample], axis=2)
             inputs = tf.layers.dense(inputs, self.num_units, activation=tf.tanh, use_bias=False, name="last") #[?,105,256]
 
@@ -206,10 +209,8 @@ class TCVAE():
                 gradients, _ = tf.clip_by_global_norm(gradients, 5.0)
                 self.train_op = optimizer.apply_gradients(zip(gradients, v), global_step=self.global_step)
 
-            gen_step = tf.train.RMSPropOptimizer(learning_rate=0.001).minimize(gen_loss
-                                                                               )  # G Train step
-            disc_step = tf.train.RMSPropOptimizer(learning_rate=0.001).minimize(disc_loss
-                                                                                )  # D Train step
+            self.gen_step = tf.train.RMSPropOptimizer(learning_rate=0.001).minimize(gen_loss)  # G Train step
+            self.disc_step = tf.train.RMSPropOptimizer(learning_rate=0.001).minimize(disc_loss)  # D Train step
 
         self.saver = tf.train.Saver(tf.global_variables())
 
@@ -341,8 +342,9 @@ class TCVAE():
             self.which: input_which
         }
         word_nums = sum(sum(weight) for weight in weights)
-        loss, global_step, _, total_loss = sess.run([self.loss, self.global_step, self.train_op, self.total_loss],
+        loss, global_step, _, total_loss,genStep, DisStep = sess.run([self.loss, self.global_step, self.train_op, self.total_loss, self.gen_step, self.disc_step],
                                                     feed_dict=feed)
+
         return total_loss, global_step, word_nums
 
     def eval_step(self, sess, data, no_random=False, id=0):
