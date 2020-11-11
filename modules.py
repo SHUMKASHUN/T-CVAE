@@ -305,7 +305,7 @@ def feedforward(inputs,
 
         # Readout layer
         params = {"inputs": outputs, "filters": num_units[1], "kernel_size": 1,
-                  "activation": None, "use_bias": True}se
+                  "activation": None, "use_bias": True}
         outputs = tf.layers.conv1d(**params)
 
         outputs = tf.layers.dropout(outputs, rate=dropout_rate, training=tf.convert_to_tensor(is_training))
