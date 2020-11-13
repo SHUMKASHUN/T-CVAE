@@ -51,8 +51,8 @@ class TCVAE():
             self.which = tf.placeholder(tf.int32, [None])
 
         with tf.variable_scope("embedding") as scope:
-            self.word_embeddings = tf.Variable(self.init_matrix([self.vocab_size, self.emb_dim]))
-            # self.word_embeddings = tf.Variable(hparams.embeddings, trainable=True)
+            #self.word_embeddings = tf.Variable(self.init_matrix([self.vocab_size, self.emb_dim]))
+            self.word_embeddings = tf.Variable(hparams.embeddings, trainable=True)
             self.scope_embeddings = tf.Variable(self.init_matrix([9, int(self.emb_dim / 2)]))
 
         with tf.variable_scope("project"):
@@ -209,8 +209,14 @@ class TCVAE():
                 gradients, _ = tf.clip_by_global_norm(gradients, 5.0)
                 self.train_op = optimizer.apply_gradients(zip(gradients, v), global_step=self.global_step)
 
-            self.gen_step = tf.train.RMSPropOptimizer(learning_rate=0.001).minimize(gen_loss)  # G Train step
-            self.disc_step = tf.train.RMSPropOptimizer(learning_rate=0.001).minimize(disc_loss)  # D Train step
+            #self.gen_step = tf.train.RMSPropOptimizer(learning_rate=0.001).minimize(gen_loss)  # G Train step
+            #self.disc_step = tf.train.RMSPropOptimizer(learning_rate=0.001).minimize(disc_loss)  # D Train step
+            gradients_gen, v_gen = zip(*optimizer.compute_gradients(gen_loss))
+            gradients_disc, v_disc = zip(*optimizer.compute_gradients(disc_loss))
+            gradients_gen, _gen = tf.clip_by_global_norm(gradients_gen, 5.0)
+            gradients_disc, _disc = tf.clip_by_global_norm(gradients_disc, 5.0)
+            self.gen_step = optimizer.apply_gradients(zip(gradients_gen, v_gen))
+            self.disc_step = optimizer.apply_gradients(zip(gradients_disc, v_disc))
 
         self.saver = tf.train.Saver(tf.global_variables())
 
