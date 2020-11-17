@@ -160,27 +160,13 @@ class TCVAE():
                                              #self.latent_dim * 2, use_bias=False, name="prior_fc")
             #prior_mu, prior_logvar = tf.split(prior_mulogvar, 2, axis=1)
 
+            #real_result = discriminator(post_encode)
+            #fake_result = discriminator(fake_sample)
+            #disc_loss = tf.reduce_mean(tf.nn.sigmoid_cross_entropy_with_logits(logits=real_result, labels=tf.ones_like(
+            #    real_result)) + tf.nn.sigmoid_cross_entropy_with_logits(logits=fake_result, labels=tf.zeros_like(fake_result)))
 
-            #draw latent sample
-            #if self.mode != tf.contrib.learn.ModeKeys.INFER:
-            #latent_sample = sample_gaussian(post_mu, post_logvar) #[?,64]
-            #else:
-            #     latent_sample = sample_gaussian(prior_mu, prior_logvar)
+            #gen_loss = tf.reduce_mean(tf.nn.sigmoid_cross_entropy_with_logits(logits=fake_result, labels=tf.ones_like(fake_result)))
 
-            # true sample
-            #self.latent_sample = latent_sample
-
-            real_result = discriminator(post_encode)
-            fake_result = discriminator(fake_sample)
-            disc_loss = tf.reduce_mean(tf.nn.sigmoid_cross_entropy_with_logits(logits=real_result, labels=tf.ones_like(
-                real_result)) + tf.nn.sigmoid_cross_entropy_with_logits(logits=fake_result, labels=tf.zeros_like(fake_result)))
-
-            gen_loss = tf.reduce_mean(tf.nn.sigmoid_cross_entropy_with_logits(logits=fake_result, labels=tf.ones_like(fake_result)))
-
-
-            # self.mode != tf.contrib.learn.ModeKeys.INFER:
-            #    latent_sample = tf.tile(tf.expand_dims(latent_sample, 1), [1, self.max_story_length, 1])
-            #else:
             latent_sample = tf.tile(tf.expand_dims(fake_sample, 1), [1, self.max_story_length, 1])
 
             inputs = tf.concat([inputs, latent_sample], axis=2)
@@ -191,32 +177,56 @@ class TCVAE():
             self.sample_id = tf.argmax(self.logits, axis=2)
             # self.sample_id = tf.argmax(self.weight_probs, axis=2)
 
+        disc_real = discriminator(post_encode)  # real   #(?, 1)
+        disc_fake = discriminator(fake_sample, reuse=True)  # (?, 1)
+
+        disc_real_detach = discriminator(tf.stop_gradient(post_encode), reuse=True)
+        disc_fake_detach = discriminator(tf.stop_gradient(fake_sample), reuse=True)
+
         if self.mode != tf.contrib.learn.ModeKeys.INFER:
             with tf.variable_scope("loss") as scope:
                 self.global_step = tf.Variable(0, trainable=False)
                 crossent = tf.nn.sparse_softmax_cross_entropy_with_logits(labels=self.targets, logits=self.logits)
 
-                self.total_loss = tf.reduce_sum(crossent * self.weights)
+                self.ae_loss = tf.reduce_sum(crossent * self.weights)
 
-                kl_weights = tf.minimum(tf.to_float(self.global_step) / 20000, 1.0)
+                #kl_weights = tf.minimum(tf.to_float(self.global_step) / 20000, 1.0)
                 #kld = gaussian_kld(post_mu, post_logvar, prior_mu, prior_logvar)
                 #self.loss = tf.reduce_mean(crossent * self.weights) + tf.reduce_mean(kld) * kl_weights
-                self.loss = tf.reduce_mean(crossent * self.weights)
+                #self.loss = tf.reduce_mean(crossent * self.weights)
+                self.loss_disc = tf.reduce_mean(tf.nn.softplus(disc_fake_detach)) + tf.reduce_mean(
+                    tf.nn.softplus(-disc_real_detach))
+                self.loss_gan_gen = tf.reduce_mean(-(tf.clip_by_value(tf.exp(tf.stop_gradient(disc_fake)), 0.5, 2) * disc_fake))
+                self.loss_gan_gen *= 0.1
+
         if self.mode == tf.contrib.learn.ModeKeys.TRAIN:
             with tf.variable_scope("train_op") as scope:
-                optimizer = tf.train.AdamOptimizer(0.0001, beta1=0.9, beta2=0.99, epsilon=1e-9)
-                gradients, v = zip(*optimizer.compute_gradients(self.loss))
-                gradients, _ = tf.clip_by_global_norm(gradients, 5.0)
-                self.train_op = optimizer.apply_gradients(zip(gradients, v), global_step=self.global_step)
+                optimizer_ae = tf.train.AdamOptimizer(0.0001, beta1=0.9, beta2=0.99, epsilon=1e-9)
+                gradients_ae, v = zip(*optimizer_ae.compute_gradients(self.ae_loss))
+                gradients_ae, _ = tf.clip_by_global_norm(gradients_ae, 5.0)
+                self.train_op_ae = optimizer_ae.apply_gradients(zip(gradients_ae, v), global_step=self.global_step)
+                '''
+                gradients_gen, v_gen = zip(*optimizer.compute_gradients(gen_loss))
+                gradients_disc, v_disc = zip(*optimizer.compute_gradients(disc_loss))
+                gradients_gen, _gen = tf.clip_by_global_norm(gradients_gen, 5.0)
+                gradients_disc, _disc = tf.clip_by_global_norm(gradients_disc, 5.0)
+                self.gen_step = optimizer.apply_gradients(zip(gradients_gen, v_gen))
+                self.disc_step = optimizer.apply_gradients(zip(gradients_disc, v_disc))
+                '''
+                optimizer_gan_gen = tf.train.AdamOptimizer(0.0002, beta1=0.5, beta2=0.999, epsilon=1e-9)
+                gradients_gan_gen, v_gan_gen = zip(*optimizer_gan_gen.compute_gradients(self.loss_gan_gen))
+                gradients_gan_gen, _ = tf.clip_by_global_norm(gradients_gan_gen, self.hparams.clip_value)
+                self.train_op_gan_gen = optimizer_gan_gen.apply_gradients(zip(gradients_gan_gen, v_gan_gen), global_step=self.global_step)
 
-            #self.gen_step = tf.train.RMSPropOptimizer(learning_rate=0.001).minimize(gen_loss)  # G Train step
-            #self.disc_step = tf.train.RMSPropOptimizer(learning_rate=0.001).minimize(disc_loss)  # D Train step
-            gradients_gen, v_gen = zip(*optimizer.compute_gradients(gen_loss))
-            gradients_disc, v_disc = zip(*optimizer.compute_gradients(disc_loss))
-            gradients_gen, _gen = tf.clip_by_global_norm(gradients_gen, 5.0)
-            gradients_disc, _disc = tf.clip_by_global_norm(gradients_disc, 5.0)
-            self.gen_step = optimizer.apply_gradients(zip(gradients_gen, v_gen))
-            self.disc_step = optimizer.apply_gradients(zip(gradients_disc, v_disc))
+                optimizer_gan_enc = tf.train.AdamOptimizer(0.0002, beta1=0.5, beta2=0.999, epsilon=1e-9)
+                gradients_gan_enc, v_gan_enc = zip(*optimizer_gan_enc.compute_gradients(self.loss_gan_enc))
+                gradients_gan_enc, _ = tf.clip_by_global_norm(gradients_gan_enc, self.hparams.clip_value)
+                self.train_op_gan_enc = optimizer_gan_enc.apply_gradients(zip(gradients_gan_enc, v_gan_enc), global_step=self.global_step)
+
+                optimizer_disc = tf.train.AdamOptimizer(0.0002, beta1=0.5, beta2=0.999, epsilon=1e-9)
+                gradients_disc, v_disc = zip(*optimizer_disc.compute_gradients(self.loss_disc))
+                gradients_disc, _ = tf.clip_by_global_norm(gradients_disc, self.hparams.clip_value)
+                self.train_op_disc = optimizer_disc.apply_gradients(zip(gradients_disc, v_disc), global_step=self.global_step)
 
         self.saver = tf.train.Saver(tf.global_variables())
 
@@ -348,10 +358,17 @@ class TCVAE():
             self.which: input_which
         }
         word_nums = sum(sum(weight) for weight in weights)
-        loss, global_step, _, total_loss,genStep, DisStep = sess.run([self.loss, self.global_step, self.train_op, self.total_loss, self.gen_step, self.disc_step],
-                                                    feed_dict=feed)
+        #Train autoEncoder
+        ae_loss, global_step, _ = sess.run([self.ae_loss, self.global_step, self.train_op_ae], feed_dict=feed)
+        #Train Discriminator
+        loss_disc, global_step, _ = sess.run([self.loss_disc, self.global_step, self.train_op_disc],feed_dict=feed)
+        #Train Generator and encoder
+        loss_gan_enc, loss_gan_gen, global_step, _, _ = sess.run([self.loss_gan_enc, self.loss_gan_gen, self.global_step, self.train_op_gan_enc, self.train_op_gan_gen],
+                                                                  feed_dict=feed)
+        #loss, global_step, _, total_loss,genStep, DisStep = sess.run([self.loss, self.global_step, self.train_op, self.total_loss, self.gen_step, self.disc_step],
+        #                                            feed_dict=feed)
 
-        return total_loss, global_step, word_nums
+        return ae_loss, global_step, word_nums
 
     def eval_step(self, sess, data, no_random=False, id=0):
         input_ids, input_scopes, input_positions, input_masks, input_lens, input_which, targets, weights, input_windows = self.get_batch(
