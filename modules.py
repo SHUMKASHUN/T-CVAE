@@ -315,7 +315,7 @@ def generator(Z, hsize=[256, 256],reuse=tf.AUTO_REUSE):
     with tf.variable_scope("GAN/Generator",reuse=reuse):
         h1 = tf.layers.dense(Z,hsize[0],activation=tf.nn.leaky_relu)
         h2 = tf.layers.dense(h1,hsize[1],activation=tf.nn.leaky_relu)
-        out = tf.layers.dense(h2,64)
+        out = tf.layers.dense(h2,512)
 
     return out
 

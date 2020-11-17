@@ -147,8 +147,8 @@ class TCVAE():
                                                        )
             #Both Post_encode and Prior_encode is [?,256]
             # Posterior net
-            post_mulogvar = tf.layers.dense(post_encode, self.latent_dim * 2, use_bias=False, name="post_fc")
-            post_mu, post_logvar = tf.split(post_mulogvar, 2, axis=1)
+            #post_mulogvar = tf.layers.dense(post_encode, self.latent_dim * 2, use_bias=False, name="post_fc")
+            #post_mu, post_logvar = tf.split(post_mulogvar, 2, axis=1)
 
             #Prior net -> Generator
             z = tf.random_normal(tf.shape(prior_encode))
@@ -163,14 +163,14 @@ class TCVAE():
 
             #draw latent sample
             #if self.mode != tf.contrib.learn.ModeKeys.INFER:
-            latent_sample = sample_gaussian(post_mu, post_logvar) #[?,64]
+            #latent_sample = sample_gaussian(post_mu, post_logvar) #[?,64]
             #else:
             #     latent_sample = sample_gaussian(prior_mu, prior_logvar)
 
             # true sample
-            self.latent_sample = latent_sample
+            #self.latent_sample = latent_sample
 
-            real_result = discriminator(latent_sample)
+            real_result = discriminator(post_encode)
             fake_result = discriminator(fake_sample)
             disc_loss = tf.reduce_mean(tf.nn.sigmoid_cross_entropy_with_logits(logits=real_result, labels=tf.ones_like(
                 real_result)) + tf.nn.sigmoid_cross_entropy_with_logits(logits=fake_result, labels=tf.zeros_like(fake_result)))
@@ -178,10 +178,10 @@ class TCVAE():
             gen_loss = tf.reduce_mean(tf.nn.sigmoid_cross_entropy_with_logits(logits=fake_result, labels=tf.ones_like(fake_result)))
 
 
-            if self.mode != tf.contrib.learn.ModeKeys.INFER:
-                latent_sample = tf.tile(tf.expand_dims(latent_sample, 1), [1, self.max_story_length, 1])
-            else:
-                latent_sample = tf.tile(tf.expand_dims(fake_sample, 1), [1, self.max_story_length, 1])
+            # self.mode != tf.contrib.learn.ModeKeys.INFER:
+            #    latent_sample = tf.tile(tf.expand_dims(latent_sample, 1), [1, self.max_story_length, 1])
+            #else:
+            latent_sample = tf.tile(tf.expand_dims(fake_sample, 1), [1, self.max_story_length, 1])
 
             inputs = tf.concat([inputs, latent_sample], axis=2)
             inputs = tf.layers.dense(inputs, self.num_units, activation=tf.tanh, use_bias=False, name="last") #[?,105,256]
