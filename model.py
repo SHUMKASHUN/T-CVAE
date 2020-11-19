@@ -172,10 +172,11 @@ class TCVAE():
 
             real_result = discriminator(post_encode)
             fake_result = discriminator(fake_sample)
-            disc_loss = tf.reduce_mean(tf.nn.sigmoid_cross_entropy_with_logits(logits=real_result, labels=tf.ones_like(
-                real_result)) + tf.nn.sigmoid_cross_entropy_with_logits(logits=fake_result, labels=tf.zeros_like(fake_result)))
-
-            gen_loss = tf.reduce_mean(tf.nn.sigmoid_cross_entropy_with_logits(logits=fake_result, labels=tf.ones_like(fake_result)))
+            #KL loss
+            disc_loss = tf.reduce_mean(tf.nn.softplus(fake_result)) + tf.reduce_mean(
+                tf.nn.softplus(-real_result))
+            gen_loss = tf.reduce_mean(
+                -(tf.clip_by_value(tf.exp(fake_result), 0.5, 2) * fake_result))
 
 
             # self.mode != tf.contrib.learn.ModeKeys.INFER:
@@ -211,8 +212,12 @@ class TCVAE():
 
             #self.gen_step = tf.train.RMSPropOptimizer(learning_rate=0.001).minimize(gen_loss)  # G Train step
             #self.disc_step = tf.train.RMSPropOptimizer(learning_rate=0.001).minimize(disc_loss)  # D Train step
-            gradients_gen, v_gen = zip(*optimizer.compute_gradients(gen_loss))
-            gradients_disc, v_disc = zip(*optimizer.compute_gradients(disc_loss))
+            t_vars = tf.trainable_variables()
+            d_vars = [var for var in t_vars if 'd_' in var.name]
+            g_vars = [var for var in t_vars if 'g_' in var.name]
+
+            gradients_gen, v_gen = zip(*optimizer.compute_gradients(gen_loss, var_list = g_vars))
+            gradients_disc, v_disc = zip(*optimizer.compute_gradients(disc_loss, var_list = d_vars))
             gradients_gen, _gen = tf.clip_by_global_norm(gradients_gen, 5.0)
             gradients_disc, _disc = tf.clip_by_global_norm(gradients_disc, 5.0)
             self.gen_step = optimizer.apply_gradients(zip(gradients_gen, v_gen))
