@@ -177,7 +177,7 @@ class TCVAE():
                 tf.nn.softplus(-real_result))
             self.gen_loss = tf.reduce_mean(
                 -(tf.clip_by_value(tf.exp(fake_result), 0.5, 2) * fake_result))
-
+            self.gan_ae_loss = tf.reduce_mean(real_result)
 
             # self.mode != tf.contrib.learn.ModeKeys.INFER:
             #    latent_sample = tf.tile(tf.expand_dims(latent_sample, 1), [1, self.max_story_length, 1])
@@ -215,13 +215,19 @@ class TCVAE():
             t_vars = tf.trainable_variables()
             d_vars = [var for var in t_vars if 'd_' in var.name]
             g_vars = [var for var in t_vars if 'g_' in var.name]
+            ae_vars = [var for var in t_vars if 'concentrate_attention' in var.name]
 
             gradients_gen, v_gen = zip(*optimizer.compute_gradients(self.gen_loss, var_list = g_vars))
             gradients_disc, v_disc = zip(*optimizer.compute_gradients(self.disc_loss, var_list = d_vars))
+            gradients_gan_ae, v_ae = zip(*optimizer.compute_gradients(self.gan_ae_loss, var_list = ae_vars))
+
             gradients_gen, _gen = tf.clip_by_global_norm(gradients_gen, 5.0)
             gradients_disc, _disc = tf.clip_by_global_norm(gradients_disc, 5.0)
+            gradients_gan_ae, _gan_ae = tf.clip_by_global_norm(gradients_gan_ae, 5.0)
+
             self.gen_step = optimizer.apply_gradients(zip(gradients_gen, v_gen))
             self.disc_step = optimizer.apply_gradients(zip(gradients_disc, v_disc))
+            self.gan_ae_step = optimizer.apply_gradients(zip(gradients_gan_ae, v_ae))
 
         self.saver = tf.train.Saver(tf.global_variables())
 
@@ -357,7 +363,7 @@ class TCVAE():
                                                     feed_dict=feed)
         loss_disc, global_step, _ = sess.run([self.disc_loss, self.global_step, self.disc_step],
                                              feed_dict=feed)
-        loss_gen,global_step, _ = sess.run([self.gen_loss, self.global_step,self.gen_step],
+        loss_gen,global_step, _,_ = sess.run([self.gen_loss, self.global_step,self.gen_step,self.gan_ae_step],
                                             feed_dict=feed)
         return total_loss, global_step, word_nums
 
