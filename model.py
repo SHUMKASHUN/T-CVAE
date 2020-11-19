@@ -173,9 +173,9 @@ class TCVAE():
             real_result = discriminator(post_encode)
             fake_result = discriminator(fake_sample)
             #KL loss
-            disc_loss = tf.reduce_mean(tf.nn.softplus(fake_result)) + tf.reduce_mean(
+            self.disc_loss = tf.reduce_mean(tf.nn.softplus(fake_result)) + tf.reduce_mean(
                 tf.nn.softplus(-real_result))
-            gen_loss = tf.reduce_mean(
+            self.gen_loss = tf.reduce_mean(
                 -(tf.clip_by_value(tf.exp(fake_result), 0.5, 2) * fake_result))
 
 
@@ -216,8 +216,8 @@ class TCVAE():
             d_vars = [var for var in t_vars if 'd_' in var.name]
             g_vars = [var for var in t_vars if 'g_' in var.name]
 
-            gradients_gen, v_gen = zip(*optimizer.compute_gradients(gen_loss, var_list = g_vars))
-            gradients_disc, v_disc = zip(*optimizer.compute_gradients(disc_loss, var_list = d_vars))
+            gradients_gen, v_gen = zip(*optimizer.compute_gradients(self.gen_loss, var_list = g_vars))
+            gradients_disc, v_disc = zip(*optimizer.compute_gradients(self.disc_loss, var_list = d_vars))
             gradients_gen, _gen = tf.clip_by_global_norm(gradients_gen, 5.0)
             gradients_disc, _disc = tf.clip_by_global_norm(gradients_disc, 5.0)
             self.gen_step = optimizer.apply_gradients(zip(gradients_gen, v_gen))
@@ -353,9 +353,12 @@ class TCVAE():
             self.which: input_which
         }
         word_nums = sum(sum(weight) for weight in weights)
-        loss, global_step, _, total_loss,genStep, DisStep = sess.run([self.loss, self.global_step, self.train_op, self.total_loss, self.gen_step, self.disc_step],
+        loss, global_step, _, total_loss = sess.run([self.loss, self.global_step, self.train_op, self.total_loss],
                                                     feed_dict=feed)
-
+        loss_disc, global_step, _ = sess.run([self.disc_loss, self.global_step, self.disc_step],
+                                             feed_dict=feed)
+        loss_gen,global_step, _ = sess.run([self.gen_loss, self.global_step,self.gen_step],
+                                            feed_dict=feed)
         return total_loss, global_step, word_nums
 
     def eval_step(self, sess, data, no_random=False, id=0):
