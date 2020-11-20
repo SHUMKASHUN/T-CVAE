@@ -13,6 +13,7 @@ import numpy as np
 #from six.moves import range  # pylint: disable=redefined-builtin
 import tensorflow as tf
 import os
+import re
 
 import data_utils
 from data_utils import *
@@ -21,6 +22,10 @@ from model import TCVAE
 import collections
 from gensim.models import KeyedVectors
 FLAGS = None
+
+import wandb
+wandb.init(project="t-cvae-gan", sync_tensorboard=True)
+
 # tf.enable_eager_execution()
 def add_arguments(parser):
     parser.register("type", "bool", lambda v: v.lower() == "true")
@@ -235,6 +240,7 @@ def train(hparams):
             avg_gan_ae_loss = total_loss_gan_ae / 100
             total_loss, total_predict_count, total_time, total_loss_disc, total_loss_gen,total_loss_gan_ae = 0.0, 0.0, 0.0,0.0,0.0,0.0
             print("global step %d   step-time %.2fs  loss %.3f ppl %.2f  disc %.3f gen %.3f gan_ae %.3f" % (global_step, avg_time, avg_loss, ppl, avg_disc_loss,avg_gen_loss,avg_gan_ae_loss))
+            wandb.log({"loss": avg_loss, "loss_disc": avg_disc_loss, "avg_loss_gan_gen": avg_gen_loss, "avg_loss_gan_enc": avg_gan_ae_loss}, step=global_step)
 
         if  global_step % 3000 == 0:
             train_model.model.saver.save(train_sess, ckpt_path, global_step=global_step)
@@ -253,7 +259,9 @@ def train(hparams):
 
             total_loss, total_predict_count, total_time = 0.0, 0.0, 0.0
             print("eval  ppl %.2f" % (ppl))
-            if global_step < 30000:
+            wandb.log({"eval_ppl": ppl}, step=global_step)
+
+            if global_step < 12000:
                 continue
             x = hparams.train_dir.split("/")[-2]
             f1 = open("output/" + x + "/ref2_file" + str(global_step),"w",encoding="utf-8")
@@ -292,8 +300,24 @@ def train(hparams):
             f2.close()
             hyp_file = "output/" + x + "/predict2_file" + str(global_step)
             ref_file = "output/" + x + "/ref2_file" + str(global_step)
-            result = os.popen("python multi_bleu.py -ref " + ref_file + " -hyp " + hyp_file)
-            print(result.read())
+            try:
+                result = os.popen("python multi_bleu.py -ref " + ref_file + " -hyp " + hyp_file)
+                BLEU_result = result.read()
+                print(BLEU_result)
+                pattern = re.compile('BLEU = (.*?), (.*?)/(.*?)/(.*?)/(.*?) .*?BP=(.*?),.*?ratio=(.*?),.*?=(.*?),.*?=(.*?)\\)')
+                m = pattern.match(BLEU_result)
+                global_bleu = m.group(1)
+                bleu1 = m.group(2)
+                bleu2 = m.group(3)
+                bleu3 = m.group(4)
+                bleu4 = m.group(5)
+                BP = m.group(6)
+                ratio = m.group(7)
+                hyp_len = m.group(8)
+                ref_len = m.group(9)
+                wandb.log({"global_bleu": float(global_bleu), "bleu1": float(bleu1), "bleu2": float(bleu2), "bleu3": float(bleu3), "bleu4": float(bleu4), "BP": float(BP), "ratio": float(ratio), "hyp_len": float(hyp_len), "ref_len": float(ref_len)}, step=global_step)
+            except:
+                print("error when evaluation BLEU, skip ... ")
 
             f3 = open("output/" + x + "/predict2_file" + str(global_step), "r", encoding="utf-8")
             dic1 = {}
@@ -315,6 +339,8 @@ def train(hparams):
                         distinc2 += 1
             print("distinc1: %.5f" % float(distinc1 / all1))
             print("distinc2: %.5f" % float(distinc2 / all2))
+            wandb.log({"distinc1": distinc1, "distinc2": distinc2}, step=global_step)
+
             print("infer done.")
 
 def init_embedding(hparams):
@@ -354,6 +380,7 @@ if __name__ == "__main__":
     my_parser = argparse.ArgumentParser()
     add_arguments(my_parser)
     FLAGS, remaining = my_parser.parse_known_args()
+    wandb.config.update(FLAGS)
     FLAGS.train_dir = FLAGS.model_dir + FLAGS.train_dir
     FLAGS.output_dir = FLAGS.out_dir + FLAGS.output_dir
     print(FLAGS)

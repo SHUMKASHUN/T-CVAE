@@ -216,7 +216,7 @@ class TCVAE():
             t_vars = tf.trainable_variables()
             d_vars = [var for var in t_vars if 'd_' in var.name]
             g_vars = [var for var in t_vars if 'g_' in var.name]
-            ae_vars = [var for var in t_vars if 'ae_' in var.name]
+            ae_vars = [var for var in t_vars if 'GAN' not in var.name]
 
             gradients_gen, v_gen = zip(*optimizer.compute_gradients(self.gen_loss, var_list = g_vars))
             gradients_disc, v_disc = zip(*optimizer.compute_gradients(self.disc_loss, var_list = d_vars))
