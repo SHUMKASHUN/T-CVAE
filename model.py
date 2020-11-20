@@ -160,7 +160,8 @@ class TCVAE():
                                              #self.latent_dim * 2, use_bias=False, name="prior_fc")
             #prior_mu, prior_logvar = tf.split(prior_mulogvar, 2, axis=1)
 
-
+            post_encode = tf.layers.dense(tf.layers.dense(prior_encode, 256, activation=tf.nn.tanh,name = 'ae_1'),
+                                          64,use_bias = False, name = 'ae_2')
             #draw latent sample
             #if self.mode != tf.contrib.learn.ModeKeys.INFER:
             #latent_sample = sample_gaussian(post_mu, post_logvar) #[?,64]
@@ -215,7 +216,7 @@ class TCVAE():
             t_vars = tf.trainable_variables()
             d_vars = [var for var in t_vars if 'd_' in var.name]
             g_vars = [var for var in t_vars if 'g_' in var.name]
-            ae_vars = [var for var in t_vars if 'concentrate_attention' in var.name]
+            ae_vars = [var for var in t_vars if 'ae_' in var.name]
 
             gradients_gen, v_gen = zip(*optimizer.compute_gradients(self.gen_loss, var_list = g_vars))
             gradients_disc, v_disc = zip(*optimizer.compute_gradients(self.disc_loss, var_list = d_vars))
@@ -363,9 +364,9 @@ class TCVAE():
                                                     feed_dict=feed)
         loss_disc, global_step, _ = sess.run([self.disc_loss, self.global_step, self.disc_step],
                                              feed_dict=feed)
-        loss_gen,global_step, _,_ = sess.run([self.gen_loss, self.global_step,self.gen_step,self.gan_ae_step],
+        loss_gen,loss_gan_ae, global_step, _,_ = sess.run([self.gen_loss, self.gan_ae_loss,self.global_step,self.gen_step,self.gan_ae_step],
                                             feed_dict=feed)
-        return total_loss, global_step, word_nums
+        return total_loss, global_step, word_nums, loss_disc, loss_gen, loss_gan_ae
 
     def eval_step(self, sess, data, no_random=False, id=0):
         input_ids, input_scopes, input_positions, input_masks, input_lens, input_which, targets, weights, input_windows = self.get_batch(

@@ -214,21 +214,27 @@ def train(hparams):
 
 
     step_loss, step_time, total_predict_count, total_loss, total_time, avg_loss, avg_time = 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0
-
+    total_loss_disc, total_loss_gen, total_loss_gan_ae,avg_disc_loss, avg_gen_loss ,avg_gan_ae_loss= 0.0, 0.0, 0.0, 0.0,0.0,0.0
 
     while global_step <= 380000:
         start_time = time.time()
-        step_loss, global_step, predict_count = train_model.model.train_step(train_sess, train_data)
+        step_loss, global_step, predict_count,loss_disc,loss_gen, loss_gan_ae = train_model.model.train_step(train_sess, train_data)
 
         total_loss += step_loss / hparams.batch_size
+        total_loss_disc += loss_disc
+        total_loss_gen += loss_gen
+        total_loss_gan_ae += loss_gan_ae
         total_time += (time.time() - start_time)
         total_predict_count += predict_count
         if global_step % 100 == 0:
             ppl = safe_exp(total_loss * hparams.batch_size / total_predict_count)
             avg_loss = total_loss / 100
             avg_time = total_time / 100
-            total_loss, total_predict_count, total_time = 0.0, 0.0, 0.0
-            print("global step %d   step-time %.2fs  loss %.3f ppl %.2f" % (global_step, avg_time, avg_loss, ppl))
+            avg_disc_loss = total_loss_disc / 100
+            avg_gen_loss = total_loss_gen / 100
+            avg_gan_ae_loss = total_loss_gan_ae / 100
+            total_loss, total_predict_count, total_time, total_loss_disc, total_loss_gen,total_loss_gan_ae = 0.0, 0.0, 0.0,0.0,0.0,0.0
+            print("global step %d   step-time %.2fs  loss %.3f ppl %.2f  disc %.3f gen %.3f gan_ae %.3f" % (global_step, avg_time, avg_loss, ppl, avg_disc_loss,avg_gen_loss,avg_gan_ae_loss))
 
         if  global_step % 3000 == 0:
             train_model.model.saver.save(train_sess, ckpt_path, global_step=global_step)
