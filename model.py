@@ -153,37 +153,30 @@ class TCVAE():
             #Prior net -> Generator
             z = tf.random_normal(tf.shape(prior_encode))
             gen_input = tf.concat([prior_encode, z], axis=1)
-
+            #generator output
             fake_sample = generator(gen_input) #[?,64]
-
+            #-----------------------------------Not Used--------------------------------------------------------
             #prior_mulogvar = tf.layers.dense(tf.layers.dense(prior_encode, 256, activation=tf.nn.tanh),
                                              #self.latent_dim * 2, use_bias=False, name="prior_fc")
             #prior_mu, prior_logvar = tf.split(prior_mulogvar, 2, axis=1)
+            #-----------------------------------Not Used--------------------------------------------------------
 
+            #MLP output
             post_encode = tf.layers.dense(tf.layers.dense(prior_encode, 256, activation=tf.nn.tanh,name = 'ae_1'),
                                           64,use_bias = False, name = 'ae_2')
             #draw latent sample
             #if self.mode != tf.contrib.learn.ModeKeys.INFER:
-            #latent_sample = sample_gaussian(post_mu, post_logvar) #[?,64]
+            #latent_sample =post_encode #sample_gaussian(post_mu, post_logvar) #[?,64]
             #else:
             #     latent_sample = sample_gaussian(prior_mu, prior_logvar)
 
             # true sample
             #self.latent_sample = latent_sample
 
-            real_result = discriminator(post_encode)
-            fake_result = discriminator(fake_sample)
-            #KL loss
-            self.disc_loss = tf.reduce_mean(tf.nn.softplus(fake_result)) + tf.reduce_mean(
-                tf.nn.softplus(-real_result))
-            self.gen_loss = tf.reduce_mean(
-                -(tf.clip_by_value(tf.exp(fake_result), 0.5, 2) * fake_result))
-            self.gan_ae_loss = tf.reduce_mean(real_result)
-
-            # self.mode != tf.contrib.learn.ModeKeys.INFER:
-            #    latent_sample = tf.tile(tf.expand_dims(latent_sample, 1), [1, self.max_story_length, 1])
-            #else:
-            latent_sample = tf.tile(tf.expand_dims(fake_sample, 1), [1, self.max_story_length, 1])
+            if self.mode != tf.contrib.learn.ModeKeys.INFER:
+                latent_sample = tf.tile(tf.expand_dims(post_encode, 1), [1, self.max_story_length, 1])
+            else:
+                latent_sample = tf.tile(tf.expand_dims(fake_sample, 1), [1, self.max_story_length, 1])
 
             inputs = tf.concat([inputs, latent_sample], axis=2)
             inputs = tf.layers.dense(inputs, self.num_units, activation=tf.tanh, use_bias=False, name="last") #[?,105,256]
@@ -193,6 +186,15 @@ class TCVAE():
             self.sample_id = tf.argmax(self.logits, axis=2)
             # self.sample_id = tf.argmax(self.weight_probs, axis=2)
 
+
+        real_result = discriminator(post_encode)
+        fake_result = discriminator(fake_sample)
+        # KL loss
+        self.disc_loss = tf.reduce_mean(tf.nn.softplus(fake_result)) + tf.reduce_mean(
+            tf.nn.softplus(-real_result))
+        self.gen_loss = tf.reduce_mean(
+            -(tf.clip_by_value(tf.exp(fake_result), 0.5, 2) * fake_result))
+        self.gan_ae_loss = tf.reduce_mean(real_result)
         if self.mode != tf.contrib.learn.ModeKeys.INFER:
             with tf.variable_scope("loss") as scope:
                 self.global_step = tf.Variable(0, trainable=False)
