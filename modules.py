@@ -313,16 +313,16 @@ def feedforward(inputs,
 
 def generator(Z, hsize=[256, 256],reuse=tf.AUTO_REUSE):
     with tf.variable_scope("GAN/Generator",reuse=reuse):
-        h1 = tf.layers.dense(Z,hsize[0],activation=tf.nn.leaky_relu,name = 'g_h1')
-        h2 = tf.layers.dense(h1,hsize[1],activation=tf.nn.leaky_relu,name ='g_h2')
-        out = tf.layers.dense(h2,64,name = 'g_h3')
+        h1 = tf.layers.dense(Z,256,activation=tf.nn.leaky_relu,name = 'g_h1')
+        #h2 = tf.layers.dense(h1,128,activation=tf.nn.leaky_relu,name ='g_h2')
+        out = tf.layers.dense(h1,128,name = 'g_h3')
 
     return out
 
 def discriminator(X, hsize=[256, 256],reuse=tf.AUTO_REUSE):
     with tf.variable_scope("GAN/Discriminator",reuse=reuse):
         h1 = tf.layers.dense(X,hsize[0],activation=tf.nn.leaky_relu,name = 'd_h1')
-        h2 = tf.layers.dense(h1,hsize[1],activation=tf.nn.leaky_relu,name = 'd_h2')
+        h2 = tf.layers.dense(h1,128,activation=tf.nn.leaky_relu,name = 'd_h2')
         h3 = tf.layers.dense(h2,2,name = 'd_h3')
         out = tf.layers.dense(h3,1,name = 'd_h4')
 
