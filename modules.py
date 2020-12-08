@@ -327,3 +327,18 @@ def discriminator(X, hsize=[256, 128],reuse=tf.AUTO_REUSE):
         out = tf.layers.dense(h3,1,name = 'd_h4')
 
     return out
+
+def discriminator_bn(x, reuse=False):
+    with tf.variable_scope('GAN/Discriminator_bn', reuse=reuse):
+        x = tf.layers.dense(x, 128,name = 'd_bn_h1')
+        # x = tf.nn.leaky_relu(tf.layers.batch_normalization(x, training=True, name='bn1'))
+        x = tf.nn.leaky_relu(x)
+        x = tf.layers.dense(x, 64,name = 'd_bn_h2')
+        x = tf.nn.leaky_relu(tf.layers.batch_normalization(x, training=True, name='d_bn2'))
+        # x = tf.nn.leaky_relu(x)
+        x = tf.layers.dense(x, 32,name = 'd_bn_h3')
+        x = tf.nn.leaky_relu(tf.layers.batch_normalization(x, training=True, name='d_bn3'))
+        # x = tf.nn.leaky_relu(x)
+        x = tf.layers.dense(x, 1,name = 'd_bn_h4')
+
+    return x
