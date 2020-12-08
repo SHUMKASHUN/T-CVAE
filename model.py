@@ -162,7 +162,7 @@ class TCVAE():
             #-----------------------------------Not Used--------------------------------------------------------
 
             #MLP output
-            post_encode = tf.layers.dense(tf.layers.dense(prior_encode, 256, activation=tf.nn.tanh,name = 'ae_1'),
+            post_encode = tf.layers.dense(tf.layers.dense(post_encode, 256, activation=tf.nn.tanh,name = 'ae_1'),
                                           64,use_bias = False, name = 'ae_2')
             #draw latent sample
             #if self.mode != tf.contrib.learn.ModeKeys.INFER:
@@ -190,11 +190,11 @@ class TCVAE():
         real_result = discriminator(post_encode)
         fake_result = discriminator(fake_sample)
         # KL loss
-        self.disc_loss = tf.reduce_mean(tf.nn.softplus(fake_result)) + tf.reduce_mean(
-            tf.nn.softplus(-real_result))
-        self.gen_loss = tf.reduce_mean(
-            -(tf.clip_by_value(tf.exp(fake_result), 0.5, 2) * fake_result))
-        self.gan_ae_loss = tf.reduce_mean(real_result)
+        self.disc_loss = (tf.reduce_mean(tf.nn.softplus(fake_result)) + tf.reduce_mean(
+            tf.nn.softplus(-real_result)))*0.01
+        self.gen_loss = (tf.reduce_mean(
+            -(tf.clip_by_value(tf.exp(fake_result), 0.5, 2) * fake_result)))*0.01
+        self.gan_ae_loss = tf.reduce_mean(real_result)*0.01
         if self.mode != tf.contrib.learn.ModeKeys.INFER:
             with tf.variable_scope("loss") as scope:
                 self.global_step = tf.Variable(0, trainable=False)

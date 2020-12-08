@@ -311,7 +311,7 @@ def feedforward(inputs,
         outputs = tf.layers.dropout(outputs, rate=dropout_rate, training=tf.convert_to_tensor(is_training))
     return outputs
 
-def generator(Z, hsize=[256, 256],reuse=tf.AUTO_REUSE):
+def generator(Z, hsize=[256, 128],reuse=tf.AUTO_REUSE):
     with tf.variable_scope("GAN/Generator",reuse=reuse):
         h1 = tf.layers.dense(Z,hsize[0],activation=tf.nn.leaky_relu,name = 'g_h1')
         h2 = tf.layers.dense(h1,hsize[1],activation=tf.nn.leaky_relu,name ='g_h2')
@@ -319,7 +319,7 @@ def generator(Z, hsize=[256, 256],reuse=tf.AUTO_REUSE):
 
     return out
 
-def discriminator(X, hsize=[256, 256],reuse=tf.AUTO_REUSE):
+def discriminator(X, hsize=[256, 128],reuse=tf.AUTO_REUSE):
     with tf.variable_scope("GAN/Discriminator",reuse=reuse):
         h1 = tf.layers.dense(X,hsize[0],activation=tf.nn.leaky_relu,name = 'd_h1')
         h2 = tf.layers.dense(h1,hsize[1],activation=tf.nn.leaky_relu,name = 'd_h2')
