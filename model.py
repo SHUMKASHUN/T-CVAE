@@ -172,7 +172,8 @@ class TCVAE():
 
             # true sample
             #self.latent_sample = latent_sample
-
+            real_result = discriminator(post_encode)
+            fake_result = discriminator(fake_sample)
             if self.mode != tf.contrib.learn.ModeKeys.INFER:
                 latent_sample = tf.tile(tf.expand_dims(post_encode, 1), [1, self.max_story_length, 1])
             else:
@@ -187,14 +188,6 @@ class TCVAE():
             # self.sample_id = tf.argmax(self.weight_probs, axis=2)
 
 
-        real_result = discriminator(post_encode)
-        fake_result = discriminator(fake_sample)
-        # KL loss
-        self.disc_loss = (tf.reduce_mean(tf.nn.softplus(fake_result)) + tf.reduce_mean(
-            tf.nn.softplus(-real_result)))*0.01
-        self.gen_loss = (tf.reduce_mean(
-            -(tf.clip_by_value(tf.exp(fake_result), 0.5, 2) * fake_result)))*0.01
-        self.gan_ae_loss = tf.reduce_mean(real_result)*0.01
         if self.mode != tf.contrib.learn.ModeKeys.INFER:
             with tf.variable_scope("loss") as scope:
                 self.global_step = tf.Variable(0, trainable=False)
@@ -206,6 +199,10 @@ class TCVAE():
                 #kld = gaussian_kld(post_mu, post_logvar, prior_mu, prior_logvar)
                 #self.loss = tf.reduce_mean(crossent * self.weights) + tf.reduce_mean(kld) * kl_weights
                 self.loss = tf.reduce_mean(crossent * self.weights)
+                self.disc_loss = (tf.reduce_mean(tf.nn.softplus(fake_result)) + tf.reduce_mean(
+                                    tf.nn.softplus(-real_result)))*0.01
+                self.gen_loss = (tf.reduce_mean(-(tf.clip_by_value(tf.exp(fake_result), 0.5, 2) * fake_result)))*0.01
+                self.gan_ae_loss = tf.reduce_mean(real_result)*0.01
         if self.mode == tf.contrib.learn.ModeKeys.TRAIN:
             with tf.variable_scope("train_op") as scope:
                 optimizer = tf.train.AdamOptimizer(0.0001, beta1=0.9, beta2=0.99, epsilon=1e-9)
