@@ -213,8 +213,8 @@ class TCVAE():
             #self.gen_step = tf.train.RMSPropOptimizer(learning_rate=0.001).minimize(gen_loss)  # G Train step
             #self.disc_step = tf.train.RMSPropOptimizer(learning_rate=0.001).minimize(disc_loss)  # D Train step
             t_vars = tf.trainable_variables()
-            d_vars = [var for var in t_vars if 'd_' in var.name]
-            g_vars = [var for var in t_vars if 'g_' in var.name]
+            d_vars = [var for var in t_vars if 'discriminator_' in var.name]
+            g_vars = [var for var in t_vars if 'generator_' in var.name]
             ae_vars = [var for var in t_vars if 'GAN' not in var.name]
 
             gradients_gen, v_gen = zip(*optimizer.compute_gradients(self.gen_loss, var_list = g_vars))
