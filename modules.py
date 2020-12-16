@@ -313,32 +313,32 @@ def feedforward(inputs,
 
 def generator(Z, hsize=[256, 128],reuse=tf.AUTO_REUSE):
     with tf.variable_scope("GAN/Generator",reuse=reuse):
-        h1 = tf.layers.dense(Z,hsize[0],activation=tf.nn.leaky_relu,name = 'g_h1')
-        h2 = tf.layers.dense(h1,hsize[1],activation=tf.nn.leaky_relu,name ='g_h2')
-        out = tf.layers.dense(h2,64,name = 'g_h3')
+        h1 = tf.layers.dense(Z,hsize[0],activation=tf.nn.leaky_relu,name = 'generator_h1')
+        h2 = tf.layers.dense(h1,hsize[1],activation=tf.nn.leaky_relu,name ='generator_h2')
+        out = tf.layers.dense(h2,64,name = 'generator_h3')
 
     return out
 
-def discriminator(X, hsize=[256,128,2,1],reuse=tf.AUTO_REUSE):
+def discriminator(X, hsize=[128,64,32,1],reuse=tf.AUTO_REUSE):
     with tf.variable_scope("GAN/Discriminator",reuse=reuse):
-        h1 = tf.layers.dense(X,hsize[0],activation=tf.nn.leaky_relu,name = 'd_h1')
-        h2 = tf.layers.dense(h1,hsize[1],activation=tf.nn.leaky_relu,name = 'd_h2')
-        h3 = tf.layers.dense(h2,hsize[2],name = 'd_h3')
-        out = tf.layers.dense(h3,hsize[3],name = 'd_h4')
+        h1 = tf.layers.dense(X,hsize[0],activation=tf.nn.leaky_relu,name = 'discriminator_h1')
+        h2 = tf.layers.dense(h1,hsize[1],activation=tf.nn.leaky_relu,name = 'discriminator_h2')
+        h3 = tf.layers.dense(h2,hsize[2],name = 'discriminator_h3')
+        out = tf.layers.dense(h3,hsize[3],name = 'discriminator_h4')
 
     return out
 
 def discriminator_bn(x, reuse=tf.AUTO_REUSE):
     with tf.variable_scope('GAN/Discriminator_bn', reuse=reuse):
-        x = tf.layers.dense(x, 128,name = 'd_bn_h1')
+        x = tf.layers.dense(x, 128,name = 'discriminator_bn_h1')
         # x = tf.nn.leaky_relu(tf.layers.batch_normalization(x, training=True, name='bn1'))
         x = tf.nn.leaky_relu(x)
-        x = tf.layers.dense(x, 64,name = 'd_bn_h2')
-        x = tf.nn.leaky_relu(tf.layers.batch_normalization(x, training=True, name='d_bn2'))
+        x = tf.layers.dense(x, 64,name = 'discriminator_bn_h2')
+        x = tf.nn.leaky_relu(tf.layers.batch_normalization(x, training=True, name='discriminator_bn1'))
         # x = tf.nn.leaky_relu(x)
-        x = tf.layers.dense(x, 32,name = 'd_bn_h3')
-        x = tf.nn.leaky_relu(tf.layers.batch_normalization(x, training=True, name='d_bn3'))
+        x = tf.layers.dense(x, 32,name = 'discriminator_bn_h3')
+        x = tf.nn.leaky_relu(tf.layers.batch_normalization(x, training=True, name='discriminator_bn2'))
         # x = tf.nn.leaky_relu(x)
-        x = tf.layers.dense(x, 1,name = 'd_bn_h4')
+        x = tf.layers.dense(x, 1,name = 'discriminator_bn_h4')
 
     return x
