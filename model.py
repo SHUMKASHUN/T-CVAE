@@ -151,10 +151,11 @@ class TCVAE():
             #post_mu, post_logvar = tf.split(post_mulogvar, 2, axis=1)
 
             #Prior net -> Generator
-            z = tf.random_normal(tf.shape(prior_encode))
-            gen_input = tf.concat([prior_encode, z], axis=1)
+            #z = tf.random_normal(tf.shape(prior_encode))
+            #gen_input = tf.concat([prior_encode, z], axis=1)
             #generator output
-            fake_sample = generator(gen_input) #[?,64]
+            fake_sample = generator(prior_encode) #[?,64]
+            fake_mu, fake_logvar = tf.split(fake_sample, 2,axis = 1)
             #-----------------------------------Not Used--------------------------------------------------------
             #prior_mulogvar = tf.layers.dense(tf.layers.dense(prior_encode, 256, activation=tf.nn.tanh),
                                              #self.latent_dim * 2, use_bias=False, name="prior_fc")
@@ -177,8 +178,8 @@ class TCVAE():
             if self.mode != tf.contrib.learn.ModeKeys.INFER:
                 latent_sample = tf.tile(tf.expand_dims(post_encode, 1), [1, self.max_story_length, 1])
             else:
-                latent_sample = tf.tile(tf.expand_dims(fake_sample, 1), [1, self.max_story_length, 1])
-
+                latent_sample = sample_gaussian(fake_mu, fake_logvar)
+                latent_sample = tf.tile(tf.expand_dims(latent_sample, 1), [1, self.max_story_length, 1])
             inputs = tf.concat([inputs, latent_sample], axis=2)
             inputs = tf.layers.dense(inputs, self.num_units, activation=tf.tanh, use_bias=False, name="last") #[?,105,256]
 

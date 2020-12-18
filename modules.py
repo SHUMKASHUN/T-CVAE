@@ -314,8 +314,8 @@ def feedforward(inputs,
 def generator(Z, hsize=[256, 128],reuse=tf.AUTO_REUSE):
     with tf.variable_scope("GAN/Generator",reuse=reuse):
         h1 = tf.layers.dense(Z,hsize[0],activation=tf.nn.leaky_relu,name = 'generator_h1')
-        h2 = tf.layers.dense(h1,hsize[1],activation=tf.nn.leaky_relu,name ='generator_h2')
-        out = tf.layers.dense(h2,64,name = 'generator_h3')
+        #h2 = tf.layers.dense(h1,hsize[1],activation=tf.nn.leaky_relu,name ='generator_h2')
+        out = tf.layers.dense(h1,128,name = 'generator_h3')
 
     return out
 
