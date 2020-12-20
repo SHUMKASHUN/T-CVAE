@@ -164,7 +164,8 @@ class TCVAE():
 
             #MLP output
             post_encode = tf.layers.dense(tf.layers.dense(post_encode, 256, activation=tf.nn.tanh,name = 'ae_1'),
-                                          64,use_bias = False, name = 'ae_2')
+                                          128,use_bias = False, name = 'ae_2')
+            post_mu,post_logvar = tf.split(post_encode, 2, axis = 1)
             #draw latent sample
             #if self.mode != tf.contrib.learn.ModeKeys.INFER:
             #latent_sample =post_encode #sample_gaussian(post_mu, post_logvar) #[?,64]
@@ -176,7 +177,8 @@ class TCVAE():
             real_result = discriminator(post_encode)
             fake_result = discriminator(fake_sample)
             if self.mode != tf.contrib.learn.ModeKeys.INFER:
-                latent_sample = tf.tile(tf.expand_dims(post_encode, 1), [1, self.max_story_length, 1])
+                latent_sample = sample_gaussian(post_mu,post_logvar)
+                latent_sample = tf.tile(tf.expand_dims(latent_sample, 1), [1, self.max_story_length, 1])
             else:
                 latent_sample = sample_gaussian(fake_mu, fake_logvar)
                 latent_sample = tf.tile(tf.expand_dims(latent_sample, 1), [1, self.max_story_length, 1])
