@@ -164,7 +164,7 @@ class TCVAE():
 
             #MLP output
             post_encode = tf.layers.dense(tf.layers.dense(post_encode, 256, activation=tf.nn.tanh,name = 'ae_1'),
-                                          128,use_bias = False, name = 'ae_2')
+                                          64,use_bias = False, name = 'ae_2')
             post_mu,post_logvar = tf.split(post_encode, 2, axis = 1)
             #draw latent sample
             #if self.mode != tf.contrib.learn.ModeKeys.INFER:
