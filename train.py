@@ -221,11 +221,11 @@ def train(hparams):
 
     step_loss, step_time, total_predict_count, total_loss, total_time, avg_loss, avg_time = 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0
     total_loss_disc, total_loss_gen, total_loss_gan_ae,avg_disc_loss, avg_gen_loss ,avg_gan_ae_loss= 0.0, 0.0, 0.0, 0.0,0.0,0.0
-
+    indicate_id = 0
     while global_step <= 600000:
         start_time = time.time()
-        step_loss, global_step, predict_count,loss_disc,loss_gen, loss_gan_ae = train_model.model.train_step(train_sess, train_data)
-
+        step_loss, global_step, predict_count,loss_disc,loss_gen, loss_gan_ae = train_model.model.train_step(train_sess, train_data,indicate_id)
+        indicate_id = indicate_id + 1
         total_loss += step_loss / hparams.batch_size
         total_loss_disc += loss_disc
         total_loss_gen += loss_gen

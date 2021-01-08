@@ -24,6 +24,7 @@ class TCVAE():
         self.flag = True
         self.mode = mode
         self.batch_size = hparams.batch_size
+        self.indicate_id = 0
         if self.mode == tf.contrib.learn.ModeKeys.TRAIN:
             self.is_training = True
         else:
@@ -74,7 +75,8 @@ class TCVAE():
             layers_outputs = []
 
             post_inputs = inputs
-            print(post_inputs.shape)
+
+            #print(post_inputs.shape)
             #bert_module = hub.Module("https://tfhub.dev/google/small_bert/bert_uncased_L-6_H-512_A-8/1",
             #             trainable=True,
             #             tags={"train"} if training else None)
@@ -153,12 +155,14 @@ class TCVAE():
                                                        scope="concentrate_attention",
                                                        reuse=tf.AUTO_REUSE
                                                        )
-            #Both Post_encode and Prior_encode is [?,256]
+            #Both Post_encode and Prior_encode is [?,512]
             # Posterior net
             #post_mulogvar = tf.layers.dense(post_encode, self.latent_dim * 2, use_bias=False, name="post_fc")
             #post_mu, post_logvar = tf.split(post_mulogvar, 2, axis=1)
 
             #Prior net -> Generator
+            prior_encode = get_bert_output(self.indicate_id) # [64,512]
+            post_encode = get_bert_post_output(self.indicate_id) #[64,512]
             z = tf.random_normal(tf.shape(prior_encode))
             gen_input = tf.concat([prior_encode, z], axis=1)
             #generator output
@@ -352,9 +356,10 @@ class TCVAE():
 
         return input_ids, input_scopes, input_positions, input_masks, input_lens, input_which, targets, weights, input_windows
 
-    def train_step(self, sess, data):
+    def train_step(self, sess, data,indicate_id):
         input_ids, input_scopes, input_positions, input_masks, input_lens, input_which, targets, weights, input_windows = self.get_batch(
             data)
+        
         #to_vocab, rev_to_vocab = initialize_vocabulary("data/vocab_20000")
 
         
@@ -368,6 +373,7 @@ class TCVAE():
             self.targets: targets,
             self.input_windows: input_windows,
             self.which: input_which
+            self.indicate_id : indicate_id
         }
         word_nums = sum(sum(weight) for weight in weights)
         
