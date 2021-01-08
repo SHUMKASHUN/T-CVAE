@@ -23,8 +23,9 @@ import collections
 from gensim.models import KeyedVectors
 FLAGS = None
 
-import wandb
-wandb.init(project="t-cvae-gan_bert", sync_tensorboard=True)
+#import wandb
+
+#wandb.init(project="t-cvae-gan_bert", sync_tensorboard=True)
 
 # tf.enable_eager_execution()
 def add_arguments(parser):
@@ -240,7 +241,7 @@ def train(hparams):
             avg_gan_ae_loss = total_loss_gan_ae / 100
             total_loss, total_predict_count, total_time, total_loss_disc, total_loss_gen,total_loss_gan_ae = 0.0, 0.0, 0.0,0.0,0.0,0.0
             print("global step %d   step-time %.2fs  loss %.3f ppl %.2f  disc %.3f gen %.3f gan_ae %.3f" % (global_step, avg_time, avg_loss, ppl, avg_disc_loss,avg_gen_loss,avg_gan_ae_loss))
-            wandb.log({"loss": avg_loss, "loss_disc": avg_disc_loss, "avg_loss_gan_gen": avg_gen_loss, "avg_loss_gan_enc": avg_gan_ae_loss}, step=global_step)
+            #wandb.log({"loss": avg_loss, "loss_disc": avg_disc_loss, "avg_loss_gan_gen": avg_gen_loss, "avg_loss_gan_enc": avg_gan_ae_loss}, step=global_step)
 
         if  global_step % 3000 == 0:
             train_model.model.saver.save(train_sess, ckpt_path, global_step=global_step)
@@ -259,7 +260,7 @@ def train(hparams):
 
             total_loss, total_predict_count, total_time = 0.0, 0.0, 0.0
             print("eval  ppl %.2f" % (ppl))
-            wandb.log({"eval_ppl": ppl}, step=global_step)
+            #wandb.log({"eval_ppl": ppl}, step=global_step)
 
             if global_step < 12000:
                 continue
@@ -315,7 +316,7 @@ def train(hparams):
                 ratio = m.group(7)
                 hyp_len = m.group(8)
                 ref_len = m.group(9)
-                wandb.log({"global_bleu": float(global_bleu), "bleu1": float(bleu1), "bleu2": float(bleu2), "bleu3": float(bleu3), "bleu4": float(bleu4), "BP": float(BP), "ratio": float(ratio), "hyp_len": float(hyp_len), "ref_len": float(ref_len)}, step=global_step)
+                #wandb.log({"global_bleu": float(global_bleu), "bleu1": float(bleu1), "bleu2": float(bleu2), "bleu3": float(bleu3), "bleu4": float(bleu4), "BP": float(BP), "ratio": float(ratio), "hyp_len": float(hyp_len), "ref_len": float(ref_len)}, step=global_step)
             except:
                 print("error when evaluation BLEU, skip ... ")
 
@@ -339,7 +340,7 @@ def train(hparams):
                         distinc2 += 1
             print("distinc1: %.5f" % float(distinc1 / all1))
             print("distinc2: %.5f" % float(distinc2 / all2))
-            wandb.log({"distinc1": distinc1, "distinc2": distinc2}, step=global_step)
+            #wandb.log({"distinc1": distinc1/all1, "distinc2": distinc2/all2}, step=global_step)
 
             print("infer done.")
 
@@ -380,7 +381,7 @@ if __name__ == "__main__":
     my_parser = argparse.ArgumentParser()
     add_arguments(my_parser)
     FLAGS, remaining = my_parser.parse_known_args()
-    wandb.config.update(FLAGS)
+    #.config.update(FLAGS)
     FLAGS.train_dir = FLAGS.model_dir + FLAGS.train_dir
     FLAGS.output_dir = FLAGS.out_dir + FLAGS.output_dir
     print(FLAGS)

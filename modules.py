@@ -342,3 +342,6 @@ def discriminator_bn(x, reuse=tf.AUTO_REUSE):
         x = tf.layers.dense(x, 1,name = 'discriminator_bn_h4')
 
     return x
+
+
+

@@ -5,7 +5,6 @@ import math
 from tensorflow.python.layers import core as layers_core
 from data_utils import *
 import random
-import tensorflow_hub as hub
 
 class TCVAE():
     def __init__(self, hparams, mode):
@@ -75,58 +74,59 @@ class TCVAE():
             layers_outputs = []
 
             post_inputs = inputs
-            bert_module = hub.Module("https://tfhub.dev/google/small_bert/bert_uncased_L-6_H-512_A-8/1",
-                         trainable=True,
-                         tags={"train"} if training else None)
+            print(post_inputs.shape)
+            #bert_module = hub.Module("https://tfhub.dev/google/small_bert/bert_uncased_L-6_H-512_A-8/1",
+            #             trainable=True,
+            #             tags={"train"} if training else None)
             for i in range(self.num_layers):
                 with tf.variable_scope("num_layers_{}".format(i)):
-                    # outputs = multihead_attention(queries=inputs,
-                    #                               keys=inputs,
-                    #                               query_length=self.input_lens,
-                    #                               key_length=self.input_lens,
-                    #                               num_units=self.num_units,
-                    #                               num_heads=self.num_heads,
-                    #                               dropout_rate=self.dropout_rate,
-                    #                               is_training=self.is_training,
-                    #                               using_mask=True,
-                    #                               mymasks=self.input_masks,
-                    #                               scope="self_attention")
+                    outputs = multihead_attention(queries=inputs,
+                                                  keys=inputs,
+                                                  query_length=self.input_lens,
+                                                  key_length=self.input_lens,
+                                                  num_units=self.num_units,
+                                                  num_heads=self.num_heads,
+                                                  dropout_rate=self.dropout_rate,
+                                                  is_training=self.is_training,
+                                                  using_mask=True,
+                                                  mymasks=self.input_masks,
+                                                  scope="self_attention")
 
-                    # outputs = outputs + inputs
-                    # inputs = normalize(outputs)
+                    outputs = outputs + inputs
+                    inputs = normalize(outputs)
 
-                    # outputs = feedforward(inputs, [self.num_units * 2, self.num_units], is_training=self.is_training,
-                    #                       dropout_rate=self.dropout_rate, scope="f1")
-                    # outputs = outputs + inputs
-                    # inputs = normalize(outputs)
+                    outputs = feedforward(inputs, [self.num_units * 2, self.num_units], is_training=self.is_training,
+                                          dropout_rate=self.dropout_rate, scope="f1")
+                    outputs = outputs + inputs
+                    inputs = normalize(outputs)
 
-                    # post_outputs = multihead_attention(queries=post_inputs,
-                    #                                    keys=post_inputs,
-                    #                                    query_length=self.input_lens,
-                    #                                    key_length=self.input_lens,
-                    #                                    num_units=self.num_units,
-                    #                                    num_heads=self.num_heads,
-                    #                                    dropout_rate=self.dropout_rate,
-                    #                                    is_training=self.is_training,
-                    #                                    using_mask=False,
-                    #                                    mymasks=None,
-                    #                                    scope="self_attention",
-                    #                                    reuse=tf.AUTO_REUSE
-                    #                                    )
+                    post_outputs = multihead_attention(queries=post_inputs,
+                                                       keys=post_inputs,
+                                                       query_length=self.input_lens,
+                                                       key_length=self.input_lens,
+                                                       num_units=self.num_units,
+                                                       num_heads=self.num_heads,
+                                                       dropout_rate=self.dropout_rate,
+                                                       is_training=self.is_training,
+                                                       using_mask=False,
+                                                       mymasks=None,
+                                                       scope="self_attention",
+                                                       reuse=tf.AUTO_REUSE
+                                                       )
 
-                    # post_outputs = post_outputs + post_inputs # [?,?,256]
-                    # post_inputs = normalize(post_outputs)
+                    post_outputs = post_outputs + post_inputs # [?,?,256]
+                    post_inputs = normalize(post_outputs)
 
-                    # post_outputs = feedforward(post_inputs, [self.num_units * 2, self.num_units],
-                    #                            is_training=self.is_training,
-                    #                            dropout_rate=self.dropout_rate, scope="f1", reuse=tf.AUTO_REUSE)
-                    # post_outputs = post_outputs + post_inputs
-                    # post_inputs = normalize(post_outputs)
+                    post_outputs = feedforward(post_inputs, [self.num_units * 2, self.num_units],
+                                               is_training=self.is_training,
+                                               dropout_rate=self.dropout_rate, scope="f1", reuse=tf.AUTO_REUSE)
+                    post_outputs = post_outputs + post_inputs
+                    post_inputs = normalize(post_outputs)
 
-                    bert_outputs = bert_module(inputs, signature="tokens", as_dict=True)
-                    bert_post_outputs = bert_module(post_inputs, signature="tokens", as_dict=True)
-                    inputs = bert_outputs["sequence_output"]
-                    post_inputs = bert_post_outputs["sequence_output"]
+                    #bert_outputs = bert_module(inputs, signature="tokens", as_dict=True)
+                    #bert_post_outputs = bert_module(post_inputs, signature="tokens", as_dict=True)
+                    #inputs = bert_outputs["sequence_output"]
+                    #post_inputs = bert_post_outputs["sequence_output"]
 
             big_window = windows[0] + windows[1] + windows[2] + windows[3]
             post_encode, weight = w_encoder_attention(self.query,
@@ -355,6 +355,9 @@ class TCVAE():
     def train_step(self, sess, data):
         input_ids, input_scopes, input_positions, input_masks, input_lens, input_which, targets, weights, input_windows = self.get_batch(
             data)
+        #to_vocab, rev_to_vocab = initialize_vocabulary("data/vocab_20000")
+
+        
         feed = {
             self.input_ids: input_ids,
             self.input_scopes: input_scopes,
@@ -367,6 +370,7 @@ class TCVAE():
             self.which: input_which
         }
         word_nums = sum(sum(weight) for weight in weights)
+        
         loss, global_step, _, total_loss = sess.run([self.loss, self.global_step, self.train_op, self.total_loss],
                                                     feed_dict=feed)
         loss_disc, global_step, _ = sess.run([self.disc_loss, self.global_step, self.disc_step],
@@ -427,3 +431,7 @@ class TCVAE():
 
     def init_matrix(self, shape):
         return tf.random_normal(shape, stddev=0.1)
+    
+    #def get_string_story_with_y(self, data, id=0):
+
+
