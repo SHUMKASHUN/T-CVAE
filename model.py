@@ -5,7 +5,7 @@ import math
 from tensorflow.python.layers import core as layers_core
 from data_utils import *
 import random
-
+from bert_serving.client import BertClient
 class TCVAE():
     def __init__(self, hparams, mode):
         self.hparams = hparams
@@ -24,7 +24,7 @@ class TCVAE():
         self.flag = True
         self.mode = mode
         self.batch_size = hparams.batch_size
-        self.indicate_id = 0
+        self.encode = tf.placeholder(tf.float32, [None, None])
         if self.mode == tf.contrib.learn.ModeKeys.TRAIN:
             self.is_training = True
         else:
@@ -130,39 +130,41 @@ class TCVAE():
                     #inputs = bert_outputs["sequence_output"]
                     #post_inputs = bert_post_outputs["sequence_output"]
 
-            big_window = windows[0] + windows[1] + windows[2] + windows[3]
-            post_encode, weight = w_encoder_attention(self.query,
-                                                      post_inputs,
-                                                      self.input_lens,
-                                                      num_units=self.num_units,
-                                                      num_heads=self.num_heads,
-                                                      dropout_rate=self.dropout_rate,
-                                                      is_training=self.is_training,
-                                                      using_mask=False,
-                                                      mymasks=None,
-                                                      scope="concentrate_attention"
-                                                      )
+            # big_window = windows[0] + windows[1] + windows[2] + windows[3]
+            # post_encode, weight = w_encoder_attention(self.query,
+            #                                           post_inputs,
+            #                                           self.input_lens,
+            #                                           num_units=self.num_units,
+            #                                           num_heads=self.num_heads,
+            #                                           dropout_rate=self.dropout_rate,
+            #                                           is_training=self.is_training,
+            #                                           using_mask=False,
+            #                                           mymasks=None,
+            #                                           scope="concentrate_attention"
+            #                                           )
 
-            prior_encode, weight = w_encoder_attention(self.query,
-                                                       inputs,
-                                                       self.input_lens,
-                                                       num_units=self.num_units,
-                                                       num_heads=self.num_heads,
-                                                       dropout_rate=self.dropout_rate,
-                                                       is_training=self.is_training,
-                                                       using_mask=True,
-                                                       mymasks=big_window,
-                                                       scope="concentrate_attention",
-                                                       reuse=tf.AUTO_REUSE
-                                                       )
+            # prior_encode, weight = w_encoder_attention(self.query,
+            #                                            inputs,
+            #                                            self.input_lens,
+            #                                            num_units=self.num_units,
+            #                                            num_heads=self.num_heads,
+            #                                            dropout_rate=self.dropout_rate,
+            #                                            is_training=self.is_training,
+            #                                            using_mask=True,
+            #                                            mymasks=big_window,
+            #                                            scope="concentrate_attention",
+            #                                            reuse=tf.AUTO_REUSE
+            #                                            )
             #Both Post_encode and Prior_encode is [?,512]
             # Posterior net
             #post_mulogvar = tf.layers.dense(post_encode, self.latent_dim * 2, use_bias=False, name="post_fc")
             #post_mu, post_logvar = tf.split(post_mulogvar, 2, axis=1)
 
             #Prior net -> Generator
-            prior_encode = get_bert_output(self.indicate_id) # [64,512]
-            post_encode = get_bert_post_output(self.indicate_id) #[64,512]
+            prior_encode = self.encode # [64,512]
+            post_encode = self.encode #[64,512]
+            prior_encode = tf.convert_to_tensor(prior_encode)
+            post_encode = tf.convert_to_tensor(post_encode)
             z = tf.random_normal(tf.shape(prior_encode))
             gen_input = tf.concat([prior_encode, z], axis=1)
             #generator output
@@ -359,9 +361,8 @@ class TCVAE():
     def train_step(self, sess, data,indicate_id):
         input_ids, input_scopes, input_positions, input_masks, input_lens, input_which, targets, weights, input_windows = self.get_batch(
             data)
-        
-        #to_vocab, rev_to_vocab = initialize_vocabulary("data/vocab_20000")
-
+        indicate_id = indicate_id % 1218
+        bert_post_outputs = (indicate_id)
         
         feed = {
             self.input_ids: input_ids,
@@ -372,8 +373,8 @@ class TCVAE():
             self.weights: weights,
             self.targets: targets,
             self.input_windows: input_windows,
-            self.which: input_which
-            self.indicate_id : indicate_id
+            self.which: input_which,
+            self.encode : bert_post_outputs
         }
         word_nums = sum(sum(weight) for weight in weights)
         

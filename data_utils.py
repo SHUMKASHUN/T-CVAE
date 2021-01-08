@@ -1,4 +1,5 @@
 from tensorflow.python.platform import gfile
+
 _PAD = "_PAD"
 _GO = "_GO"
 _EOS = "_EOS"
