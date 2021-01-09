@@ -253,9 +253,10 @@ def train(hparams):
             else:
                 raise ValueError("ckpt file not found.")
             for id in range(0, int(len(valid_data)/hparams.batch_size)):
-                step_loss, predict_count = eval_model.model.eval_step(eval_sess, valid_data, no_random=True, id=id * hparams.batch_size)
-                total_loss += step_loss
-                total_predict_count += predict_count
+                if(id < 135):
+                    step_loss, predict_count = eval_model.model.eval_step(eval_sess, valid_data, no_random=True, id=id * hparams.batch_size,id)
+                    total_loss += step_loss
+                    total_predict_count += predict_count
             ppl = safe_exp(total_loss / total_predict_count)
 
             total_loss, total_predict_count, total_time = 0.0, 0.0, 0.0
@@ -268,32 +269,32 @@ def train(hparams):
             f1 = open("output/" + x + "/ref2_file" + str(global_step),"w",encoding="utf-8")
             f2 = open("output/" + x + "/predict2_file" + str(global_step),"w", encoding="utf-8")
             for id in range(0, int(len(valid_data) / hparams.batch_size)):
+                if (id < 135):
+                    given, answer, predict = infer_model.model.infer_step(infer_sess, valid_data, no_random=True,
+                                                                        id=id * hparams.batch_size,indicate_id = id)
+                    for i in range(hparams.batch_size):
+                        sample_output = predict[i]
+                        if hparams.EOS_ID in sample_output:
+                            sample_output = sample_output[:sample_output.index(hparams.EOS_ID)]
+                        pred = []
+                        for output in sample_output:
+                            pred.append(tf.compat.as_str(rev_to_vocab[output]))
 
-                given, answer, predict = infer_model.model.infer_step(infer_sess, valid_data, no_random=True,
-                                                                      id=id * hparams.batch_size)
-                for i in range(hparams.batch_size):
-                    sample_output = predict[i]
-                    if hparams.EOS_ID in sample_output:
-                        sample_output = sample_output[:sample_output.index(hparams.EOS_ID)]
-                    pred = []
-                    for output in sample_output:
-                        pred.append(tf.compat.as_str(rev_to_vocab[output]))
+                        sample_output = answer[i]
+                        if hparams.EOS_ID in sample_output[:]:
+                            if sample_output[0] == hparams.GO_ID:
+                                sample_output = sample_output[1:sample_output.index(hparams.EOS_ID)]
+                            else:
+                                sample_output = sample_output[0:sample_output.index(hparams.EOS_ID)]
+                        ans = []
+                        for output in sample_output:
+                            ans.append(tf.compat.as_str(rev_to_vocab[output]))
+                        if id == 0 and i < 8:
+                            print("answer: ", " ".join(ans))
+                            print("predict: ", " ".join(pred))
 
-                    sample_output = answer[i]
-                    if hparams.EOS_ID in sample_output[:]:
-                        if sample_output[0] == hparams.GO_ID:
-                            sample_output = sample_output[1:sample_output.index(hparams.EOS_ID)]
-                        else:
-                            sample_output = sample_output[0:sample_output.index(hparams.EOS_ID)]
-                    ans = []
-                    for output in sample_output:
-                        ans.append(tf.compat.as_str(rev_to_vocab[output]))
-                    if id == 0 and i < 8:
-                        print("answer: ", " ".join(ans))
-                        print("predict: ", " ".join(pred))
-
-                    f1.write(" ".join(ans).replace("_UNK", "_unknown") + "\n")
-                    f2.write(" ".join(pred) + "\n")
+                        f1.write(" ".join(ans).replace("_UNK", "_unknown") + "\n")
+                        f2.write(" ".join(pred) + "\n")
 
 
 

@@ -6,6 +6,118 @@ from tensorflow.python.layers import core as layers_core
 from data_utils import *
 import random
 from bert_serving.client import BertClient
+import sys
+
+def initialize_vocabulary(vocabulary_path):
+  if gfile.Exists(vocabulary_path):
+    rev_vocab = []
+    with gfile.GFile(vocabulary_path, mode="r") as f:
+      rev_vocab.extend(f.readlines())
+    rev_vocab = [line.strip() for line in rev_vocab]
+    vocab = dict([(x, y) for (y, x) in enumerate(rev_vocab)])
+    return vocab, rev_vocab
+  else:
+    raise ValueError("Vocabulary file %s not found.", vocabulary_path)
+
+def get_pred(path):
+    prediction=[]
+    file = open(path,'r') #'./output/predict2_file105000'
+    line = file.read().splitlines()
+    while line:
+        prediction.append(line)
+        line = file.read().splitlines()
+    file.close()
+    return prediction  #Using prediction[0][i] to see each sentence
+
+def convert_pred_to_story_post(data,converter):
+    word = []
+    output = []
+    pred_story = []
+    for i in range (0,78016):
+        for j in range (0,len(data[i])):
+            for k in range (0,len(data[i][j])):
+                word.append(tf.compat.as_str(converter[data[i][j][k]]))
+            new_sentence = " ".join(word)
+            #if j == i % 5:
+                
+            #    output.append(empty_string)
+            #else:
+            output.append(new_sentence)
+
+            word.clear()
+        new_stroy = " ".join(output)
+        pred_story.append(new_stroy)
+        output.clear()
+    return pred_story
+
+def convert_pred_to_story(data,converter):
+    empty_string = "               " ## length 15
+    word = []
+    output = []
+    pred_story = []
+    for i in range (0,78016):
+        for j in range (0,len(data[i])):
+            for k in range (0,len(data[i][j])):
+                word.append(tf.compat.as_str(converter[data[i][j][k]]))
+            new_sentence = " ".join(word)
+            if j == i % 5: 
+               output.append(empty_string)
+            else:
+                output.append(new_sentence)
+
+            word.clear()
+        new_stroy = " ".join(output)
+        pred_story.append(new_stroy)
+        output.clear()
+    return pred_story
+
+def get_bert_post_output(train_data,indicate_id):
+    #train_data = read_data("data/train.ids")
+    to_vocab, rev_to_vocab = initialize_vocabulary("data/vocab_20000")
+    train_story = convert_pred_to_story_post(train_data,rev_to_vocab)
+    bc = BertClient()
+    #max indicate_id = 1218
+    result = bc.encode(train_story[(0+indicate_id * 64) :(64+indicate_id * 64)])
+    return result
+
+def get_bert_output(train_data,indicate_id):
+    #train_data = read_data("data/train.ids")
+    to_vocab, rev_to_vocab = initialize_vocabulary("data/vocab_20000")
+    train_story = convert_pred_to_story(train_data,rev_to_vocab)
+    bc = BertClient()
+    #max indicate_id = 1218
+    result = bc.encode(train_story[(0+indicate_id * 64) :(64+indicate_id * 64)])
+    return result  ##[64,105,512]
+
+def read_data(src_path):
+    data_set = []
+    counter = 0
+    max_length1 = 0
+    with tf.gfile.GFile(src_path, mode="r") as src_file:
+        src = src_file.readline()
+        while src:
+            if counter % 100000 == 0:
+                print("  reading data line %d" % counter)
+                sys.stdout.flush()
+
+            sentences = []
+            s = []
+            for x in src.split(" "):
+                id = int(x)
+                if id != -1:
+                    s.append(id)
+                else:
+                    if len(s) > max_length1:
+                        max_length1 = len(s)
+                    sentences.append(s)
+                    s = []
+
+            data_set.append(sentences)
+            counter += 1
+            src = src_file.readline()
+    print(counter)
+    print(max_length1)
+    return data_set
 class TCVAE():
     def __init__(self, hparams, mode):
         self.hparams = hparams
@@ -24,7 +136,9 @@ class TCVAE():
         self.flag = True
         self.mode = mode
         self.batch_size = hparams.batch_size
-        self.encode = tf.placeholder(tf.float32, [None, None])
+        self.encode = tf.placeholder(tf.float32, [64,105, 512])
+        self.encode_post = tf.placeholder(tf.float32, [64, 105,512])
+
         if self.mode == tf.contrib.learn.ModeKeys.TRAIN:
             self.is_training = True
         else:
@@ -76,95 +190,91 @@ class TCVAE():
 
             post_inputs = inputs
 
-            #print(post_inputs.shape)
-            #bert_module = hub.Module("https://tfhub.dev/google/small_bert/bert_uncased_L-6_H-512_A-8/1",
-            #             trainable=True,
-            #             tags={"train"} if training else None)
-            for i in range(self.num_layers):
-                with tf.variable_scope("num_layers_{}".format(i)):
-                    outputs = multihead_attention(queries=inputs,
-                                                  keys=inputs,
-                                                  query_length=self.input_lens,
-                                                  key_length=self.input_lens,
-                                                  num_units=self.num_units,
-                                                  num_heads=self.num_heads,
-                                                  dropout_rate=self.dropout_rate,
-                                                  is_training=self.is_training,
-                                                  using_mask=True,
-                                                  mymasks=self.input_masks,
-                                                  scope="self_attention")
+            #for i in range(self.num_layers):
+                # with tf.variable_scope("num_layers_{}".format(i)):
+                #     outputs = multihead_attention(queries=inputs,
+                #                                   keys=inputs,
+                #                                   query_length=self.input_lens,
+                #                                   key_length=self.input_lens,
+                #                                   num_units=self.num_units,
+                #                                   num_heads=self.num_heads,
+                #                                   dropout_rate=self.dropout_rate,
+                #                                   is_training=self.is_training,
+                #                                   using_mask=True,
+                #                                   mymasks=self.input_masks,
+                #                                   scope="self_attention")
 
-                    outputs = outputs + inputs
-                    inputs = normalize(outputs)
+                #     outputs = outputs + inputs
+                #     inputs = normalize(outputs)
 
-                    outputs = feedforward(inputs, [self.num_units * 2, self.num_units], is_training=self.is_training,
-                                          dropout_rate=self.dropout_rate, scope="f1")
-                    outputs = outputs + inputs
-                    inputs = normalize(outputs)
+                #     outputs = feedforward(inputs, [self.num_units * 2, self.num_units], is_training=self.is_training,
+                #                           dropout_rate=self.dropout_rate, scope="f1")
+                #     outputs = outputs + inputs
+                #     inputs = normalize(outputs)
 
-                    post_outputs = multihead_attention(queries=post_inputs,
-                                                       keys=post_inputs,
-                                                       query_length=self.input_lens,
-                                                       key_length=self.input_lens,
+                    # post_outputs = multihead_attention(queries=post_inputs,
+                    #                                    keys=post_inputs,
+                    #                                    query_length=self.input_lens,
+                    #                                    key_length=self.input_lens,
+                    #                                    num_units=self.num_units,
+                    #                                    num_heads=self.num_heads,
+                    #                                    dropout_rate=self.dropout_rate,
+                    #                                    is_training=self.is_training,
+                    #                                    using_mask=False,
+                    #                                    mymasks=None,
+                    #                                    scope="self_attention",
+                    #                                    reuse=tf.AUTO_REUSE
+                    #                                    )
+
+                    # post_outputs = post_outputs + post_inputs # [?,?,256]
+                    # post_inputs = normalize(post_outputs)
+
+                    # post_outputs = feedforward(post_inputs, [self.num_units * 2, self.num_units],
+                    #                            is_training=self.is_training,
+                    #                            dropout_rate=self.dropout_rate, scope="f1", reuse=tf.AUTO_REUSE)
+                    # post_outputs = post_outputs + post_inputs
+                    # post_inputs = normalize(post_outputs)
+
+
+            post_inputs = self.encode_post
+            inputs = self.encode
+            post_inputs = tf.convert_to_tensor(post_inputs)
+            inputs = tf.convert_to_tensor(inputs)
+            big_window = windows[0] + windows[1] + windows[2] + windows[3]
+            post_encode, weight = w_encoder_attention(self.query,
+                                                      post_inputs,
+                                                      self.input_lens,
+                                                      num_units=self.num_units,
+                                                      num_heads=self.num_heads,
+                                                      dropout_rate=self.dropout_rate,
+                                                      is_training=self.is_training,
+                                                      using_mask=False,
+                                                      mymasks=None,
+                                                      scope="concentrate_attention"
+                                                      )
+
+            prior_encode, weight = w_encoder_attention(self.query,
+                                                       inputs,
+                                                       self.input_lens,
                                                        num_units=self.num_units,
                                                        num_heads=self.num_heads,
                                                        dropout_rate=self.dropout_rate,
                                                        is_training=self.is_training,
-                                                       using_mask=False,
-                                                       mymasks=None,
-                                                       scope="self_attention",
+                                                       using_mask=True,
+                                                       mymasks=big_window,
+                                                       scope="concentrate_attention",
                                                        reuse=tf.AUTO_REUSE
                                                        )
-
-                    post_outputs = post_outputs + post_inputs # [?,?,256]
-                    post_inputs = normalize(post_outputs)
-
-                    post_outputs = feedforward(post_inputs, [self.num_units * 2, self.num_units],
-                                               is_training=self.is_training,
-                                               dropout_rate=self.dropout_rate, scope="f1", reuse=tf.AUTO_REUSE)
-                    post_outputs = post_outputs + post_inputs
-                    post_inputs = normalize(post_outputs)
-
-                    #bert_outputs = bert_module(inputs, signature="tokens", as_dict=True)
-                    #bert_post_outputs = bert_module(post_inputs, signature="tokens", as_dict=True)
-                    #inputs = bert_outputs["sequence_output"]
-                    #post_inputs = bert_post_outputs["sequence_output"]
-
-            # big_window = windows[0] + windows[1] + windows[2] + windows[3]
-            # post_encode, weight = w_encoder_attention(self.query,
-            #                                           post_inputs,
-            #                                           self.input_lens,
-            #                                           num_units=self.num_units,
-            #                                           num_heads=self.num_heads,
-            #                                           dropout_rate=self.dropout_rate,
-            #                                           is_training=self.is_training,
-            #                                           using_mask=False,
-            #                                           mymasks=None,
-            #                                           scope="concentrate_attention"
-            #                                           )
-
-            # prior_encode, weight = w_encoder_attention(self.query,
-            #                                            inputs,
-            #                                            self.input_lens,
-            #                                            num_units=self.num_units,
-            #                                            num_heads=self.num_heads,
-            #                                            dropout_rate=self.dropout_rate,
-            #                                            is_training=self.is_training,
-            #                                            using_mask=True,
-            #                                            mymasks=big_window,
-            #                                            scope="concentrate_attention",
-            #                                            reuse=tf.AUTO_REUSE
-            #                                            )
             #Both Post_encode and Prior_encode is [?,512]
             # Posterior net
             #post_mulogvar = tf.layers.dense(post_encode, self.latent_dim * 2, use_bias=False, name="post_fc")
             #post_mu, post_logvar = tf.split(post_mulogvar, 2, axis=1)
 
             #Prior net -> Generator
-            prior_encode = self.encode # [64,512]
-            post_encode = self.encode #[64,512]
-            prior_encode = tf.convert_to_tensor(prior_encode)
-            post_encode = tf.convert_to_tensor(post_encode)
+            # prior_encode = self.encode # [64,512]
+            # post_encode = self.encode #[64,512]
+            # prior_encode = tf.convert_to_tensor(prior_encode)
+            # post_encode = tf.convert_to_tensor(post_encode)
             z = tf.random_normal(tf.shape(prior_encode))
             gen_input = tf.concat([prior_encode, z], axis=1)
             #generator output
@@ -362,8 +472,9 @@ class TCVAE():
         input_ids, input_scopes, input_positions, input_masks, input_lens, input_which, targets, weights, input_windows = self.get_batch(
             data)
         indicate_id = indicate_id % 1218
-        bert_post_outputs = (indicate_id)
-        
+
+        bert_post_outputs = get_bert_post_output(data,indicate_id)
+        bert_outputs = get_bert_output(data,indicate_id)
         feed = {
             self.input_ids: input_ids,
             self.input_scopes: input_scopes,
@@ -374,7 +485,8 @@ class TCVAE():
             self.targets: targets,
             self.input_windows: input_windows,
             self.which: input_which,
-            self.encode : bert_post_outputs
+            self.encode : bert_outputs,
+            self.encode_post : bert_post_outputs
         }
         word_nums = sum(sum(weight) for weight in weights)
         
@@ -386,9 +498,12 @@ class TCVAE():
                                             feed_dict=feed)
         return total_loss, global_step, word_nums, loss_disc, loss_gen, loss_gan_ae
 
-    def eval_step(self, sess, data, no_random=False, id=0):
+    def eval_step(self, sess, data, no_random=False, id=0,indicate_id=0):
         input_ids, input_scopes, input_positions, input_masks, input_lens, input_which, targets, weights, input_windows = self.get_batch(
             data, no_random, id)
+        
+        bert_post_outputs = get_bert_post_output(data,indicate_id)
+        bert_outputs = get_bert_output(data,indicate_id)
         feed = {
             self.input_ids: input_ids,
             self.input_scopes: input_scopes,
@@ -398,14 +513,16 @@ class TCVAE():
             self.weights: weights,
             self.targets: targets,
             self.input_windows: input_windows,
-            self.which: input_which
+            self.which: input_which,
+            self.encode : bert_outputs,
+            self.encode_post : bert_post_outputs
         }
         loss, logits = sess.run([self.total_loss, self.logits],
                                 feed_dict=feed)
         word_nums = sum(sum(weight) for weight in weights)
         return loss, word_nums
 
-    def infer_step(self, sess, data, no_random=False, id=0, which=0):
+    def infer_step(self, sess, data, no_random=False, id=0, which=0,indicate_id):
         input_ids, input_scopes, input_positions, input_masks, input_lens, input_which, targets, weights, input_windows = self.get_batch(
             data, no_random, id, which=which)
         start_pos = []
@@ -419,8 +536,11 @@ class TCVAE():
                                                                                                             i] + self.max_single_length:])
             ans.append(input_ids[i][start_pos[i]: start_pos[i] + self.max_single_length].copy())
             predict.append([])
-
+        indicate_id = indicate_id % 135
+        bert_post_outputs = get_bert_post_output(data,indicate_id)
+        bert_outputs = get_bert_output(data,indicate_id)
         for i in range(self.max_single_length - 1):
+
             feed = {
                 self.input_ids: input_ids,
                 self.input_scopes: input_scopes,
@@ -428,7 +548,10 @@ class TCVAE():
                 self.input_masks: input_masks,
                 self.input_lens: input_lens,
                 self.input_windows: input_windows,
-                self.which: input_which
+                self.which: input_which,
+                self.encode : bert_outputs,
+                self.encode_post : bert_post_outputs
+
             }
             sample_id = sess.run(self.sample_id, feed_dict=feed)
             for batch in range(self.hparams.batch_size):
