@@ -5,88 +5,28 @@ import math
 from tensorflow.python.layers import core as layers_core
 from data_utils import *
 import random
-from bert_serving.client import BertClient
 import sys
 
-def initialize_vocabulary(vocabulary_path):
-  if gfile.Exists(vocabulary_path):
-    rev_vocab = []
-    with gfile.GFile(vocabulary_path, mode="r") as f:
-      rev_vocab.extend(f.readlines())
-    rev_vocab = [line.strip() for line in rev_vocab]
-    vocab = dict([(x, y) for (y, x) in enumerate(rev_vocab)])
-    return vocab, rev_vocab
-  else:
-    raise ValueError("Vocabulary file %s not found.", vocabulary_path)
-
-def get_pred(path):
-    prediction=[]
-    file = open(path,'r') #'./output/predict2_file105000'
-    line = file.read().splitlines()
-    while line:
-        prediction.append(line)
-        line = file.read().splitlines()
-    file.close()
-    return prediction  #Using prediction[0][i] to see each sentence
-
-def convert_pred_to_story_post(data,converter):
-    word = []
-    output = []
-    pred_story = []
-    for i in range (0,78016):
-        for j in range (0,len(data[i])):
-            for k in range (0,len(data[i][j])):
-                word.append(tf.compat.as_str(converter[data[i][j][k]]))
-            new_sentence = " ".join(word)
-            #if j == i % 5:
-                
-            #    output.append(empty_string)
-            #else:
-            output.append(new_sentence)
-
-            word.clear()
-        new_stroy = " ".join(output)
-        pred_story.append(new_stroy)
-        output.clear()
-    return pred_story
-
-def convert_pred_to_story(data,converter):
-    empty_string = "               " ## length 15
-    word = []
-    output = []
-    pred_story = []
-    for i in range (0,78016):
-        for j in range (0,len(data[i])):
-            for k in range (0,len(data[i][j])):
-                word.append(tf.compat.as_str(converter[data[i][j][k]]))
-            new_sentence = " ".join(word)
-            if j == i % 5: 
-               output.append(empty_string)
-            else:
-                output.append(new_sentence)
-
-            word.clear()
-        new_stroy = " ".join(output)
-        pred_story.append(new_stroy)
-        output.clear()
-    return pred_story
 
 def get_bert_post_output(train_data,indicate_id):
     #train_data = read_data("data/train.ids")
-    to_vocab, rev_to_vocab = initialize_vocabulary("data/vocab_20000")
-    train_story = convert_pred_to_story_post(train_data,rev_to_vocab)
-    bc = BertClient()
+    #to_vocab, rev_to_vocab = initialize_vocabulary("data/vocab_20000")
+    #rain_story = convert_pred_to_story_post(train_data,rev_to_vocab)
+    #bc = BertClient()
     #max indicate_id = 1218
-    result = bc.encode(train_story[(0+indicate_id * 64) :(64+indicate_id * 64)])
+    result = train_data[(0+indicate_id * 64) :(64+indicate_id * 64)][:][:]
+    #result = bc.encode(train_story[(0+indicate_id * 64) :(64+indicate_id * 64)])
     return result
 
 def get_bert_output(train_data,indicate_id):
     #train_data = read_data("data/train.ids")
-    to_vocab, rev_to_vocab = initialize_vocabulary("data/vocab_20000")
-    train_story = convert_pred_to_story(train_data,rev_to_vocab)
-    bc = BertClient()
+    #to_vocab, rev_to_vocab = initialize_vocabulary("data/vocab_20000")
+    #train_story = convert_pred_to_story(train_data,rev_to_vocab)
+    #bc = BertClient()
     #max indicate_id = 1218
-    result = bc.encode(train_story[(0+indicate_id * 64) :(64+indicate_id * 64)])
+    result = train_data[(0+indicate_id * 64) :(64+indicate_id * 64)][:][:]
+
+    #result = bc.encode(train_story[(0+indicate_id * 64) :(64+indicate_id * 64)])
     return result  ##[64,105,512]
 
 def read_data(src_path):
@@ -468,13 +408,13 @@ class TCVAE():
 
         return input_ids, input_scopes, input_positions, input_masks, input_lens, input_which, targets, weights, input_windows
 
-    def train_step(self, sess, data,indicate_id):
+    def train_step(self, sess, data,indicate_id,train_post_data,train_prior_data):
         input_ids, input_scopes, input_positions, input_masks, input_lens, input_which, targets, weights, input_windows = self.get_batch(
-            data)
-        indicate_id = indicate_id % 1218
+            data,no_random=True,id=indicate_id)
+        indicate_id = indicate_id % 1219
 
-        bert_post_outputs = get_bert_post_output(data,indicate_id)
-        bert_outputs = get_bert_output(data,indicate_id)
+        bert_post_outputs = get_bert_post_output(train_post_data,indicate_id)
+        bert_outputs = get_bert_output(train_prior_data,indicate_id)
         feed = {
             self.input_ids: input_ids,
             self.input_scopes: input_scopes,
@@ -498,12 +438,12 @@ class TCVAE():
                                             feed_dict=feed)
         return total_loss, global_step, word_nums, loss_disc, loss_gen, loss_gan_ae
 
-    def eval_step(self, sess, data, no_random=False, id=0,indicate_id=0):
+    def eval_step(self, sess, data,valid_post_data,valid_prior_data, no_random=False, id=0,indicate_id=0):
         input_ids, input_scopes, input_positions, input_masks, input_lens, input_which, targets, weights, input_windows = self.get_batch(
             data, no_random, id)
         
-        bert_post_outputs = get_bert_post_output(data,indicate_id)
-        bert_outputs = get_bert_output(data,indicate_id)
+        bert_post_outputs = get_bert_post_output(valid_post_data,indicate_id)
+        bert_outputs = get_bert_output(valid_prior_data,indicate_id)
         feed = {
             self.input_ids: input_ids,
             self.input_scopes: input_scopes,
@@ -522,7 +462,7 @@ class TCVAE():
         word_nums = sum(sum(weight) for weight in weights)
         return loss, word_nums
 
-    def infer_step(self, sess, data, no_random=False, id=0, which=0,indicate_id):
+    def infer_step(self, sess, data, valid_post_data,valid_prior_data, no_random=False, id=0, which=0,indicate_id):
         input_ids, input_scopes, input_positions, input_masks, input_lens, input_which, targets, weights, input_windows = self.get_batch(
             data, no_random, id, which=which)
         start_pos = []
@@ -536,7 +476,7 @@ class TCVAE():
                                                                                                             i] + self.max_single_length:])
             ans.append(input_ids[i][start_pos[i]: start_pos[i] + self.max_single_length].copy())
             predict.append([])
-        indicate_id = indicate_id % 135
+        indicate_id = indicate_id % 153
         bert_post_outputs = get_bert_post_output(data,indicate_id)
         bert_outputs = get_bert_output(data,indicate_id)
         for i in range(self.max_single_length - 1):

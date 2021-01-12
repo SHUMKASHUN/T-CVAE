@@ -22,7 +22,7 @@ from model import TCVAE
 import collections
 from gensim.models import KeyedVectors
 FLAGS = None
-
+import numpy as np
 #import wandb
 
 #wandb.init(project="t-cvae-gan_bert", sync_tensorboard=True)
@@ -201,7 +201,8 @@ def train(hparams):
     train_data = read_data("data/train.ids")
     valid_data = read_data("data/valid.ids")
     test_data = read_data("data/test.ids")
-
+    train_data = train_data[0:78016]
+    valid_data = train_data[0:9792]
 
     ckpt = tf.train.get_checkpoint_state(hparams.train_dir)
     ckpt_path = os.path.join(hparams.train_dir, "ckpt")
@@ -217,14 +218,22 @@ def train(hparams):
             global_step = 0
     to_vocab, rev_to_vocab = data_utils.initialize_vocabulary(hparams.from_vocab)
 
-
-
     step_loss, step_time, total_predict_count, total_loss, total_time, avg_loss, avg_time = 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0
     total_loss_disc, total_loss_gen, total_loss_gan_ae,avg_disc_loss, avg_gen_loss ,avg_gan_ae_loss= 0.0, 0.0, 0.0, 0.0,0.0,0.0
     indicate_id = 0
+
+    train_post = np.load("./BERT_data/train_post.npz")
+    train_prior = np.load("./BERT_data/train_prior.npz")
+    valid_post = np.load("./BERT_data/valid_post.npz")
+    valid_prior = np.load("./BERT_data/valid_prior.npz")
+    train_post = train_post['arr_0']  #[78016,105,512]
+    train_prior = train_prior['arr_0']#[78016,105,512]
+    valid_post = valid_post['arr_0'] #[9792,105,512]
+    valid_prior = valid_prior['arr_0'] #[9792,105,512]
+
     while global_step <= 600000:
         start_time = time.time()
-        step_loss, global_step, predict_count,loss_disc,loss_gen, loss_gan_ae = train_model.model.train_step(train_sess, train_data,indicate_id)
+        step_loss, global_step, predict_count,loss_disc,loss_gen, loss_gan_ae = train_model.model.train_step(train_sess, train_data,indicate_id,train_post,train_prior)
         indicate_id = indicate_id + 1
         total_loss += step_loss / hparams.batch_size
         total_loss_disc += loss_disc
@@ -253,10 +262,9 @@ def train(hparams):
             else:
                 raise ValueError("ckpt file not found.")
             for id in range(0, int(len(valid_data)/hparams.batch_size)):
-                if(id < 135):
-                    step_loss, predict_count = eval_model.model.eval_step(eval_sess, valid_data, no_random=True, id=id * hparams.batch_size,id)
-                    total_loss += step_loss
-                    total_predict_count += predict_count
+                step_loss, predict_count = eval_model.model.eval_step(eval_sess, valid_data,valid_post,valid_prior, no_random=True, id=id * hparams.batch_size,indicate_id=id)
+                total_loss += step_loss
+                total_predict_count += predict_count
             ppl = safe_exp(total_loss / total_predict_count)
 
             total_loss, total_predict_count, total_time = 0.0, 0.0, 0.0
@@ -269,8 +277,7 @@ def train(hparams):
             f1 = open("output/" + x + "/ref2_file" + str(global_step),"w",encoding="utf-8")
             f2 = open("output/" + x + "/predict2_file" + str(global_step),"w", encoding="utf-8")
             for id in range(0, int(len(valid_data) / hparams.batch_size)):
-                if (id < 135):
-                    given, answer, predict = infer_model.model.infer_step(infer_sess, valid_data, no_random=True,
+                    given, answer, predict = infer_model.model.infer_step(infer_sess, valid_data,valid_post,valid_prior, no_random=True,
                                                                         id=id * hparams.batch_size,indicate_id = id)
                     for i in range(hparams.batch_size):
                         sample_output = predict[i]
