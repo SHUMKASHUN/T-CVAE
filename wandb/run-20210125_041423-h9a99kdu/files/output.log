@@ -1,0 +1,77 @@
+Namespace(batch_size=64, data_dir='data/', dropout_rate=0.15, emb_dim=300, epoch_num=100, from_vocab='data/vocab_20000', from_vocab_size=20000, gpu_device='0', latent_dim=64, learning_rate=1, learning_rate_decay_factor=0.5, max_gradient_norm=3.0, max_train_data_size=0, model_dir='model/', num_heads=8, num_layers=6, num_units=512, out_dir='output/', output_dir='output/tfm/', test_data='test', to_vocab='data/vocab_20000', to_vocab_size=20000, train_data='training', train_dir='model/t-cvae/', valid_data='dev')
+
+WARNING: The TensorFlow contrib module will not be included in TensorFlow 2.0.
+For more information, please see:
+  * https://github.com/tensorflow/community/blob/master/rfcs/20180907-contrib-sunset.md
+  * https://github.com/tensorflow/addons
+If you depend on functionality not listed there, please file an issue.
+
+ init embedding finished
+19833
+(20000, 300)
+Vocab load over.
+WARNING:tensorflow:From /home/sdiaoaa/.conda/envs/py36wavelet/lib/python3.6/site-packages/tensorflow/python/framework/op_def_library.py:263: colocate_with (from tensorflow.python.framework.ops) is deprecated and will be removed in a future version.
+Instructions for updating:
+Colocations handled automatically by placer.
+WARNING:tensorflow:From /import/home/sdiaoaa/new_dir/new_dir/Dec_23_1/T-CVAE-COPY_1/modules.py:111: dense (from tensorflow.python.layers.core) is deprecated and will be removed in a future version.
+Instructions for updating:
+Use keras.layers.dense instead.
+WARNING:tensorflow:From /import/home/sdiaoaa/new_dir/new_dir/Dec_23_1/T-CVAE-COPY_1/modules.py:157: dropout (from tensorflow.python.layers.core) is deprecated and will be removed in a future version.
+Instructions for updating:
+Use keras.layers.dropout instead.
+WARNING:tensorflow:From /home/sdiaoaa/.conda/envs/py36wavelet/lib/python3.6/site-packages/tensorflow/python/keras/layers/core.py:143: calling dropout (from tensorflow.python.ops.nn_ops) with keep_prob is deprecated and will be removed in a future version.
+Instructions for updating:
+Please use `rate` instead of `keep_prob`. Rate should be set to `rate = 1 - keep_prob`.
+WARNING:tensorflow:From /import/home/sdiaoaa/new_dir/new_dir/Dec_23_1/T-CVAE-COPY_1/modules.py:304: conv1d (from tensorflow.python.layers.convolutional) is deprecated and will be removed in a future version.
+Instructions for updating:
+Use keras.layers.conv1d instead.
+WARNING:tensorflow:From /import/home/sdiaoaa/new_dir/new_dir/Dec_23_1/T-CVAE-COPY_1/model.py:198: to_float (from tensorflow.python.ops.math_ops) is deprecated and will be removed in a future version.
+Instructions for updating:
+Use tf.cast instead.
+WARNING:tensorflow:From /home/sdiaoaa/.conda/envs/py36wavelet/lib/python3.6/site-packages/tensorflow/python/ops/math_ops.py:3066: to_int32 (from tensorflow.python.ops.math_ops) is deprecated and will be removed in a future version.
+Instructions for updating:
+Use tf.cast instead.
+2021-01-25 04:14:44.708263: I tensorflow/core/platform/cpu_feature_guard.cc:141] Your CPU supports instructions that this TensorFlow binary was not compiled to use: AVX2 AVX512F FMA
+2021-01-25 04:14:44.728188: I tensorflow/core/platform/profile_utils/cpu_utils.cc:94] CPU Frequency: 3899935000 Hz
+2021-01-25 04:14:44.728713: I tensorflow/compiler/xla/service/service.cc:150] XLA service 0x564a1ea0ec00 executing computations on platform Host. Devices:
+2021-01-25 04:14:44.728743: I tensorflow/compiler/xla/service/service.cc:158]   StreamExecutor device (0): <undefined>, <undefined>
+Model create over.
+  reading data line 0
+78529
+21
+  reading data line 0
+9816
+21
+  reading data line 0
+9817
+20
+global step 100   step-time 16.99s  loss 76.995 ppl 1127.67  disc 0.249 gen -0.066 gan_ae -0.199
+global step 200   step-time 16.91s  loss 65.543 ppl 401.98  disc 0.209 gen -0.132 gan_ae -0.127
+global step 300   step-time 16.59s  loss 65.318 ppl 392.73  disc 0.115 gen 0.009 gan_ae -0.103
+global step 400   step-time 16.62s  loss 65.128 ppl 385.70  disc 0.095 gen -0.013 gan_ae -0.073
+global step 500   step-time 16.60s  loss 65.573 ppl 385.81  disc 0.118 gen -0.015 gan_ae -0.095
+global step 600   step-time 16.55s  loss 65.415 ppl 382.75  disc 0.130 gen -0.102 gan_ae -0.065
+global step 700   step-time 17.60s  loss 65.180 ppl 387.25  disc 0.076 gen -0.011 gan_ae -0.052
+global step 800   step-time 16.66s  loss 65.429 ppl 390.63  disc 0.081 gen -0.040 gan_ae -0.044
+global step 900   step-time 19.10s  loss 65.555 ppl 384.88  disc 0.077 gen -0.063 gan_ae -0.030
+global step 1000   step-time 20.14s  loss 65.341 ppl 388.79  disc 0.101 gen -0.071 gan_ae -0.053
+global step 1100   step-time 22.69s  loss 65.267 ppl 390.29  disc 0.058 gen -0.022 gan_ae -0.027
+global step 1200   step-time 22.49s  loss 65.243 ppl 390.26  disc 0.086 gen -0.067 gan_ae -0.037
+global step 1300   step-time 24.35s  loss 65.405 ppl 393.35  disc 0.043 gen -0.005 gan_ae -0.011
+Traceback (most recent call last):
+  File "train.py", line 388, in <module>
+    tf.app.run()
+  File "/home/sdiaoaa/.conda/envs/py36wavelet/lib/python3.6/site-packages/tensorflow/python/platform/app.py", line 125, in run
+  File "train.py", line 377, in main
+    train(hparams)
+  File "train.py", line 226, in train
+    step_loss, global_step, predict_count,loss_disc,loss_gen, loss_gan_ae = train_model.model.train_step(train_sess, train_data)
+  File "/import/home/sdiaoaa/new_dir/new_dir/Dec_23_1/T-CVAE-COPY_1/model.py", line 363, in train_step
+    feed_dict=feed)
+  File "/home/sdiaoaa/.conda/envs/py36wavelet/lib/python3.6/site-packages/tensorflow/python/client/session.py", line 929, in run
+  File "/home/sdiaoaa/.conda/envs/py36wavelet/lib/python3.6/site-packages/tensorflow/python/client/session.py", line 1152, in _run
+  File "/home/sdiaoaa/.conda/envs/py36wavelet/lib/python3.6/site-packages/tensorflow/python/client/session.py", line 1328, in _do_run
+  File "/home/sdiaoaa/.conda/envs/py36wavelet/lib/python3.6/site-packages/tensorflow/python/client/session.py", line 1334, in _do_call
+  File "/home/sdiaoaa/.conda/envs/py36wavelet/lib/python3.6/site-packages/tensorflow/python/client/session.py", line 1319, in _run_fn
+  File "/home/sdiaoaa/.conda/envs/py36wavelet/lib/python3.6/site-packages/tensorflow/python/client/session.py", line 1407, in _call_tf_sessionrun
+KeyboardInterrupt

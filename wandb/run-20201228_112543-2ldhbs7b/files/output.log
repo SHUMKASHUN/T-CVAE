@@ -1,0 +1,67 @@
+Namespace(batch_size=64, data_dir='data/', dropout_rate=0.15, emb_dim=300, epoch_num=100, from_vocab='data/vocab_20000', from_vocab_size=20000, gpu_device='1', latent_dim=64, learning_rate=1, learning_rate_decay_factor=0.5, max_gradient_norm=3.0, max_train_data_size=0, model_dir='model/', num_heads=8, num_layers=6, num_units=512, out_dir='output/', output_dir='output/tfm/', test_data='test', to_vocab='data/vocab_20000', to_vocab_size=20000, train_data='training', train_dir='model/t-cvae/', valid_data='dev')
+ init embedding finished
+19833
+(20000, 300)
+Vocab load over.
+2020-12-28 11:26:06.303737: I tensorflow/core/platform/cpu_feature_guard.cc:141] Your CPU supports instructions that this TensorFlow binary was not compiled to use: SSE4.1 SSE4.2 AVX AVX2 AVX512F FMA
+2020-12-28 11:26:06.452860: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1432] Found device 0 with properties: 
+name: GeForce RTX 2080 Ti major: 7 minor: 5 memoryClockRate(GHz): 1.545
+pciBusID: 0000:1a:00.0
+totalMemory: 10.76GiB freeMemory: 10.60GiB
+2020-12-28 11:26:06.452879: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1511] Adding visible gpu devices: 0
+2020-12-28 11:26:06.666793: I tensorflow/core/common_runtime/gpu/gpu_device.cc:982] Device interconnect StreamExecutor with strength 1 edge matrix:
+2020-12-28 11:26:06.666816: I tensorflow/core/common_runtime/gpu/gpu_device.cc:988]      0 
+2020-12-28 11:26:06.666820: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1001] 0:   N 
+2020-12-28 11:26:06.666896: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1115] Created TensorFlow device (/job:localhost/replica:0/task:0/device:GPU:0 with 10232 MB memory) -> physical GPU (device: 0, name: GeForce RTX 2080 Ti, pci bus id: 0000:1a:00.0, compute capability: 7.5)
+2020-12-28 11:26:06.668708: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1511] Adding visible gpu devices: 0
+2020-12-28 11:26:06.668751: I tensorflow/core/common_runtime/gpu/gpu_device.cc:982] Device interconnect StreamExecutor with strength 1 edge matrix:
+2020-12-28 11:26:06.668759: I tensorflow/core/common_runtime/gpu/gpu_device.cc:988]      0 
+2020-12-28 11:26:06.668765: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1001] 0:   N 
+2020-12-28 11:26:06.668854: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1115] Created TensorFlow device (/job:localhost/replica:0/task:0/device:GPU:0 with 10232 MB memory) -> physical GPU (device: 0, name: GeForce RTX 2080 Ti, pci bus id: 0000:1a:00.0, compute capability: 7.5)
+2020-12-28 11:26:06.669597: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1511] Adding visible gpu devices: 0
+2020-12-28 11:26:06.669625: I tensorflow/core/common_runtime/gpu/gpu_device.cc:982] Device interconnect StreamExecutor with strength 1 edge matrix:
+2020-12-28 11:26:06.669632: I tensorflow/core/common_runtime/gpu/gpu_device.cc:988]      0 
+2020-12-28 11:26:06.669638: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1001] 0:   N 
+2020-12-28 11:26:06.669705: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1115] Created TensorFlow device (/job:localhost/replica:0/task:0/device:GPU:0 with 10232 MB memory) -> physical GPU (device: 0, name: GeForce RTX 2080 Ti, pci bus id: 0000:1a:00.0, compute capability: 7.5)
+Model create over.
+  reading data line 0
+78529
+21
+  reading data line 0
+9816
+21
+  reading data line 0
+9817
+20
+Reading model parameters from model/t-cvae/ckpt-366000
+global step 366100   step-time 0.68s  loss 65.560 ppl 403.88  disc 0.032 gen -0.007 gan_ae -0.002
+global step 366200   step-time 0.60s  loss 66.155 ppl 408.91  disc 0.028 gen 0.000 gan_ae -0.001
+global step 366300   step-time 0.60s  loss 65.703 ppl 408.76  disc 0.028 gen -0.001 gan_ae -0.002
+global step 366400   step-time 0.60s  loss 65.910 ppl 405.34  disc 0.027 gen -0.001 gan_ae 0.001
+global step 366500   step-time 0.60s  loss 66.273 ppl 408.30  disc 0.031 gen -0.005 gan_ae -0.004
+global step 366600   step-time 0.60s  loss 65.954 ppl 405.90  disc 0.029 gen -0.001 gan_ae -0.002
+global step 366700   step-time 0.60s  loss 65.800 ppl 401.02  disc 0.030 gen -0.005 gan_ae -0.000
+Traceback (most recent call last):
+  File "train.py", line 388, in <module>
+    tf.app.run()
+  File "/home/sdiaoaa/.conda/envs/py36wavelet/lib/python3.6/site-packages/tensorflow/python/platform/app.py", line 125, in run
+    _sys.exit(main(argv))
+  File "train.py", line 377, in main
+    train(hparams)
+  File "train.py", line 226, in train
+    step_loss, global_step, predict_count,loss_disc,loss_gen, loss_gan_ae = train_model.model.train_step(train_sess, train_data)
+  File "/import/home/sdiaoaa/new_dir/new_dir/Dec_23_1/T-CVAE/model.py", line 363, in train_step
+    feed_dict=feed)
+  File "/home/sdiaoaa/.conda/envs/py36wavelet/lib/python3.6/site-packages/tensorflow/python/client/session.py", line 929, in run
+    run_metadata_ptr)
+  File "/home/sdiaoaa/.conda/envs/py36wavelet/lib/python3.6/site-packages/tensorflow/python/client/session.py", line 1152, in _run
+    feed_dict_tensor, options, run_metadata)
+  File "/home/sdiaoaa/.conda/envs/py36wavelet/lib/python3.6/site-packages/tensorflow/python/client/session.py", line 1328, in _do_run
+    run_metadata)
+  File "/home/sdiaoaa/.conda/envs/py36wavelet/lib/python3.6/site-packages/tensorflow/python/client/session.py", line 1334, in _do_call
+    return fn(*args)
+  File "/home/sdiaoaa/.conda/envs/py36wavelet/lib/python3.6/site-packages/tensorflow/python/client/session.py", line 1319, in _run_fn
+    options, feed_dict, fetch_list, target_list, run_metadata)
+  File "/home/sdiaoaa/.conda/envs/py36wavelet/lib/python3.6/site-packages/tensorflow/python/client/session.py", line 1407, in _call_tf_sessionrun
+    run_metadata)
+KeyboardInterrupt

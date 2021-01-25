@@ -200,9 +200,9 @@ class TCVAE():
                 #self.loss = tf.reduce_mean(crossent * self.weights) + tf.reduce_mean(kld) * kl_weights
                 self.loss = tf.reduce_mean(crossent * self.weights)
                 self.disc_loss = (tf.reduce_mean(tf.nn.softplus(fake_result)) + tf.reduce_mean(
-                                    tf.nn.softplus(-real_result)))*0.01
-                self.gen_loss = (tf.reduce_mean(-(tf.clip_by_value(tf.exp(fake_result), 0.5, 2) * fake_result)))*0.01
-                self.gan_ae_loss = tf.reduce_mean(real_result)*0.01
+                                    tf.nn.softplus(-real_result)))*0.02
+                self.gen_loss = (tf.reduce_mean(-(tf.clip_by_value(tf.exp(fake_result), 0.5, 2) * fake_result)))*0.02
+                self.gan_ae_loss = tf.reduce_mean(real_result)*0.02
         if self.mode == tf.contrib.learn.ModeKeys.TRAIN:
             with tf.variable_scope("train_op") as scope:
                 optimizer = tf.train.AdamOptimizer(0.0001, beta1=0.9, beta2=0.99, epsilon=1e-9)

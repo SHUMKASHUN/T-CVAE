@@ -1,0 +1,27 @@
+{
+    "os": "Linux-4.15.0-109-generic-x86_64-with-debian-buster-sid",
+    "python": "3.6.12",
+    "heartbeatAt": "2021-01-01T03:47:05.073124",
+    "startedAt": "2021-01-01T03:47:03.200706",
+    "docker": null,
+    "gpu": "GeForce RTX 2080 Ti",
+    "gpu_count": 4,
+    "cpu_count": 8,
+    "cuda": "10.1.168",
+    "args": [
+        "--gpu_device",
+        "1"
+    ],
+    "state": "running",
+    "codePath": "train.py",
+    "program": "train.py",
+    "git": {
+        "remote": "https://www.github.com/SHUMKASHUN/T-CVAE",
+        "commit": "5b4610031ef9406f27f868ff2a0d5cc0712d17ec"
+    },
+    "email": "654745845@qq.com",
+    "root": "/import/home/sdiaoaa/new_dir/new_dir/Dec_23_1/T-CVAE",
+    "host": "tongzhang8.math.ust.hk",
+    "username": "sdiaoaa",
+    "executable": "/home/sdiaoaa/.conda/envs/py36wavelet/bin/python"
+}

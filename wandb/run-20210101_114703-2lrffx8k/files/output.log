@@ -1,0 +1,1640 @@
+Namespace(batch_size=64, data_dir='data/', dropout_rate=0.15, emb_dim=300, epoch_num=100, from_vocab='data/vocab_20000', from_vocab_size=20000, gpu_device='1', latent_dim=64, learning_rate=1, learning_rate_decay_factor=0.5, max_gradient_norm=3.0, max_train_data_size=0, model_dir='model/', num_heads=8, num_layers=6, num_units=512, out_dir='output/', output_dir='output/tfm/', test_data='test', to_vocab='data/vocab_20000', to_vocab_size=20000, train_data='training', train_dir='model/t-cvae/', valid_data='dev')
+ init embedding finished
+19833
+(20000, 300)
+Vocab load over.
+2021-01-01 11:47:26.571269: I tensorflow/core/platform/cpu_feature_guard.cc:141] Your CPU supports instructions that this TensorFlow binary was not compiled to use: SSE4.1 SSE4.2 AVX AVX2 AVX512F FMA
+2021-01-01 11:47:26.768596: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1432] Found device 0 with properties: 
+name: GeForce RTX 2080 Ti major: 7 minor: 5 memoryClockRate(GHz): 1.545
+pciBusID: 0000:1a:00.0
+totalMemory: 10.76GiB freeMemory: 10.60GiB
+2021-01-01 11:47:26.768616: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1511] Adding visible gpu devices: 0
+2021-01-01 11:47:27.003358: I tensorflow/core/common_runtime/gpu/gpu_device.cc:982] Device interconnect StreamExecutor with strength 1 edge matrix:
+2021-01-01 11:47:27.003379: I tensorflow/core/common_runtime/gpu/gpu_device.cc:988]      0 
+2021-01-01 11:47:27.003382: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1001] 0:   N 
+2021-01-01 11:47:27.003455: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1115] Created TensorFlow device (/job:localhost/replica:0/task:0/device:GPU:0 with 10232 MB memory) -> physical GPU (device: 0, name: GeForce RTX 2080 Ti, pci bus id: 0000:1a:00.0, compute capability: 7.5)
+2021-01-01 11:47:27.005808: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1511] Adding visible gpu devices: 0
+2021-01-01 11:47:27.005854: I tensorflow/core/common_runtime/gpu/gpu_device.cc:982] Device interconnect StreamExecutor with strength 1 edge matrix:
+2021-01-01 11:47:27.005862: I tensorflow/core/common_runtime/gpu/gpu_device.cc:988]      0 
+2021-01-01 11:47:27.005868: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1001] 0:   N 
+2021-01-01 11:47:27.005952: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1115] Created TensorFlow device (/job:localhost/replica:0/task:0/device:GPU:0 with 10232 MB memory) -> physical GPU (device: 0, name: GeForce RTX 2080 Ti, pci bus id: 0000:1a:00.0, compute capability: 7.5)
+2021-01-01 11:47:27.006544: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1511] Adding visible gpu devices: 0
+2021-01-01 11:47:27.006572: I tensorflow/core/common_runtime/gpu/gpu_device.cc:982] Device interconnect StreamExecutor with strength 1 edge matrix:
+2021-01-01 11:47:27.006578: I tensorflow/core/common_runtime/gpu/gpu_device.cc:988]      0 
+2021-01-01 11:47:27.006584: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1001] 0:   N 
+2021-01-01 11:47:27.006652: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1115] Created TensorFlow device (/job:localhost/replica:0/task:0/device:GPU:0 with 10232 MB memory) -> physical GPU (device: 0, name: GeForce RTX 2080 Ti, pci bus id: 0000:1a:00.0, compute capability: 7.5)
+Model create over.
+  reading data line 0
+78529
+21
+  reading data line 0
+9816
+21
+  reading data line 0
+9817
+20
+Reading model parameters from model/t-cvae/ckpt-480000
+global step 480100   step-time 0.68s  loss 23.354 ppl 8.33  disc 0.030 gen -0.009 gan_ae 0.001
+global step 480200   step-time 0.60s  loss 22.861 ppl 8.17  disc 0.023 gen 0.003 gan_ae 0.003
+global step 480300   step-time 0.60s  loss 22.977 ppl 8.30  disc 0.030 gen -0.005 gan_ae -0.002
+global step 480400   step-time 0.60s  loss 23.152 ppl 8.25  disc 0.029 gen -0.003 gan_ae -0.002
+global step 480500   step-time 0.60s  loss 23.386 ppl 8.40  disc 0.028 gen -0.004 gan_ae 0.003
+global step 480600   step-time 0.60s  loss 23.375 ppl 8.41  disc 0.030 gen -0.009 gan_ae 0.002
+global step 480700   step-time 0.60s  loss 23.112 ppl 8.28  disc 0.030 gen -0.009 gan_ae 0.000
+global step 480800   step-time 0.60s  loss 22.939 ppl 8.22  disc 0.028 gen -0.002 gan_ae -0.000
+global step 480900   step-time 0.60s  loss 23.581 ppl 8.55  disc 0.036 gen -0.015 gan_ae -0.005
+global step 481000   step-time 0.60s  loss 23.093 ppl 8.25  disc 0.020 gen 0.017 gan_ae -0.002
+global step 481100   step-time 0.60s  loss 23.137 ppl 8.27  disc 0.033 gen -0.008 gan_ae -0.002
+global step 481200   step-time 0.60s  loss 23.276 ppl 8.38  disc 0.027 gen -0.002 gan_ae 0.001
+global step 481300   step-time 0.60s  loss 23.196 ppl 8.27  disc 0.029 gen -0.004 gan_ae 0.000
+global step 481400   step-time 0.60s  loss 23.046 ppl 8.21  disc 0.026 gen 0.000 gan_ae 0.001
+global step 481500   step-time 0.60s  loss 23.262 ppl 8.32  disc 0.029 gen -0.010 gan_ae 0.004
+global step 481600   step-time 0.60s  loss 23.581 ppl 8.54  disc 0.028 gen -0.002 gan_ae -0.001
+global step 481700   step-time 0.60s  loss 23.289 ppl 8.36  disc 0.025 gen 0.003 gan_ae 0.002
+global step 481800   step-time 0.60s  loss 23.257 ppl 8.30  disc 0.030 gen -0.004 gan_ae -0.002
+global step 481900   step-time 0.60s  loss 23.315 ppl 8.32  disc 0.029 gen -0.007 gan_ae 0.003
+global step 482000   step-time 0.60s  loss 23.299 ppl 8.37  disc 0.026 gen -0.000 gan_ae 0.003
+global step 482100   step-time 0.60s  loss 23.423 ppl 8.43  disc 0.030 gen -0.003 gan_ae -0.001
+global step 482200   step-time 0.60s  loss 23.293 ppl 8.33  disc 0.029 gen -0.008 gan_ae 0.003
+global step 482300   step-time 0.60s  loss 23.234 ppl 8.33  disc 0.029 gen -0.001 gan_ae -0.001
+global step 482400   step-time 0.60s  loss 23.327 ppl 8.40  disc 0.030 gen -0.004 gan_ae 0.000
+global step 482500   step-time 0.60s  loss 23.400 ppl 8.46  disc 0.027 gen -0.001 gan_ae 0.000
+global step 482600   step-time 0.60s  loss 23.159 ppl 8.26  disc 0.026 gen -0.001 gan_ae 0.001
+global step 482700   step-time 0.60s  loss 23.299 ppl 8.34  disc 0.028 gen -0.001 gan_ae -0.003
+global step 482800   step-time 0.60s  loss 23.452 ppl 8.46  disc 0.031 gen -0.014 gan_ae 0.002
+global step 482900   step-time 0.60s  loss 23.120 ppl 8.21  disc 0.023 gen 0.009 gan_ae -0.002
+global step 483000   step-time 0.60s  loss 22.972 ppl 8.14  disc 0.032 gen -0.007 gan_ae -0.002
+load eval model.
+eval  ppl 17.57
+answer:  one day , i was driving the van down to the store .
+predict:  i was driving my van down the road one day .
+answer:  she bought some new shelves .
+predict:  she bought a new pair of books .
+answer:  he was given a set of tickets .
+predict:  he bought some band members .
+answer:  his friends agree that 's a great idea .
+predict:  billy tells them he can go fishing .
+answer:  after starting a fire in the kitchen , chance has a babysitter again .
+predict:  his mom was happy and thanked him for the idea .
+answer:  alicia looked at her house .
+predict:  alicia was cleaning her house .
+answer:  she searched everywhere but could n't find it .
+predict:  she needed one .
+answer:  when the cast was announced , she was left disappointed .
+predict:  but she was not good at acting and did n't make a good one .
+BLEU = 4.16, 31.8/5.9/2.2/0.9 (BP=0.937, ratio=0.938, hyp_len=91632, ref_len=97637)
+
+distinc1: 0.03468
+distinc2: 0.22300
+infer done.
+global step 483100   step-time 0.60s  loss 23.253 ppl 8.30  disc 0.026 gen -0.002 gan_ae 0.002
+global step 483200   step-time 0.60s  loss 23.186 ppl 8.35  disc 0.030 gen -0.007 gan_ae 0.000
+global step 483300   step-time 0.60s  loss 23.425 ppl 8.44  disc 0.029 gen 0.001 gan_ae -0.004
+global step 483400   step-time 0.60s  loss 23.227 ppl 8.29  disc 0.030 gen -0.010 gan_ae 0.002
+global step 483500   step-time 0.60s  loss 23.038 ppl 8.25  disc 0.024 gen 0.007 gan_ae -0.002
+global step 483600   step-time 0.60s  loss 23.100 ppl 8.26  disc 0.032 gen 0.000 gan_ae -0.007
+global step 483700   step-time 0.60s  loss 23.033 ppl 8.26  disc 0.029 gen -0.005 gan_ae 0.001
+global step 483800   step-time 0.60s  loss 23.241 ppl 8.32  disc 0.026 gen -0.000 gan_ae 0.001
+global step 483900   step-time 0.60s  loss 23.212 ppl 8.37  disc 0.029 gen -0.006 gan_ae -0.001
+global step 484000   step-time 0.60s  loss 23.218 ppl 8.30  disc 0.030 gen -0.002 gan_ae -0.004
+global step 484100   step-time 0.60s  loss 23.224 ppl 8.30  disc 0.021 gen 0.006 gan_ae 0.004
+global step 484200   step-time 0.60s  loss 23.193 ppl 8.21  disc 0.031 gen -0.006 gan_ae -0.003
+global step 484300   step-time 0.60s  loss 23.190 ppl 8.31  disc 0.031 gen -0.004 gan_ae -0.004
+global step 484400   step-time 0.60s  loss 23.254 ppl 8.26  disc 0.024 gen 0.000 gan_ae 0.004
+global step 484500   step-time 0.60s  loss 22.920 ppl 8.18  disc 0.035 gen -0.010 gan_ae -0.006
+global step 484600   step-time 0.60s  loss 23.321 ppl 8.47  disc 0.023 gen 0.010 gan_ae -0.003
+global step 484700   step-time 0.60s  loss 23.332 ppl 8.41  disc 0.031 gen -0.011 gan_ae 0.001
+global step 484800   step-time 0.60s  loss 23.060 ppl 8.18  disc 0.028 gen 0.002 gan_ae -0.003
+global step 484900   step-time 0.60s  loss 23.253 ppl 8.36  disc 0.031 gen -0.010 gan_ae 0.001
+global step 485000   step-time 0.60s  loss 23.026 ppl 8.19  disc 0.023 gen 0.004 gan_ae 0.004
+global step 485100   step-time 0.60s  loss 23.294 ppl 8.41  disc 0.030 gen -0.010 gan_ae 0.002
+global step 485200   step-time 0.60s  loss 23.413 ppl 8.35  disc 0.034 gen -0.003 gan_ae -0.009
+global step 485300   step-time 0.60s  loss 23.141 ppl 8.27  disc 0.022 gen 0.003 gan_ae 0.005
+global step 485400   step-time 0.60s  loss 23.170 ppl 8.32  disc 0.029 gen -0.005 gan_ae 0.001
+global step 485500   step-time 0.60s  loss 23.290 ppl 8.39  disc 0.030 gen -0.007 gan_ae 0.001
+global step 485600   step-time 0.60s  loss 23.093 ppl 8.30  disc 0.026 gen 0.004 gan_ae -0.002
+global step 485700   step-time 0.60s  loss 23.288 ppl 8.36  disc 0.029 gen -0.005 gan_ae 0.001
+global step 485800   step-time 0.60s  loss 23.046 ppl 8.31  disc 0.027 gen -0.001 gan_ae -0.001
+global step 485900   step-time 0.60s  loss 50.583 ppl 97.72  disc 0.028 gen -0.002 gan_ae -0.000
+global step 486000   step-time 0.60s  loss 29.169 ppl 14.33  disc 0.028 gen -0.006 gan_ae 0.004
+load eval model.
+eval  ppl 17.99
+answer:  one day , i was driving the van down to the store .
+predict:  i was driving to work last week .
+answer:  she bought some new shelves .
+predict:  she was going to put them in a box .
+answer:  he was given a set of tickets .
+predict:  he saw a band .
+answer:  his friends agree that 's a great idea .
+predict:  billy gets a call from his friends .
+answer:  after starting a fire in the kitchen , chance has a babysitter again .
+predict:  his mom was relieved when she found out he was n't hungry anymore .
+answer:  alicia looked at her house .
+predict:  alicia was cleaning her house .
+answer:  she searched everywhere but could n't find it .
+predict:  she needed a new one .
+answer:  when the cast was announced , she was left disappointed .
+predict:  she was nervous that she would make a lot of money .
+BLEU = 3.87, 31.1/5.5/2.0/0.9 (BP=0.924, ratio=0.927, hyp_len=90472, ref_len=97637)
+
+distinc1: 0.03557
+distinc2: 0.22369
+infer done.
+global step 486100   step-time 0.60s  loss 24.942 ppl 9.68  disc 0.027 gen -0.005 gan_ae 0.001
+global step 486200   step-time 0.60s  loss 24.318 ppl 9.15  disc 0.032 gen -0.012 gan_ae 0.000
+global step 486300   step-time 0.60s  loss 23.279 ppl 8.42  disc 0.026 gen -0.000 gan_ae 0.001
+global step 486400   step-time 0.60s  loss 23.349 ppl 8.46  disc 0.026 gen 0.005 gan_ae -0.003
+global step 486500   step-time 0.60s  loss 23.531 ppl 8.50  disc 0.029 gen -0.009 gan_ae 0.001
+global step 486600   step-time 0.60s  loss 23.324 ppl 8.32  disc 0.028 gen -0.001 gan_ae 0.000
+global step 486700   step-time 0.60s  loss 23.218 ppl 8.32  disc 0.031 gen -0.013 gan_ae 0.001
+global step 486800   step-time 0.60s  loss 23.224 ppl 8.39  disc 0.020 gen 0.004 gan_ae 0.009
+global step 486900   step-time 0.60s  loss 23.189 ppl 8.35  disc 0.039 gen -0.031 gan_ae 0.003
+global step 487000   step-time 0.60s  loss 23.195 ppl 8.38  disc 0.023 gen 0.012 gan_ae -0.004
+global step 487100   step-time 0.60s  loss 23.244 ppl 8.39  disc 0.030 gen -0.006 gan_ae -0.002
+global step 487200   step-time 0.60s  loss 22.856 ppl 8.13  disc 0.026 gen 0.001 gan_ae 0.000
+global step 487300   step-time 0.60s  loss 23.177 ppl 8.25  disc 0.030 gen -0.013 gan_ae 0.004
+global step 487400   step-time 0.60s  loss 23.144 ppl 8.32  disc 0.023 gen 0.008 gan_ae -0.001
+global step 487500   step-time 0.60s  loss 23.356 ppl 8.32  disc 0.029 gen -0.008 gan_ae 0.000
+global step 487600   step-time 0.60s  loss 23.297 ppl 8.38  disc 0.028 gen -0.007 gan_ae 0.002
+global step 487700   step-time 0.60s  loss 23.154 ppl 8.30  disc 0.027 gen -0.001 gan_ae -0.000
+global step 487800   step-time 0.60s  loss 23.066 ppl 8.22  disc 0.028 gen -0.003 gan_ae 0.001
+global step 487900   step-time 0.60s  loss 22.924 ppl 8.12  disc 0.025 gen 0.005 gan_ae -0.000
+global step 488000   step-time 0.60s  loss 23.485 ppl 8.46  disc 0.033 gen -0.019 gan_ae 0.003
+global step 488100   step-time 0.60s  loss 23.216 ppl 8.29  disc 0.026 gen 0.001 gan_ae 0.000
+global step 488200   step-time 0.60s  loss 23.308 ppl 8.36  disc 0.035 gen -0.010 gan_ae -0.007
+global step 488300   step-time 0.60s  loss 23.332 ppl 8.38  disc 0.022 gen 0.001 gan_ae 0.007
+global step 488400   step-time 0.60s  loss 23.193 ppl 8.30  disc 0.032 gen -0.010 gan_ae -0.002
+global step 488500   step-time 0.60s  loss 22.787 ppl 8.07  disc 0.033 gen -0.011 gan_ae -0.004
+global step 488600   step-time 0.60s  loss 23.234 ppl 8.27  disc 0.024 gen 0.006 gan_ae -0.000
+global step 488700   step-time 0.60s  loss 23.063 ppl 8.23  disc 0.031 gen -0.013 gan_ae 0.003
+global step 488800   step-time 0.60s  loss 23.283 ppl 8.35  disc 0.024 gen 0.008 gan_ae -0.003
+global step 488900   step-time 0.60s  loss 23.089 ppl 8.22  disc 0.030 gen -0.006 gan_ae -0.002
+global step 489000   step-time 0.60s  loss 23.251 ppl 8.33  disc 0.029 gen -0.002 gan_ae -0.001
+load eval model.
+eval  ppl 17.48
+answer:  one day , i was driving the van down to the store .
+predict:  i was driving my van one day when i saw a van pull into my driveway .
+answer:  she bought some new shelves .
+predict:  she bought a bunch of old books .
+answer:  he was given a set of tickets .
+predict:  he bought some music .
+answer:  his friends agree that 's a great idea .
+predict:  billy and his friends go fishing .
+answer:  after starting a fire in the kitchen , chance has a babysitter again .
+predict:  his mom was so happy and she almost cried .
+answer:  alicia looked at her house .
+predict:  alicia was cleaning her house .
+answer:  she searched everywhere but could n't find it .
+predict:  she needed one .
+answer:  when the cast was announced , she was left disappointed .
+predict:  but she was n't sure if she could do it .
+BLEU = 4.39, 32.4/6.3/2.4/1.1 (BP=0.914, ratio=0.917, hyp_len=89538, ref_len=97637)
+
+distinc1: 0.03767
+distinc2: 0.24184
+infer done.
+global step 489100   step-time 0.60s  loss 23.175 ppl 8.36  disc 0.028 gen -0.006 gan_ae 0.002
+global step 489200   step-time 0.60s  loss 23.204 ppl 8.27  disc 0.033 gen -0.011 gan_ae -0.001
+global step 489300   step-time 0.60s  loss 23.232 ppl 8.30  disc 0.024 gen 0.004 gan_ae 0.002
+global step 489400   step-time 0.60s  loss 23.028 ppl 8.20  disc 0.028 gen -0.007 gan_ae 0.002
+global step 489500   step-time 0.60s  loss 23.306 ppl 8.38  disc 0.032 gen -0.015 gan_ae 0.002
+global step 489600   step-time 0.60s  loss 23.249 ppl 8.27  disc 0.024 gen 0.002 gan_ae 0.003
+global step 489700   step-time 0.60s  loss 23.212 ppl 8.28  disc 0.030 gen -0.005 gan_ae 0.001
+global step 489800   step-time 0.60s  loss 23.231 ppl 8.33  disc 0.034 gen -0.001 gan_ae -0.010
+global step 489900   step-time 0.60s  loss 22.986 ppl 8.15  disc 0.021 gen 0.004 gan_ae 0.006
+global step 490000   step-time 0.60s  loss 23.364 ppl 8.34  disc 0.029 gen -0.007 gan_ae 0.002
+global step 490100   step-time 0.60s  loss 22.965 ppl 8.19  disc 0.032 gen -0.004 gan_ae -0.005
+global step 490200   step-time 0.60s  loss 23.303 ppl 8.41  disc 0.025 gen -0.001 gan_ae 0.002
+global step 490300   step-time 0.60s  loss 23.215 ppl 8.38  disc 0.031 gen -0.009 gan_ae -0.002
+global step 490400   step-time 0.60s  loss 23.197 ppl 8.27  disc 0.025 gen 0.008 gan_ae -0.004
+global step 490500   step-time 0.60s  loss 23.082 ppl 8.21  disc 0.032 gen -0.011 gan_ae -0.002
+global step 490600   step-time 0.60s  loss 23.101 ppl 8.19  disc 0.026 gen 0.006 gan_ae -0.004
+global step 490700   step-time 0.60s  loss 23.252 ppl 8.33  disc 0.029 gen -0.012 gan_ae 0.006
+global step 490800   step-time 0.60s  loss 23.276 ppl 8.33  disc 0.027 gen -0.000 gan_ae 0.000
+global step 490900   step-time 0.60s  loss 23.132 ppl 8.34  disc 0.024 gen 0.011 gan_ae -0.005
+global step 491000   step-time 0.60s  loss 23.362 ppl 8.37  disc 0.031 gen -0.008 gan_ae -0.001
+global step 491100   step-time 0.60s  loss 23.188 ppl 8.33  disc 0.029 gen 0.003 gan_ae -0.006
+global step 491200   step-time 0.60s  loss 23.343 ppl 8.38  disc 0.031 gen -0.008 gan_ae -0.003
+global step 491300   step-time 0.60s  loss 23.134 ppl 8.24  disc 0.028 gen -0.003 gan_ae -0.003
+global step 491400   step-time 0.60s  loss 23.132 ppl 8.22  disc 0.031 gen -0.004 gan_ae -0.004
+global step 491500   step-time 0.60s  loss 23.242 ppl 8.33  disc 0.025 gen -0.000 gan_ae 0.004
+global step 491600   step-time 0.60s  loss 23.017 ppl 8.21  disc 0.030 gen -0.009 gan_ae 0.002
+global step 491700   step-time 0.60s  loss 23.255 ppl 8.35  disc 0.025 gen -0.000 gan_ae 0.003
+global step 491800   step-time 0.60s  loss 23.402 ppl 8.37  disc 0.033 gen -0.009 gan_ae -0.004
+global step 491900   step-time 0.60s  loss 23.239 ppl 8.33  disc 0.032 gen -0.006 gan_ae -0.005
+global step 492000   step-time 0.60s  loss 23.249 ppl 8.40  disc 0.030 gen -0.004 gan_ae -0.003
+load eval model.
+eval  ppl 17.53
+answer:  one day , i was driving the van down to the store .
+predict:  i was driving my van to my cousin 's house to take a turn .
+answer:  she bought some new shelves .
+predict:  she had a big shelf of books .
+answer:  he was given a set of tickets .
+predict:  he bought a ticket .
+answer:  his friends agree that 's a great idea .
+predict:  billy gets a vacation ticket to the lake .
+answer:  after starting a fire in the kitchen , chance has a babysitter again .
+predict:  his mom was so relieved she gave him a big kiss .
+answer:  alicia looked at her house .
+predict:  alicia was looking at her new makeup .
+answer:  she searched everywhere but could n't find it .
+predict:  she had been saving for months .
+answer:  when the cast was announced , she was left disappointed .
+predict:  anna was nervous , but she still had a great time .
+BLEU = 3.61, 30.7/5.3/1.8/0.7 (BP=0.950, ratio=0.951, hyp_len=92863, ref_len=97637)
+
+distinc1: 0.03211
+distinc2: 0.21265
+infer done.
+global step 492100   step-time 0.60s  loss 23.226 ppl 8.27  disc 0.024 gen 0.001 gan_ae 0.006
+global step 492200   step-time 0.60s  loss 23.114 ppl 8.26  disc 0.028 gen -0.011 gan_ae 0.007
+global step 492300   step-time 0.60s  loss 23.055 ppl 8.19  disc 0.027 gen -0.000 gan_ae -0.000
+global step 492400   step-time 0.60s  loss 23.450 ppl 8.45  disc 0.036 gen -0.002 gan_ae -0.011
+global step 492500   step-time 0.60s  loss 22.752 ppl 8.13  disc 0.034 gen -0.006 gan_ae -0.007
+global step 492600   step-time 0.60s  loss 23.439 ppl 8.42  disc 0.029 gen -0.003 gan_ae -0.002
+global step 492700   step-time 0.60s  loss 23.263 ppl 8.33  disc 0.028 gen -0.007 gan_ae 0.004
+global step 492800   step-time 0.60s  loss 23.381 ppl 8.38  disc 0.031 gen -0.010 gan_ae 0.000
+global step 492900   step-time 0.60s  loss 22.962 ppl 8.20  disc 0.027 gen 0.003 gan_ae -0.001
+global step 493000   step-time 0.60s  loss 23.292 ppl 8.36  disc 0.031 gen -0.011 gan_ae 0.002
+global step 493100   step-time 0.60s  loss 23.293 ppl 8.36  disc 0.025 gen -0.001 gan_ae 0.001
+global step 493200   step-time 0.60s  loss 23.349 ppl 8.37  disc 0.019 gen 0.006 gan_ae 0.013
+global step 493300   step-time 0.60s  loss 23.502 ppl 8.39  disc 0.036 gen 0.001 gan_ae -0.015
+global step 493400   step-time 0.60s  loss 23.146 ppl 8.28  disc 0.035 gen 0.007 gan_ae -0.017
+global step 493500   step-time 0.60s  loss 23.315 ppl 8.38  disc 0.033 gen -0.007 gan_ae -0.005
+global step 493600   step-time 0.60s  loss 23.530 ppl 8.49  disc 0.024 gen 0.006 gan_ae -0.000
+global step 493700   step-time 0.60s  loss 23.251 ppl 8.35  disc 0.035 gen -0.015 gan_ae -0.002
+global step 493800   step-time 0.60s  loss 22.875 ppl 8.12  disc 0.026 gen 0.004 gan_ae -0.001
+global step 493900   step-time 0.60s  loss 23.167 ppl 8.23  disc 0.032 gen -0.002 gan_ae -0.007
+global step 494000   step-time 0.60s  loss 23.218 ppl 8.41  disc 0.029 gen -0.006 gan_ae -0.002
+global step 494100   step-time 0.60s  loss 23.214 ppl 8.34  disc 0.026 gen 0.001 gan_ae 0.002
+global step 494200   step-time 0.60s  loss 23.386 ppl 8.41  disc 0.028 gen -0.004 gan_ae -0.000
+global step 494300   step-time 0.60s  loss 23.159 ppl 8.27  disc 0.027 gen 0.001 gan_ae -0.002
+global step 494400   step-time 0.60s  loss 23.127 ppl 8.23  disc 0.024 gen -0.001 gan_ae 0.007
+global step 494500   step-time 0.60s  loss 23.133 ppl 8.24  disc 0.037 gen -0.024 gan_ae 0.001
+global step 494600   step-time 0.60s  loss 22.994 ppl 8.23  disc 0.026 gen 0.009 gan_ae -0.007
+global step 494700   step-time 0.60s  loss 23.141 ppl 8.31  disc 0.029 gen -0.002 gan_ae -0.002
+global step 494800   step-time 0.60s  loss 23.094 ppl 8.24  disc 0.029 gen -0.006 gan_ae -0.000
+global step 494900   step-time 0.60s  loss 22.837 ppl 8.18  disc 0.029 gen -0.017 gan_ae 0.013
+global step 495000   step-time 0.60s  loss 23.222 ppl 8.29  disc 0.036 gen -0.011 gan_ae -0.008
+load eval model.
+eval  ppl 17.55
+answer:  one day , i was driving the van down to the store .
+predict:  i went to visit my sister yesterday .
+answer:  she bought some new shelves .
+predict:  she had a lot of books to make .
+answer:  he was given a set of tickets .
+predict:  he tried to make a band .
+answer:  his friends agree that 's a great idea .
+predict:  billy asks his friends to come and go .
+answer:  after starting a fire in the kitchen , chance has a babysitter again .
+predict:  his mom was shocked to find he was n't eating it .
+answer:  alicia looked at her house .
+predict:  alicia was change .
+answer:  she searched everywhere but could n't find it .
+predict:  she had to go to the store to buy one .
+answer:  when the cast was announced , she was left disappointed .
+predict:  but she did n't study the lines .
+BLEU = 3.31, 31.3/5.1/1.6/0.7 (BP=0.905, ratio=0.910, hyp_len=88816, ref_len=97637)
+
+distinc1: 0.03192
+distinc2: 0.21011
+infer done.
+global step 495100   step-time 0.60s  loss 23.344 ppl 8.31  disc 0.022 gen 0.012 gan_ae -0.004
+global step 495200   step-time 0.60s  loss 23.077 ppl 8.21  disc 0.032 gen -0.010 gan_ae -0.002
+global step 495300   step-time 0.60s  loss 23.199 ppl 8.22  disc 0.027 gen 0.005 gan_ae -0.004
+global step 495400   step-time 0.60s  loss 23.424 ppl 8.47  disc 0.026 gen -0.004 gan_ae 0.005
+global step 495500   step-time 0.60s  loss 23.455 ppl 8.46  disc 0.034 gen -0.014 gan_ae -0.004
+global step 495600   step-time 0.60s  loss 23.092 ppl 8.26  disc 0.029 gen -0.007 gan_ae 0.002
+global step 495700   step-time 0.60s  loss 22.891 ppl 8.19  disc 0.025 gen 0.008 gan_ae -0.005
+global step 495800   step-time 0.60s  loss 23.562 ppl 8.44  disc 0.028 gen -0.006 gan_ae 0.003
+global step 495900   step-time 0.60s  loss 23.125 ppl 8.34  disc 0.024 gen 0.005 gan_ae 0.001
+global step 496000   step-time 0.60s  loss 23.117 ppl 8.31  disc 0.032 gen -0.009 gan_ae -0.004
+global step 496100   step-time 0.60s  loss 23.311 ppl 8.33  disc 0.026 gen 0.003 gan_ae -0.000
+global step 496200   step-time 0.60s  loss 23.193 ppl 8.34  disc 0.031 gen -0.012 gan_ae 0.002
+global step 496300   step-time 0.60s  loss 22.805 ppl 8.08  disc 0.025 gen 0.002 gan_ae 0.001
+global step 496400   step-time 0.60s  loss 23.069 ppl 8.21  disc 0.030 gen -0.012 gan_ae 0.003
+global step 496500   step-time 0.60s  loss 23.219 ppl 8.28  disc 0.033 gen -0.014 gan_ae -0.002
+global step 496600   step-time 0.60s  loss 23.431 ppl 8.51  disc 0.024 gen 0.010 gan_ae -0.004
+global step 496700   step-time 0.60s  loss 23.191 ppl 8.28  disc 0.029 gen 0.002 gan_ae -0.006
+global step 496800   step-time 0.60s  loss 23.161 ppl 8.28  disc 0.026 gen -0.002 gan_ae 0.005
+global step 496900   step-time 0.60s  loss 23.232 ppl 8.32  disc 0.034 gen -0.014 gan_ae -0.004
+global step 497000   step-time 0.60s  loss 23.029 ppl 8.21  disc 0.022 gen -0.000 gan_ae 0.011
+global step 497100   step-time 0.60s  loss 22.987 ppl 8.16  disc 0.019 gen 0.009 gan_ae 0.008
+global step 497200   step-time 0.60s  loss 23.070 ppl 8.18  disc 0.033 gen -0.008 gan_ae -0.005
+global step 497300   step-time 0.60s  loss 23.134 ppl 8.26  disc 0.038 gen -0.024 gan_ae -0.001
+global step 497400   step-time 0.60s  loss 23.195 ppl 8.29  disc 0.021 gen 0.013 gan_ae -0.002
+global step 497500   step-time 0.60s  loss 23.488 ppl 8.41  disc 0.035 gen -0.017 gan_ae -0.001
+global step 497600   step-time 0.60s  loss 23.253 ppl 8.32  disc 0.026 gen 0.011 gan_ae -0.006
+global step 497700   step-time 0.60s  loss 23.112 ppl 8.21  disc 0.033 gen 0.000 gan_ae -0.011
+global step 497800   step-time 0.60s  loss 23.101 ppl 8.24  disc 0.023 gen 0.012 gan_ae -0.005
+global step 497900   step-time 0.60s  loss 23.226 ppl 8.40  disc 0.031 gen -0.013 gan_ae 0.003
+global step 498000   step-time 0.60s  loss 23.109 ppl 8.26  disc 0.018 gen 0.009 gan_ae 0.008
+load eval model.
+eval  ppl 17.43
+answer:  one day , i was driving the van down to the store .
+predict:  i was driving my van along the road one day .
+answer:  she bought some new shelves .
+predict:  she bought new books .
+answer:  he was given a set of tickets .
+predict:  he saw a band .
+answer:  his friends agree that 's a great idea .
+predict:  billy tells his friends he can go fishing .
+answer:  after starting a fire in the kitchen , chance has a babysitter again .
+predict:  he was so happy that he decided to leave the house .
+answer:  alicia looked at her house .
+predict:  alicia was getting ready for bed .
+answer:  she searched everywhere but could n't find it .
+predict:  she had been saving for months .
+answer:  when the cast was announced , she was left disappointed .
+predict:  she was denied .
+BLEU = 3.69, 31.6/5.6/1.9/0.9 (BP=0.893, ratio=0.898, hyp_len=87681, ref_len=97637)
+
+distinc1: 0.03349
+distinc2: 0.21242
+infer done.
+global step 498100   step-time 0.60s  loss 23.076 ppl 8.27  disc 0.034 gen -0.007 gan_ae -0.006
+global step 498200   step-time 0.60s  loss 23.208 ppl 8.23  disc 0.031 gen -0.004 gan_ae -0.005
+global step 498300   step-time 0.60s  loss 22.893 ppl 8.23  disc 0.033 gen -0.005 gan_ae -0.007
+global step 498400   step-time 0.60s  loss 23.176 ppl 8.27  disc 0.029 gen 0.011 gan_ae -0.013
+global step 498500   step-time 0.60s  loss 23.113 ppl 8.27  disc 0.029 gen -0.003 gan_ae -0.002
+global step 498600   step-time 0.60s  loss 23.193 ppl 8.26  disc 0.030 gen -0.003 gan_ae -0.004
+global step 498700   step-time 0.60s  loss 23.282 ppl 8.32  disc 0.032 gen -0.006 gan_ae -0.005
+global step 498800   step-time 0.60s  loss 22.876 ppl 8.15  disc 0.027 gen -0.003 gan_ae 0.002
+global step 498900   step-time 0.60s  loss 23.120 ppl 8.32  disc 0.023 gen 0.002 gan_ae 0.006
+global step 499000   step-time 0.60s  loss 23.028 ppl 8.30  disc 0.034 gen -0.016 gan_ae -0.001
+global step 499100   step-time 0.60s  loss 23.312 ppl 8.32  disc 0.027 gen 0.006 gan_ae -0.006
+global step 499200   step-time 0.60s  loss 23.402 ppl 8.38  disc 0.029 gen -0.009 gan_ae 0.003
+global step 499300   step-time 0.60s  loss 23.052 ppl 8.20  disc 0.027 gen 0.005 gan_ae -0.006
+global step 499400   step-time 0.60s  loss 22.968 ppl 8.08  disc 0.033 gen -0.021 gan_ae 0.003
+global step 499500   step-time 0.60s  loss 23.176 ppl 8.28  disc 0.026 gen 0.004 gan_ae -0.001
+global step 499600   step-time 0.60s  loss 23.047 ppl 8.30  disc 0.030 gen -0.006 gan_ae 0.000
+global step 499700   step-time 0.60s  loss 23.120 ppl 8.26  disc 0.027 gen -0.002 gan_ae 0.001
+global step 499800   step-time 0.60s  loss 23.228 ppl 8.28  disc 0.027 gen -0.009 gan_ae 0.006
+global step 499900   step-time 0.60s  loss 23.258 ppl 8.33  disc 0.040 gen -0.021 gan_ae -0.005
+global step 500000   step-time 0.60s  loss 23.034 ppl 8.21  disc 0.029 gen -0.001 gan_ae -0.001
+global step 500100   step-time 0.60s  loss 22.945 ppl 8.19  disc 0.030 gen -0.008 gan_ae 0.003
+global step 500200   step-time 0.60s  loss 22.985 ppl 8.21  disc 0.031 gen -0.013 gan_ae 0.003
+global step 500300   step-time 0.60s  loss 23.198 ppl 8.38  disc 0.030 gen -0.008 gan_ae -0.001
+global step 500400   step-time 0.60s  loss 23.043 ppl 8.25  disc 0.030 gen 0.000 gan_ae -0.003
+global step 500500   step-time 0.60s  loss 22.957 ppl 8.15  disc 0.024 gen -0.001 gan_ae 0.006
+global step 500600   step-time 0.60s  loss 23.054 ppl 8.21  disc 0.035 gen -0.022 gan_ae -0.001
+global step 500700   step-time 0.60s  loss 22.935 ppl 8.11  disc 0.025 gen 0.005 gan_ae -0.001
+global step 500800   step-time 0.60s  loss 23.103 ppl 8.23  disc 0.028 gen 0.005 gan_ae -0.005
+global step 500900   step-time 0.60s  loss 23.436 ppl 8.41  disc 0.027 gen -0.012 gan_ae 0.007
+global step 501000   step-time 0.60s  loss 23.203 ppl 8.22  disc 0.030 gen -0.003 gan_ae -0.004
+load eval model.
+eval  ppl 17.56
+answer:  one day , i was driving the van down to the store .
+predict:  i was driving to work one day when a truck came by .
+answer:  she bought some new shelves .
+predict:  she bought a huge box of old books .
+answer:  he was given a set of tickets .
+predict:  he saw a band band .
+answer:  his friends agree that 's a great idea .
+predict:  billy gets to the lake and gets into his car .
+answer:  after starting a fire in the kitchen , chance has a babysitter again .
+predict:  his mom was so happy that he ate a lot of bread that day .
+answer:  alicia looked at her house .
+predict:  alicia was cleaning her house .
+answer:  she searched everywhere but could n't find it .
+predict:  she went to the store to buy one .
+answer:  when the cast was announced , she was left disappointed .
+predict:  she was nervous about getting a role in the school play .
+BLEU = 4.23, 32.2/6.0/2.2/1.0 (BP=0.920, ratio=0.923, hyp_len=90119, ref_len=97637)
+
+distinc1: 0.03717
+distinc2: 0.23886
+infer done.
+global step 501100   step-time 0.60s  loss 23.141 ppl 8.32  disc 0.029 gen -0.006 gan_ae 0.001
+global step 501200   step-time 0.60s  loss 23.358 ppl 8.31  disc 0.027 gen -0.010 gan_ae 0.011
+global step 501300   step-time 0.60s  loss 23.182 ppl 8.29  disc 0.032 gen -0.009 gan_ae -0.004
+global step 501400   step-time 0.60s  loss 23.309 ppl 8.33  disc 0.029 gen 0.008 gan_ae -0.009
+global step 501500   step-time 0.60s  loss 23.037 ppl 8.23  disc 0.029 gen -0.016 gan_ae 0.006
+global step 501600   step-time 0.60s  loss 23.172 ppl 8.30  disc 0.027 gen -0.000 gan_ae -0.001
+global step 501700   step-time 0.60s  loss 23.162 ppl 8.33  disc 0.026 gen -0.007 gan_ae 0.005
+global step 501800   step-time 0.60s  loss 22.845 ppl 8.09  disc 0.025 gen 0.004 gan_ae 0.002
+global step 501900   step-time 0.60s  loss 23.214 ppl 8.32  disc 0.034 gen -0.022 gan_ae 0.004
+global step 502000   step-time 0.60s  loss 23.269 ppl 8.29  disc 0.023 gen 0.009 gan_ae 0.000
+global step 502100   step-time 0.60s  loss 23.182 ppl 8.29  disc 0.031 gen -0.004 gan_ae -0.007
+global step 502200   step-time 0.60s  loss 22.990 ppl 8.26  disc 0.025 gen 0.006 gan_ae -0.001
+global step 502300   step-time 0.60s  loss 23.375 ppl 8.38  disc 0.032 gen -0.010 gan_ae -0.002
+global step 502400   step-time 0.60s  loss 22.980 ppl 8.16  disc 0.024 gen 0.004 gan_ae 0.001
+global step 502500   step-time 0.60s  loss 23.219 ppl 8.30  disc 0.035 gen -0.026 gan_ae 0.004
+global step 502600   step-time 0.60s  loss 23.084 ppl 8.32  disc 0.020 gen 0.008 gan_ae 0.006
+global step 502700   step-time 0.60s  loss 23.017 ppl 8.24  disc 0.032 gen -0.031 gan_ae 0.022
+global step 502800   step-time 0.60s  loss 22.768 ppl 8.04  disc 0.025 gen 0.004 gan_ae -0.000
+global step 502900   step-time 0.60s  loss 23.073 ppl 8.26  disc 0.026 gen 0.010 gan_ae -0.009
+global step 503000   step-time 0.60s  loss 23.182 ppl 8.22  disc 0.026 gen -0.005 gan_ae 0.007
+global step 503100   step-time 0.60s  loss 23.243 ppl 8.31  disc 0.034 gen -0.012 gan_ae -0.003
+global step 503200   step-time 0.60s  loss 22.827 ppl 8.12  disc 0.033 gen -0.009 gan_ae -0.004
+global step 503300   step-time 0.60s  loss 22.901 ppl 8.13  disc 0.031 gen -0.013 gan_ae 0.004
+global step 503400   step-time 0.60s  loss 23.170 ppl 8.30  disc 0.022 gen 0.014 gan_ae -0.001
+global step 503500   step-time 0.60s  loss 23.200 ppl 8.34  disc 0.036 gen -0.026 gan_ae 0.005
+global step 503600   step-time 0.60s  loss 22.988 ppl 8.12  disc 0.018 gen 0.014 gan_ae 0.008
+global step 503700   step-time 0.60s  loss 23.179 ppl 8.34  disc 0.040 gen -0.026 gan_ae -0.002
+global step 503800   step-time 0.60s  loss 23.054 ppl 8.14  disc 0.020 gen 0.010 gan_ae 0.003
+global step 503900   step-time 0.60s  loss 23.258 ppl 8.33  disc 0.027 gen 0.001 gan_ae -0.003
+global step 504000   step-time 0.60s  loss 22.971 ppl 8.18  disc 0.029 gen -0.004 gan_ae 0.000
+load eval model.
+eval  ppl 17.50
+answer:  one day , i was driving the van down to the store .
+predict:  i was driving my van to work yesterday morning .
+answer:  she bought some new shelves .
+predict:  she got some old books to use .
+answer:  he was given a set of tickets .
+predict:  he got a couple of of friends to meet him .
+answer:  his friends agree that 's a great idea .
+predict:  billy gets up and goes to the pond to go fishing .
+answer:  after starting a fire in the kitchen , chance has a babysitter again .
+predict:  his mom was very upset and told him to go back to sleep .
+answer:  alicia looked at her house .
+predict:  alicia was having a bad day .
+answer:  she searched everywhere but could n't find it .
+predict:  she needed one .
+answer:  when the cast was announced , she was left disappointed .
+predict:  but when the time came , she was very nervous .
+BLEU = 3.63, 30.3/5.1/1.7/0.7 (BP=0.972, ratio=0.973, hyp_len=94977, ref_len=97637)
+
+distinc1: 0.02809
+distinc2: 0.19812
+infer done.
+global step 504100   step-time 0.60s  loss 23.175 ppl 8.29  disc 0.033 gen -0.007 gan_ae -0.006
+global step 504200   step-time 0.60s  loss 23.188 ppl 8.26  disc 0.024 gen 0.001 gan_ae 0.004
+global step 504300   step-time 0.60s  loss 23.353 ppl 8.33  disc 0.028 gen -0.008 gan_ae 0.003
+global step 504400   step-time 0.60s  loss 23.092 ppl 8.19  disc 0.027 gen -0.004 gan_ae 0.003
+global step 504500   step-time 0.60s  loss 22.872 ppl 8.09  disc 0.034 gen -0.009 gan_ae -0.005
+global step 504600   step-time 0.60s  loss 23.146 ppl 8.24  disc 0.029 gen 0.000 gan_ae -0.004
+global step 504700   step-time 0.60s  loss 23.270 ppl 8.30  disc 0.027 gen -0.002 gan_ae 0.003
+global step 504800   step-time 0.60s  loss 22.901 ppl 8.17  disc 0.032 gen -0.016 gan_ae 0.003
+global step 504900   step-time 0.60s  loss 23.051 ppl 8.20  disc 0.031 gen -0.006 gan_ae -0.002
+global step 505000   step-time 0.60s  loss 23.047 ppl 8.20  disc 0.031 gen -0.013 gan_ae 0.002
+global step 505100   step-time 0.60s  loss 23.161 ppl 8.31  disc 0.025 gen -0.007 gan_ae 0.009
+global step 505200   step-time 0.60s  loss 22.925 ppl 8.19  disc 0.037 gen -0.025 gan_ae 0.003
+global step 505300   step-time 0.60s  loss 23.267 ppl 8.34  disc 0.027 gen 0.001 gan_ae 0.003
+global step 505400   step-time 0.60s  loss 23.046 ppl 8.22  disc 0.036 gen -0.017 gan_ae -0.002
+global step 505500   step-time 0.60s  loss 23.164 ppl 8.26  disc 0.021 gen 0.007 gan_ae 0.005
+global step 505600   step-time 0.60s  loss 23.272 ppl 8.31  disc 0.031 gen -0.014 gan_ae 0.002
+global step 505700   step-time 0.60s  loss 22.901 ppl 8.10  disc 0.031 gen -0.008 gan_ae -0.002
+global step 505800   step-time 0.60s  loss 22.972 ppl 8.09  disc 0.032 gen -0.015 gan_ae 0.002
+global step 505900   step-time 0.60s  loss 22.929 ppl 8.10  disc 0.021 gen 0.008 gan_ae 0.004
+global step 506000   step-time 0.60s  loss 23.197 ppl 8.33  disc 0.030 gen -0.008 gan_ae 0.001
+global step 506100   step-time 0.60s  loss 23.155 ppl 8.30  disc 0.027 gen 0.003 gan_ae -0.002
+global step 506200   step-time 0.60s  loss 22.890 ppl 8.11  disc 0.032 gen -0.011 gan_ae -0.002
+global step 506300   step-time 0.60s  loss 23.014 ppl 8.18  disc 0.028 gen -0.005 gan_ae -0.000
+global step 506400   step-time 0.60s  loss 23.036 ppl 8.21  disc 0.029 gen -0.008 gan_ae 0.003
+global step 506500   step-time 0.60s  loss 23.233 ppl 8.32  disc 0.026 gen 0.007 gan_ae -0.004
+global step 506600   step-time 0.60s  loss 22.974 ppl 8.14  disc 0.038 gen -0.034 gan_ae 0.008
+global step 506700   step-time 0.60s  loss 23.009 ppl 8.09  disc 0.025 gen 0.007 gan_ae -0.004
+global step 506800   step-time 0.60s  loss 23.082 ppl 8.19  disc 0.024 gen -0.002 gan_ae 0.006
+global step 506900   step-time 0.60s  loss 23.108 ppl 8.22  disc 0.025 gen 0.002 gan_ae 0.002
+global step 507000   step-time 0.60s  loss 23.329 ppl 8.34  disc 0.041 gen -0.032 gan_ae -0.001
+load eval model.
+eval  ppl 17.64
+answer:  one day , i was driving the van down to the store .
+predict:  i bought a new vehicle the other day .
+answer:  she bought some new shelves .
+predict:  she bought some new books .
+answer:  he was given a set of tickets .
+predict:  he saw some band members .
+answer:  his friends agree that 's a great idea .
+predict:  billy gets to the nearby nearby nearby .
+answer:  after starting a fire in the kitchen , chance has a babysitter again .
+predict:  he did n't get to make it to get a new one .
+answer:  alicia looked at her house .
+predict:  lisa was cleaning out her new bus .
+answer:  she searched everywhere but could n't find it .
+predict:  she decided to buy one .
+answer:  when the cast was announced , she was left disappointed .
+predict:  but she did n't seem to make a much better ballet .
+BLEU = 2.48, 29.1/4.0/1.2/0.4 (BP=0.889, ratio=0.895, hyp_len=87355, ref_len=97637)
+
+distinc1: 0.02148
+distinc2: 0.15662
+infer done.
+global step 507100   step-time 0.60s  loss 22.792 ppl 8.02  disc 0.012 gen 0.023 gan_ae 0.013
+global step 507200   step-time 0.60s  loss 23.060 ppl 8.28  disc 0.034 gen -0.028 gan_ae 0.016
+global step 507300   step-time 0.60s  loss 23.230 ppl 8.24  disc 0.025 gen 0.013 gan_ae -0.008
+global step 507400   step-time 0.60s  loss 22.752 ppl 8.07  disc 0.026 gen -0.000 gan_ae 0.001
+global step 507500   step-time 0.60s  loss 22.977 ppl 8.13  disc 0.025 gen 0.007 gan_ae -0.000
+global step 507600   step-time 0.60s  loss 22.982 ppl 8.12  disc 0.037 gen -0.017 gan_ae -0.003
+global step 507700   step-time 0.60s  loss 22.930 ppl 8.12  disc 0.024 gen 0.012 gan_ae -0.006
+global step 507800   step-time 0.60s  loss 22.967 ppl 8.19  disc 0.034 gen -0.016 gan_ae -0.001
+global step 507900   step-time 0.60s  loss 23.158 ppl 8.24  disc 0.027 gen 0.003 gan_ae -0.002
+global step 508000   step-time 0.60s  loss 22.989 ppl 8.22  disc 0.033 gen -0.015 gan_ae -0.002
+global step 508100   step-time 0.60s  loss 23.148 ppl 8.21  disc 0.028 gen 0.000 gan_ae -0.001
+global step 508200   step-time 0.60s  loss 23.123 ppl 8.22  disc 0.028 gen -0.011 gan_ae 0.008
+global step 508300   step-time 0.60s  loss 23.053 ppl 8.21  disc 0.029 gen 0.002 gan_ae -0.004
+global step 508400   step-time 0.60s  loss 23.092 ppl 8.21  disc 0.031 gen -0.014 gan_ae 0.003
+global step 508500   step-time 0.60s  loss 23.013 ppl 8.17  disc 0.029 gen -0.003 gan_ae -0.000
+global step 508600   step-time 0.60s  loss 23.183 ppl 8.33  disc 0.025 gen 0.003 gan_ae -0.001
+global step 508700   step-time 0.60s  loss 23.033 ppl 8.10  disc 0.040 gen -0.033 gan_ae 0.003
+global step 508800   step-time 0.60s  loss 23.067 ppl 8.17  disc 0.018 gen 0.016 gan_ae 0.002
+global step 508900   step-time 0.60s  loss 23.061 ppl 8.21  disc 0.026 gen 0.001 gan_ae 0.000
+global step 509000   step-time 0.60s  loss 23.049 ppl 8.17  disc 0.038 gen -0.016 gan_ae -0.008
+global step 509100   step-time 0.60s  loss 22.969 ppl 8.15  disc 0.025 gen 0.002 gan_ae 0.001
+global step 509200   step-time 0.60s  loss 23.069 ppl 8.13  disc 0.027 gen -0.006 gan_ae 0.002
+global step 509300   step-time 0.60s  loss 22.987 ppl 8.22  disc 0.030 gen -0.012 gan_ae 0.002
+global step 509400   step-time 0.60s  loss 23.180 ppl 8.27  disc 0.024 gen 0.001 gan_ae 0.005
+global step 509500   step-time 0.60s  loss 22.933 ppl 8.15  disc 0.028 gen 0.002 gan_ae -0.003
+global step 509600   step-time 0.60s  loss 22.912 ppl 8.02  disc 0.032 gen -0.017 gan_ae 0.001
+global step 509700   step-time 0.60s  loss 23.354 ppl 8.40  disc 0.030 gen -0.006 gan_ae -0.002
+global step 509800   step-time 0.60s  loss 22.907 ppl 8.15  disc 0.028 gen -0.003 gan_ae -0.002
+global step 509900   step-time 0.60s  loss 22.844 ppl 8.09  disc 0.030 gen 0.000 gan_ae -0.005
+global step 510000   step-time 0.60s  loss 23.086 ppl 8.28  disc 0.034 gen -0.025 gan_ae 0.005
+load eval model.
+eval  ppl 17.72
+answer:  one day , i was driving the van down to the store .
+predict:  i was driving my van down the road one day .
+answer:  she bought some new shelves .
+predict:  she made some new books .
+answer:  he was given a set of tickets .
+predict:  he saw some band _UNK .
+answer:  his friends agree that 's a great idea .
+predict:  billy gets some bait and a fishing pole .
+answer:  after starting a fire in the kitchen , chance has a babysitter again .
+predict:  his mom was so happy that she gave him a big hug .
+answer:  alicia looked at her house .
+predict:  alicia was really bored .
+answer:  she searched everywhere but could n't find it .
+predict:  she decided to go shopping .
+answer:  when the cast was announced , she was left disappointed .
+predict:  but at the end of the year , she was very nervous .
+BLEU = 4.05, 30.3/5.4/2.0/0.9 (BP=0.994, ratio=0.994, hyp_len=97021, ref_len=97637)
+
+distinc1: 0.03115
+distinc2: 0.21413
+infer done.
+global step 510100   step-time 0.60s  loss 23.209 ppl 8.24  disc 0.023 gen 0.006 gan_ae 0.003
+global step 510200   step-time 0.60s  loss 23.015 ppl 8.16  disc 0.036 gen -0.027 gan_ae 0.002
+global step 510300   step-time 0.60s  loss 23.305 ppl 8.20  disc 0.023 gen 0.009 gan_ae 0.001
+global step 510400   step-time 0.60s  loss 22.871 ppl 8.07  disc 0.031 gen -0.011 gan_ae 0.002
+global step 510500   step-time 0.60s  loss 22.737 ppl 8.05  disc 0.021 gen 0.004 gan_ae 0.007
+global step 510600   step-time 0.60s  loss 23.142 ppl 8.31  disc 0.036 gen -0.013 gan_ae -0.003
+global step 510700   step-time 0.60s  loss 22.763 ppl 8.08  disc 0.029 gen 0.012 gan_ae -0.013
+global step 510800   step-time 0.60s  loss 23.089 ppl 8.24  disc 0.032 gen -0.002 gan_ae -0.007
+global step 510900   step-time 0.60s  loss 23.158 ppl 8.21  disc 0.029 gen -0.011 gan_ae 0.003
+global step 511000   step-time 0.60s  loss 23.139 ppl 8.26  disc 0.027 gen -0.013 gan_ae 0.009
+global step 511100   step-time 0.60s  loss 23.494 ppl 8.44  disc 0.027 gen -0.001 gan_ae 0.000
+global step 511200   step-time 0.60s  loss 23.000 ppl 8.16  disc 0.035 gen -0.021 gan_ae -0.001
+global step 511300   step-time 0.60s  loss 23.013 ppl 8.17  disc 0.024 gen 0.012 gan_ae -0.006
+global step 511400   step-time 0.60s  loss 23.006 ppl 8.11  disc 0.035 gen -0.021 gan_ae 0.000
+global step 511500   step-time 0.60s  loss 22.985 ppl 8.27  disc 0.023 gen 0.011 gan_ae 0.005
+global step 511600   step-time 0.60s  loss 23.001 ppl 8.15  disc 0.037 gen -0.020 gan_ae -0.002
+global step 511700   step-time 0.60s  loss 22.829 ppl 7.93  disc 0.028 gen -0.010 gan_ae 0.003
+global step 511800   step-time 0.60s  loss 22.974 ppl 8.11  disc 0.023 gen 0.002 gan_ae 0.006
+global step 511900   step-time 0.60s  loss 22.949 ppl 8.15  disc 0.032 gen -0.011 gan_ae -0.001
+global step 512000   step-time 0.60s  loss 23.192 ppl 8.22  disc 0.031 gen -0.014 gan_ae 0.001
+global step 512100   step-time 0.60s  loss 23.100 ppl 8.25  disc 0.023 gen 0.005 gan_ae 0.004
+global step 512200   step-time 0.60s  loss 22.946 ppl 8.13  disc 0.032 gen -0.018 gan_ae 0.005
+global step 512300   step-time 0.60s  loss 22.863 ppl 8.16  disc 0.030 gen -0.006 gan_ae -0.000
+global step 512400   step-time 0.60s  loss 22.854 ppl 8.11  disc 0.027 gen -0.008 gan_ae 0.007
+global step 512500   step-time 0.60s  loss 22.942 ppl 8.10  disc 0.028 gen -0.009 gan_ae 0.005
+global step 512600   step-time 0.60s  loss 22.910 ppl 8.11  disc 0.030 gen -0.000 gan_ae -0.006
+global step 512700   step-time 0.60s  loss 23.191 ppl 8.36  disc 0.030 gen -0.009 gan_ae -0.000
+global step 512800   step-time 0.60s  loss 23.354 ppl 8.37  disc 0.030 gen -0.012 gan_ae 0.002
+global step 512900   step-time 0.60s  loss 22.934 ppl 8.08  disc 0.025 gen 0.007 gan_ae -0.003
+global step 513000   step-time 0.60s  loss 23.079 ppl 8.24  disc 0.033 gen -0.019 gan_ae 0.003
+load eval model.
+eval  ppl 17.66
+answer:  one day , i was driving the van down to the store .
+predict:  i was driving my van to work one morning .
+answer:  she bought some new shelves .
+predict:  she bought a big stack of books .
+answer:  he was given a set of tickets .
+predict:  he saw some band members .
+answer:  his friends agree that 's a great idea .
+predict:  billy tells his friends he can go fishing .
+answer:  after starting a fire in the kitchen , chance has a babysitter again .
+predict:  his mom was so happy she gave him a big hug .
+answer:  alicia looked at her house .
+predict:  alicia was cleaning her house .
+answer:  she searched everywhere but could n't find it .
+predict:  she decided to go to the store to buy one .
+answer:  when the cast was announced , she was left disappointed .
+predict:  anna was nervous about her audition .
+BLEU = 4.17, 32.5/6.1/2.2/1.0 (BP=0.903, ratio=0.907, hyp_len=88575, ref_len=97637)
+
+distinc1: 0.03725
+distinc2: 0.23270
+infer done.
+global step 513100   step-time 0.60s  loss 22.931 ppl 8.19  disc 0.030 gen -0.011 gan_ae 0.004
+global step 513200   step-time 0.60s  loss 23.020 ppl 8.19  disc 0.029 gen -0.009 gan_ae 0.002
+global step 513300   step-time 0.60s  loss 22.725 ppl 7.95  disc 0.029 gen -0.010 gan_ae 0.003
+global step 513400   step-time 0.60s  loss 22.909 ppl 8.11  disc 0.032 gen -0.012 gan_ae 0.000
+global step 513500   step-time 0.60s  loss 22.958 ppl 8.11  disc 0.029 gen -0.004 gan_ae -0.000
+global step 513600   step-time 0.60s  loss 23.075 ppl 8.20  disc 0.030 gen -0.007 gan_ae -0.001
+global step 513700   step-time 0.60s  loss 23.019 ppl 8.24  disc 0.029 gen -0.011 gan_ae 0.003
+global step 513800   step-time 0.60s  loss 23.063 ppl 8.26  disc 0.024 gen 0.004 gan_ae 0.003
+global step 513900   step-time 0.60s  loss 23.073 ppl 8.19  disc 0.036 gen -0.025 gan_ae 0.002
+global step 514000   step-time 0.60s  loss 23.058 ppl 8.20  disc 0.024 gen 0.011 gan_ae -0.003
+global step 514100   step-time 0.60s  loss 23.076 ppl 8.10  disc 0.033 gen -0.010 gan_ae -0.004
+global step 514200   step-time 0.60s  loss 22.945 ppl 8.16  disc 0.026 gen 0.006 gan_ae -0.005
+global step 514300   step-time 0.60s  loss 22.960 ppl 8.21  disc 0.026 gen 0.002 gan_ae -0.000
+global step 514400   step-time 0.60s  loss 22.998 ppl 8.11  disc 0.035 gen -0.023 gan_ae 0.003
+global step 514500   step-time 0.60s  loss 23.115 ppl 8.28  disc 0.023 gen 0.007 gan_ae 0.001
+global step 514600   step-time 0.60s  loss 22.873 ppl 8.14  disc 0.035 gen -0.009 gan_ae -0.007
+global step 514700   step-time 0.60s  loss 22.966 ppl 8.12  disc 0.028 gen -0.001 gan_ae 0.000
+global step 514800   step-time 0.60s  loss 23.036 ppl 8.17  disc 0.030 gen -0.011 gan_ae 0.003
+global step 514900   step-time 0.60s  loss 23.188 ppl 8.36  disc 0.033 gen -0.013 gan_ae -0.002
+global step 515000   step-time 0.60s  loss 22.779 ppl 8.03  disc 0.027 gen 0.001 gan_ae -0.001
+global step 515100   step-time 0.60s  loss 23.013 ppl 8.15  disc 0.031 gen -0.015 gan_ae 0.004
+global step 515200   step-time 0.60s  loss 23.005 ppl 8.15  disc 0.027 gen -0.007 gan_ae 0.004
+global step 515300   step-time 0.60s  loss 22.981 ppl 8.15  disc 0.029 gen -0.016 gan_ae 0.009
+global step 515400   step-time 0.60s  loss 23.023 ppl 8.20  disc 0.033 gen -0.010 gan_ae -0.003
+global step 515500   step-time 0.60s  loss 22.899 ppl 8.13  disc 0.024 gen 0.010 gan_ae -0.005
+global step 515600   step-time 0.60s  loss 23.227 ppl 8.23  disc 0.031 gen -0.010 gan_ae 0.000
+global step 515700   step-time 0.60s  loss 22.993 ppl 8.19  disc 0.027 gen -0.010 gan_ae 0.007
+global step 515800   step-time 0.60s  loss 23.066 ppl 8.15  disc 0.027 gen -0.003 gan_ae 0.003
+global step 515900   step-time 0.60s  loss 23.282 ppl 8.32  disc 0.033 gen -0.008 gan_ae -0.004
+global step 516000   step-time 0.60s  loss 23.051 ppl 8.16  disc 0.026 gen 0.001 gan_ae 0.001
+load eval model.
+eval  ppl 17.70
+answer:  one day , i was driving the van down to the store .
+predict:  i was driving my van to work yesterday morning .
+answer:  she bought some new shelves .
+predict:  she bought a big stack of books .
+answer:  he was given a set of tickets .
+predict:  he bought a band .
+answer:  his friends agree that 's a great idea .
+predict:  billy gets a call from his friends asking for a boat .
+answer:  after starting a fire in the kitchen , chance has a babysitter again .
+predict:  his mom was so happy she gave him a big hug .
+answer:  alicia looked at her house .
+predict:  alicia was feeling lazy .
+answer:  she searched everywhere but could n't find it .
+predict:  she had to buy it yesterday .
+answer:  when the cast was announced , she was left disappointed .
+predict:  but she was n't sure she 'd get the job .
+BLEU = 4.18, 31.4/5.9/2.1/0.9 (BP=0.958, ratio=0.959, hyp_len=93618, ref_len=97637)
+
+distinc1: 0.03482
+distinc2: 0.22017
+infer done.
+global step 516100   step-time 0.60s  loss 22.948 ppl 8.21  disc 0.025 gen 0.000 gan_ae 0.003
+global step 516200   step-time 0.60s  loss 23.000 ppl 8.14  disc 0.045 gen -0.034 gan_ae -0.006
+global step 516300   step-time 0.60s  loss 23.199 ppl 8.18  disc 0.023 gen 0.012 gan_ae -0.005
+global step 516400   step-time 0.60s  loss 22.899 ppl 8.09  disc 0.025 gen 0.005 gan_ae -0.002
+global step 516500   step-time 0.60s  loss 22.903 ppl 8.07  disc 0.031 gen -0.007 gan_ae -0.002
+global step 516600   step-time 0.60s  loss 23.032 ppl 8.18  disc 0.031 gen -0.008 gan_ae -0.002
+global step 516700   step-time 0.60s  loss 23.001 ppl 8.16  disc 0.020 gen 0.006 gan_ae 0.006
+global step 516800   step-time 0.60s  loss 22.872 ppl 8.11  disc 0.033 gen -0.021 gan_ae 0.004
+global step 516900   step-time 0.60s  loss 23.004 ppl 8.12  disc 0.029 gen 0.000 gan_ae -0.005
+global step 517000   step-time 0.60s  loss 23.108 ppl 8.17  disc 0.027 gen 0.005 gan_ae -0.004
+global step 517100   step-time 0.60s  loss 23.039 ppl 8.16  disc 0.029 gen -0.001 gan_ae -0.004
+global step 517200   step-time 0.60s  loss 23.039 ppl 8.18  disc 0.030 gen -0.021 gan_ae 0.011
+global step 517300   step-time 0.60s  loss 23.213 ppl 8.28  disc 0.035 gen -0.010 gan_ae -0.005
+global step 517400   step-time 0.60s  loss 23.138 ppl 8.18  disc 0.024 gen 0.017 gan_ae -0.008
+global step 517500   step-time 0.60s  loss 22.993 ppl 8.15  disc 0.029 gen -0.005 gan_ae -0.001
+global step 517600   step-time 0.60s  loss 22.764 ppl 7.99  disc 0.024 gen 0.005 gan_ae 0.001
+global step 517700   step-time 0.60s  loss 23.019 ppl 8.14  disc 0.033 gen -0.015 gan_ae 0.003
+global step 517800   step-time 0.60s  loss 22.773 ppl 8.13  disc 0.024 gen 0.002 gan_ae 0.004
+global step 517900   step-time 0.60s  loss 22.966 ppl 8.08  disc 0.036 gen -0.013 gan_ae -0.005
+global step 518000   step-time 0.60s  loss 22.961 ppl 8.10  disc 0.020 gen 0.009 gan_ae 0.004
+global step 518100   step-time 0.60s  loss 23.103 ppl 8.16  disc 0.035 gen -0.018 gan_ae -0.001
+global step 518200   step-time 0.60s  loss 23.334 ppl 8.35  disc 0.023 gen 0.006 gan_ae 0.002
+global step 518300   step-time 0.60s  loss 22.990 ppl 8.15  disc 0.033 gen -0.017 gan_ae 0.000
+global step 518400   step-time 0.60s  loss 22.999 ppl 8.14  disc 0.026 gen -0.006 gan_ae 0.004
+global step 518500   step-time 0.60s  loss 23.057 ppl 8.24  disc 0.031 gen -0.010 gan_ae 0.000
+global step 518600   step-time 0.60s  loss 22.946 ppl 8.15  disc 0.027 gen 0.001 gan_ae -0.002
+global step 518700   step-time 0.60s  loss 22.805 ppl 8.01  disc 0.032 gen -0.014 gan_ae -0.000
+global step 518800   step-time 0.60s  loss 22.900 ppl 8.15  disc 0.033 gen -0.007 gan_ae -0.006
+global step 518900   step-time 0.60s  loss 23.028 ppl 8.16  disc 0.026 gen 0.004 gan_ae -0.002
+global step 519000   step-time 0.60s  loss 23.051 ppl 8.17  disc 0.033 gen -0.013 gan_ae 0.000
+load eval model.
+eval  ppl 17.58
+answer:  one day , i was driving the van down to the store .
+predict:  i was driving my van when i heard a loud noise in my van .
+answer:  she bought some new shelves .
+predict:  she bought a bunch of old books .
+answer:  he was given a set of tickets .
+predict:  he saw some band bands .
+answer:  his friends agree that 's a great idea .
+predict:  billy tells his friends he can go with his friends .
+answer:  after starting a fire in the kitchen , chance has a babysitter again .
+predict:  his mom was so happy and said she would be happy again .
+answer:  alicia looked at her house .
+predict:  alicia was having a hard time with her new carpet .
+answer:  she searched everywhere but could n't find it .
+predict:  she needed one .
+answer:  when the cast was announced , she was left disappointed .
+predict:  but anna did n't like the part .
+BLEU = 4.17, 30.8/5.6/2.1/0.9 (BP=0.980, ratio=0.980, hyp_len=95667, ref_len=97637)
+
+distinc1: 0.03345
+distinc2: 0.22129
+infer done.
+global step 519100   step-time 0.60s  loss 22.887 ppl 8.13  disc 0.030 gen -0.010 gan_ae 0.003
+global step 519200   step-time 0.60s  loss 22.625 ppl 7.94  disc 0.029 gen -0.006 gan_ae 0.002
+global step 519300   step-time 0.60s  loss 23.312 ppl 8.29  disc 0.031 gen -0.009 gan_ae -0.000
+global step 519400   step-time 0.60s  loss 22.851 ppl 8.04  disc 0.025 gen 0.001 gan_ae 0.004
+global step 519500   step-time 0.60s  loss 22.694 ppl 7.96  disc 0.030 gen -0.009 gan_ae 0.002
+global step 519600   step-time 0.60s  loss 22.979 ppl 8.11  disc 0.033 gen -0.006 gan_ae -0.007
+global step 519700   step-time 0.60s  loss 23.097 ppl 8.14  disc 0.025 gen 0.004 gan_ae 0.000
+global step 519800   step-time 0.60s  loss 22.754 ppl 8.02  disc 0.033 gen -0.022 gan_ae 0.006
+global step 519900   step-time 0.60s  loss 22.958 ppl 8.12  disc 0.020 gen 0.012 gan_ae 0.001
+global step 520000   step-time 0.60s  loss 23.090 ppl 8.22  disc 0.030 gen 0.004 gan_ae -0.008
+global step 520100   step-time 0.60s  loss 22.936 ppl 8.16  disc 0.032 gen -0.016 gan_ae 0.004
+global step 520200   step-time 0.60s  loss 22.876 ppl 7.99  disc 0.023 gen -0.004 gan_ae 0.016
+global step 520300   step-time 0.60s  loss 22.802 ppl 8.08  disc 0.043 gen -0.021 gan_ae -0.009
+global step 520400   step-time 0.60s  loss 23.067 ppl 8.16  disc 0.019 gen 0.015 gan_ae 0.001
+global step 520500   step-time 0.60s  loss 23.006 ppl 8.17  disc 0.028 gen 0.004 gan_ae -0.005
+global step 520600   step-time 0.60s  loss 22.914 ppl 8.08  disc 0.032 gen -0.016 gan_ae 0.002
+global step 520700   step-time 0.60s  loss 22.952 ppl 8.12  disc 0.028 gen -0.002 gan_ae -0.003
+global step 520800   step-time 0.60s  loss 22.844 ppl 8.12  disc 0.031 gen -0.010 gan_ae -0.000
+global step 520900   step-time 0.60s  loss 23.166 ppl 8.24  disc 0.031 gen -0.004 gan_ae -0.004
+global step 521000   step-time 0.60s  loss 22.824 ppl 8.05  disc 0.031 gen -0.015 gan_ae 0.003
+global step 521100   step-time 0.60s  loss 22.888 ppl 8.17  disc 0.027 gen -0.005 gan_ae 0.002
+global step 521200   step-time 0.60s  loss 22.775 ppl 8.10  disc 0.027 gen -0.003 gan_ae 0.001
+global step 521300   step-time 0.60s  loss 23.080 ppl 8.17  disc 0.034 gen -0.023 gan_ae 0.008
+global step 521400   step-time 0.60s  loss 22.960 ppl 8.13  disc 0.024 gen 0.003 gan_ae 0.003
+global step 521500   step-time 0.60s  loss 22.680 ppl 8.00  disc 0.030 gen -0.009 gan_ae 0.002
+global step 521600   step-time 0.60s  loss 22.754 ppl 8.09  disc 0.022 gen 0.004 gan_ae 0.006
+global step 521700   step-time 0.60s  loss 22.987 ppl 8.13  disc 0.034 gen -0.018 gan_ae 0.003
+global step 521800   step-time 0.60s  loss 22.784 ppl 8.06  disc 0.030 gen 0.005 gan_ae -0.009
+global step 521900   step-time 0.60s  loss 22.923 ppl 8.02  disc 0.029 gen -0.005 gan_ae -0.001
+global step 522000   step-time 0.60s  loss 22.981 ppl 8.19  disc 0.033 gen -0.004 gan_ae -0.009
+load eval model.
+eval  ppl 17.58
+answer:  one day , i was driving the van down to the store .
+predict:  i was driving to work one day when i saw a sign in a garage .
+answer:  she bought some new shelves .
+predict:  she had a bunch of old books to read .
+answer:  he was given a set of tickets .
+predict:  he tried to buy some music .
+answer:  his friends agree that 's a great idea .
+predict:  billy gets up and gets out of the car and goes to the lake .
+answer:  after starting a fire in the kitchen , chance has a babysitter again .
+predict:  he was so happy he did n't want to cook again .
+answer:  alicia looked at her house .
+predict:  alicia was cleaning her house .
+answer:  she searched everywhere but could n't find it .
+predict:  she needed one for her computer .
+answer:  when the cast was announced , she was left disappointed .
+predict:  but she was n't sure she could perform any more !
+BLEU = 3.98, 31.2/5.7/2.0/0.9 (BP=0.946, ratio=0.947, hyp_len=92474, ref_len=97637)
+
+distinc1: 0.03468
+distinc2: 0.22360
+infer done.
+global step 522100   step-time 0.60s  loss 22.847 ppl 8.09  disc 0.022 gen 0.006 gan_ae 0.003
+global step 522200   step-time 0.60s  loss 22.751 ppl 8.08  disc 0.028 gen -0.010 gan_ae 0.005
+global step 522300   step-time 0.60s  loss 23.043 ppl 8.11  disc 0.029 gen -0.006 gan_ae 0.001
+global step 522400   step-time 0.60s  loss 22.782 ppl 7.98  disc 0.036 gen -0.015 gan_ae -0.003
+global step 522500   step-time 0.60s  loss 23.116 ppl 8.22  disc 0.030 gen -0.003 gan_ae -0.003
+global step 522600   step-time 0.60s  loss 22.778 ppl 8.00  disc 0.023 gen -0.002 gan_ae 0.010
+global step 522700   step-time 0.60s  loss 23.125 ppl 8.24  disc 0.026 gen -0.001 gan_ae 0.000
+global step 522800   step-time 0.60s  loss 22.979 ppl 8.14  disc 0.030 gen -0.009 gan_ae 0.000
+global step 522900   step-time 0.60s  loss 22.947 ppl 8.08  disc 0.030 gen -0.013 gan_ae 0.005
+global step 523000   step-time 0.60s  loss 22.793 ppl 8.03  disc 0.021 gen 0.012 gan_ae -0.001
+global step 523100   step-time 0.60s  loss 23.105 ppl 8.22  disc 0.036 gen -0.015 gan_ae -0.005
+global step 523200   step-time 0.60s  loss 22.796 ppl 8.07  disc 0.025 gen 0.003 gan_ae -0.000
+global step 523300   step-time 0.60s  loss 22.788 ppl 8.08  disc 0.032 gen -0.016 gan_ae 0.003
+global step 523400   step-time 0.60s  loss 22.958 ppl 8.14  disc 0.027 gen 0.002 gan_ae -0.002
+global step 523500   step-time 0.60s  loss 22.922 ppl 8.05  disc 0.026 gen -0.004 gan_ae 0.005
+global step 523600   step-time 0.60s  loss 23.215 ppl 8.24  disc 0.030 gen 0.002 gan_ae -0.007
+global step 523700   step-time 0.60s  loss 23.084 ppl 8.16  disc 0.040 gen -0.027 gan_ae -0.004
+global step 523800   step-time 0.60s  loss 23.012 ppl 8.14  disc 0.018 gen 0.008 gan_ae 0.009
+global step 523900   step-time 0.60s  loss 23.039 ppl 8.17  disc 0.031 gen -0.014 gan_ae 0.003
+global step 524000   step-time 0.60s  loss 22.759 ppl 8.02  disc 0.024 gen 0.010 gan_ae -0.003
+global step 524100   step-time 0.60s  loss 23.064 ppl 8.25  disc 0.037 gen -0.007 gan_ae -0.011
+global step 524200   step-time 0.60s  loss 22.852 ppl 8.10  disc 0.026 gen 0.002 gan_ae 0.001
+global step 524300   step-time 0.60s  loss 23.014 ppl 8.13  disc 0.037 gen -0.020 gan_ae -0.002
+global step 524400   step-time 0.60s  loss 22.596 ppl 7.97  disc 0.023 gen 0.004 gan_ae 0.003
+global step 524500   step-time 0.60s  loss 22.978 ppl 8.17  disc 0.030 gen -0.001 gan_ae -0.004
+global step 524600   step-time 0.60s  loss 22.777 ppl 8.07  disc 0.025 gen -0.003 gan_ae 0.007
+global step 524700   step-time 0.60s  loss 22.862 ppl 8.05  disc 0.041 gen -0.031 gan_ae 0.003
+global step 524800   step-time 0.60s  loss 23.123 ppl 8.24  disc 0.022 gen 0.017 gan_ae -0.006
+global step 524900   step-time 0.60s  loss 23.000 ppl 8.16  disc 0.030 gen -0.005 gan_ae 0.001
+global step 525000   step-time 0.60s  loss 22.869 ppl 8.08  disc 0.026 gen 0.006 gan_ae -0.003
+load eval model.
+eval  ppl 17.65
+answer:  one day , i was driving the van down to the store .
+predict:  i was driving my van down the road when i heard a loud noise .
+answer:  she bought some new shelves .
+predict:  she bought a new set of books .
+answer:  he was given a set of tickets .
+predict:  he tried to sell a band .
+answer:  his friends agree that 's a great idea .
+predict:  billy decides to take his friends fishing .
+answer:  after starting a fire in the kitchen , chance has a babysitter again .
+predict:  his mom was so happy she gave him a big hug .
+answer:  alicia looked at her house .
+predict:  alicia was cleaning up .
+answer:  she searched everywhere but could n't find it .
+predict:  she had been saving for a year .
+answer:  when the cast was announced , she was left disappointed .
+predict:  she was very shy and did n't know how to do it .
+BLEU = 3.93, 31.5/5.7/2.0/0.9 (BP=0.927, ratio=0.930, hyp_len=90795, ref_len=97637)
+
+distinc1: 0.03429
+distinc2: 0.22479
+infer done.
+global step 525100   step-time 0.60s  loss 22.941 ppl 8.13  disc 0.024 gen 0.004 gan_ae 0.003
+global step 525200   step-time 0.60s  loss 22.966 ppl 8.16  disc 0.039 gen -0.016 gan_ae -0.009
+global step 525300   step-time 0.60s  loss 22.893 ppl 8.08  disc 0.026 gen 0.012 gan_ae -0.009
+global step 525400   step-time 0.60s  loss 22.853 ppl 8.07  disc 0.031 gen -0.006 gan_ae -0.003
+global step 525500   step-time 0.60s  loss 23.201 ppl 8.29  disc 0.032 gen -0.003 gan_ae -0.003
+global step 525600   step-time 0.60s  loss 23.015 ppl 8.13  disc 0.036 gen -0.018 gan_ae -0.003
+global step 525700   step-time 0.60s  loss 22.804 ppl 8.06  disc 0.030 gen 0.006 gan_ae -0.008
+global step 525800   step-time 0.60s  loss 22.720 ppl 7.96  disc 0.028 gen -0.012 gan_ae 0.007
+global step 525900   step-time 0.60s  loss 22.967 ppl 8.15  disc 0.038 gen -0.020 gan_ae -0.004
+global step 526000   step-time 0.60s  loss 22.916 ppl 7.99  disc 0.026 gen -0.002 gan_ae 0.004
+global step 526100   step-time 0.60s  loss 23.055 ppl 8.18  disc 0.031 gen -0.013 gan_ae 0.001
+global step 526200   step-time 0.60s  loss 22.930 ppl 8.11  disc 0.036 gen -0.023 gan_ae 0.002
+global step 526300   step-time 0.60s  loss 22.944 ppl 8.14  disc 0.021 gen 0.003 gan_ae 0.010
+global step 526400   step-time 0.60s  loss 22.809 ppl 8.08  disc 0.034 gen -0.018 gan_ae -0.000
+global step 526500   step-time 0.60s  loss 22.825 ppl 8.04  disc 0.030 gen -0.007 gan_ae -0.000
+global step 526600   step-time 0.60s  loss 23.061 ppl 8.22  disc 0.027 gen 0.000 gan_ae 0.000
+global step 526700   step-time 0.60s  loss 23.068 ppl 8.16  disc 0.033 gen -0.017 gan_ae 0.001
+global step 526800   step-time 0.60s  loss 23.135 ppl 8.18  disc 0.023 gen 0.004 gan_ae 0.005
+global step 526900   step-time 0.60s  loss 22.820 ppl 8.01  disc 0.032 gen -0.013 gan_ae 0.002
+global step 527000   step-time 0.60s  loss 23.083 ppl 8.20  disc 0.029 gen -0.002 gan_ae -0.001
+global step 527100   step-time 0.60s  loss 23.122 ppl 8.22  disc 0.031 gen 0.006 gan_ae -0.010
+global step 527200   step-time 0.60s  loss 23.019 ppl 8.17  disc 0.031 gen -0.010 gan_ae -0.001
+global step 527300   step-time 0.60s  loss 22.866 ppl 8.01  disc 0.029 gen -0.007 gan_ae 0.002
+global step 527400   step-time 0.60s  loss 23.087 ppl 8.24  disc 0.032 gen -0.018 gan_ae 0.004
+global step 527500   step-time 0.60s  loss 22.861 ppl 8.01  disc 0.029 gen -0.005 gan_ae 0.002
+global step 527600   step-time 0.60s  loss 23.092 ppl 8.16  disc 0.032 gen -0.017 gan_ae 0.002
+global step 527700   step-time 0.60s  loss 22.972 ppl 8.17  disc 0.031 gen -0.012 gan_ae 0.001
+global step 527800   step-time 0.60s  loss 22.707 ppl 7.97  disc 0.024 gen 0.005 gan_ae 0.000
+global step 527900   step-time 0.60s  loss 22.826 ppl 8.04  disc 0.031 gen -0.017 gan_ae 0.004
+global step 528000   step-time 0.60s  loss 22.924 ppl 8.08  disc 0.028 gen -0.002 gan_ae 0.001
+load eval model.
+eval  ppl 17.69
+answer:  one day , i was driving the van down to the store .
+predict:  i was driving to work one day and saw a car pull over .
+answer:  she bought some new shelves .
+predict:  she bought some new books .
+answer:  he was given a set of tickets .
+predict:  he bought some music .
+answer:  his friends agree that 's a great idea .
+predict:  billy goes to the lake and has a great time .
+answer:  after starting a fire in the kitchen , chance has a babysitter again .
+predict:  his mom was so happy that she gave him a big hug .
+answer:  alicia looked at her house .
+predict:  alicia was cleaning her house .
+answer:  she searched everywhere but could n't find it .
+predict:  she needed one for her school 's computer .
+answer:  when the cast was announced , she was left disappointed .
+predict:  but she was nervous about it !
+BLEU = 4.21, 32.1/6.0/2.2/1.0 (BP=0.921, ratio=0.924, hyp_len=90186, ref_len=97637)
+
+distinc1: 0.03650
+distinc2: 0.23038
+infer done.
+global step 528100   step-time 0.60s  loss 22.673 ppl 8.02  disc 0.029 gen -0.009 gan_ae 0.003
+global step 528200   step-time 0.60s  loss 22.965 ppl 8.17  disc 0.030 gen -0.008 gan_ae 0.001
+global step 528300   step-time 0.60s  loss 23.223 ppl 8.29  disc 0.031 gen -0.013 gan_ae 0.003
+global step 528400   step-time 0.60s  loss 22.971 ppl 8.04  disc 0.018 gen 0.008 gan_ae 0.011
+global step 528500   step-time 0.60s  loss 22.900 ppl 8.08  disc 0.026 gen -0.002 gan_ae 0.005
+global step 528600   step-time 0.60s  loss 22.842 ppl 7.96  disc 0.043 gen -0.015 gan_ae -0.011
+global step 528700   step-time 0.60s  loss 22.999 ppl 8.15  disc 0.022 gen 0.008 gan_ae 0.002
+global step 528800   step-time 0.60s  loss 22.918 ppl 8.16  disc 0.034 gen -0.010 gan_ae -0.007
+global step 528900   step-time 0.60s  loss 23.022 ppl 8.16  disc 0.026 gen 0.002 gan_ae 0.000
+global step 529000   step-time 0.60s  loss 22.936 ppl 8.06  disc 0.033 gen -0.021 gan_ae 0.004
+global step 529100   step-time 0.60s  loss 22.742 ppl 7.95  disc 0.024 gen 0.002 gan_ae 0.004
+global step 529200   step-time 0.60s  loss 22.581 ppl 8.01  disc 0.031 gen -0.010 gan_ae -0.001
+global step 529300   step-time 0.60s  loss 22.984 ppl 8.13  disc 0.029 gen 0.003 gan_ae -0.005
+global step 529400   step-time 0.60s  loss 22.882 ppl 8.14  disc 0.025 gen 0.003 gan_ae 0.001
+global step 529500   step-time 0.60s  loss 22.876 ppl 8.05  disc 0.030 gen -0.016 gan_ae 0.008
+global step 529600   step-time 0.60s  loss 22.910 ppl 8.17  disc 0.032 gen -0.000 gan_ae -0.008
+global step 529700   step-time 0.60s  loss 22.712 ppl 8.03  disc 0.023 gen 0.001 gan_ae 0.004
+global step 529800   step-time 0.60s  loss 22.984 ppl 8.17  disc 0.025 gen -0.002 gan_ae 0.005
+global step 529900   step-time 0.60s  loss 23.057 ppl 8.12  disc 0.040 gen -0.008 gan_ae -0.013
+global step 530000   step-time 0.60s  loss 23.165 ppl 8.24  disc 0.029 gen 0.001 gan_ae -0.005
+global step 530100   step-time 0.60s  loss 22.737 ppl 8.04  disc 0.025 gen -0.003 gan_ae 0.005
+global step 530200   step-time 0.60s  loss 23.106 ppl 8.24  disc 0.030 gen -0.003 gan_ae -0.003
+global step 530300   step-time 0.60s  loss 22.999 ppl 8.13  disc 0.027 gen -0.005 gan_ae 0.002
+global step 530400   step-time 0.60s  loss 22.970 ppl 8.08  disc 0.032 gen -0.005 gan_ae -0.004
+global step 530500   step-time 0.60s  loss 22.797 ppl 8.03  disc 0.031 gen -0.011 gan_ae 0.001
+global step 530600   step-time 0.60s  loss 22.988 ppl 8.20  disc 0.030 gen -0.004 gan_ae -0.003
+global step 530700   step-time 0.60s  loss 23.042 ppl 8.20  disc 0.029 gen -0.005 gan_ae 0.001
+global step 530800   step-time 0.60s  loss 22.722 ppl 7.98  disc 0.031 gen -0.017 gan_ae 0.006
+global step 530900   step-time 0.60s  loss 22.994 ppl 8.08  disc 0.027 gen 0.002 gan_ae -0.003
+global step 531000   step-time 0.60s  loss 22.884 ppl 8.07  disc 0.025 gen -0.004 gan_ae 0.007
+load eval model.
+eval  ppl 17.72
+answer:  one day , i was driving the van down to the store .
+predict:  i was driving my van to work one day .
+answer:  she bought some new shelves .
+predict:  she bought some new books .
+answer:  he was given a set of tickets .
+predict:  he bought some music .
+answer:  his friends agree that 's a great idea .
+predict:  billy gets to the lake and goes fishing .
+answer:  after starting a fire in the kitchen , chance has a babysitter again .
+predict:  his mom was so happy that she gave him a big hug .
+answer:  alicia looked at her house .
+predict:  alicia was looking at the air conditioning .
+answer:  she searched everywhere but could n't find it .
+predict:  she had to go to the store to buy one .
+answer:  when the cast was announced , she was left disappointed .
+predict:  she was nervous about her audition .
+BLEU = 4.32, 33.1/6.4/2.4/1.1 (BP=0.889, ratio=0.895, hyp_len=87337, ref_len=97637)
+
+distinc1: 0.03848
+distinc2: 0.24372
+infer done.
+global step 531100   step-time 0.60s  loss 23.032 ppl 8.16  disc 0.032 gen -0.023 gan_ae 0.008
+global step 531200   step-time 0.60s  loss 22.821 ppl 8.06  disc 0.020 gen 0.009 gan_ae 0.004
+global step 531300   step-time 0.60s  loss 22.721 ppl 8.01  disc 0.030 gen -0.003 gan_ae -0.004
+global step 531400   step-time 0.60s  loss 23.082 ppl 8.18  disc 0.032 gen -0.007 gan_ae -0.002
+global step 531500   step-time 0.60s  loss 22.803 ppl 8.04  disc 0.025 gen 0.006 gan_ae -0.002
+global step 531600   step-time 0.60s  loss 22.897 ppl 8.17  disc 0.030 gen -0.012 gan_ae 0.003
+global step 531700   step-time 0.60s  loss 22.670 ppl 7.98  disc 0.034 gen -0.027 gan_ae 0.007
+global step 531800   step-time 0.60s  loss 22.955 ppl 8.17  disc 0.022 gen 0.010 gan_ae -0.001
+global step 531900   step-time 0.60s  loss 22.725 ppl 7.96  disc 0.034 gen -0.011 gan_ae -0.004
+global step 532000   step-time 0.60s  loss 23.063 ppl 8.19  disc 0.024 gen -0.006 gan_ae 0.011
+global step 532100   step-time 0.60s  loss 22.953 ppl 8.07  disc 0.025 gen 0.003 gan_ae -0.001
+global step 532200   step-time 0.60s  loss 22.886 ppl 8.07  disc 0.033 gen 0.003 gan_ae -0.011
+global step 532300   step-time 0.60s  loss 22.882 ppl 8.05  disc 0.033 gen -0.012 gan_ae -0.002
+global step 532400   step-time 0.60s  loss 22.694 ppl 8.05  disc 0.026 gen 0.001 gan_ae 0.001
+global step 532500   step-time 0.61s  loss 23.081 ppl 8.14  disc 0.033 gen -0.017 gan_ae 0.001
+global step 532600   step-time 0.61s  loss 22.870 ppl 8.04  disc 0.028 gen -0.003 gan_ae 0.002
+global step 532700   step-time 0.60s  loss 22.658 ppl 7.92  disc 0.034 gen -0.018 gan_ae 0.001
+global step 532800   step-time 0.60s  loss 23.014 ppl 8.13  disc 0.028 gen -0.002 gan_ae -0.000
+global step 532900   step-time 0.60s  loss 22.789 ppl 8.11  disc 0.031 gen -0.015 gan_ae 0.002
+global step 533000   step-time 0.60s  loss 23.125 ppl 8.20  disc 0.030 gen -0.017 gan_ae 0.007
+global step 533100   step-time 0.61s  loss 22.710 ppl 8.01  disc 0.025 gen 0.002 gan_ae 0.002
+global step 533200   step-time 0.59s  loss 22.770 ppl 8.02  disc 0.029 gen -0.006 gan_ae 0.001
+global step 533300   step-time 0.59s  loss 23.031 ppl 8.09  disc 0.026 gen -0.002 gan_ae 0.003
+global step 533400   step-time 0.59s  loss 23.141 ppl 8.26  disc 0.029 gen -0.013 gan_ae 0.005
+global step 533500   step-time 0.59s  loss 22.693 ppl 8.02  disc 0.023 gen 0.004 gan_ae 0.003
+global step 533600   step-time 0.59s  loss 23.013 ppl 8.14  disc 0.029 gen -0.007 gan_ae 0.000
+global step 533700   step-time 0.59s  loss 23.089 ppl 8.16  disc 0.035 gen -0.015 gan_ae -0.003
+global step 533800   step-time 0.59s  loss 22.800 ppl 8.02  disc 0.029 gen -0.005 gan_ae 0.003
+global step 533900   step-time 0.59s  loss 22.902 ppl 8.02  disc 0.021 gen 0.009 gan_ae 0.003
+global step 534000   step-time 0.59s  loss 22.971 ppl 8.14  disc 0.037 gen -0.008 gan_ae -0.012
+load eval model.
+eval  ppl 17.75
+answer:  one day , i was driving the van down to the store .
+predict:  i was driving to work one day when i saw a sign .
+answer:  she bought some new shelves .
+predict:  she bought lots of books .
+answer:  he was given a set of tickets .
+predict:  he bought a band .
+answer:  his friends agree that 's a great idea .
+predict:  billy agrees to go to the lake and enjoy the lake .
+answer:  after starting a fire in the kitchen , chance has a babysitter again .
+predict:  he ate the bread and was never able to eat it again .
+answer:  alicia looked at her house .
+predict:  alicia had a very messy house .
+answer:  she searched everywhere but could n't find it .
+predict:  she decided to go to the store to buy one .
+answer:  when the cast was announced , she was left disappointed .
+predict:  but she was n't very good at acting .
+BLEU = 4.05, 31.4/5.7/2.1/0.9 (BP=0.943, ratio=0.945, hyp_len=92238, ref_len=97637)
+
+distinc1: 0.03602
+distinc2: 0.23605
+infer done.
+global step 534100   step-time 0.59s  loss 22.895 ppl 8.05  disc 0.030 gen -0.006 gan_ae -0.003
+global step 534200   step-time 0.59s  loss 22.978 ppl 8.07  disc 0.026 gen -0.002 gan_ae 0.003
+global step 534300   step-time 0.59s  loss 22.839 ppl 8.03  disc 0.036 gen -0.016 gan_ae -0.005
+global step 534400   step-time 0.59s  loss 22.822 ppl 8.09  disc 0.028 gen -0.003 gan_ae 0.001
+global step 534500   step-time 0.59s  loss 22.904 ppl 8.06  disc 0.026 gen -0.007 gan_ae 0.008
+global step 534600   step-time 0.59s  loss 22.995 ppl 8.17  disc 0.030 gen -0.019 gan_ae 0.008
+global step 534700   step-time 0.59s  loss 22.752 ppl 8.01  disc 0.029 gen -0.000 gan_ae -0.003
+global step 534800   step-time 0.59s  loss 22.947 ppl 8.07  disc 0.031 gen -0.010 gan_ae 0.001
+global step 534900   step-time 0.59s  loss 22.733 ppl 7.94  disc 0.026 gen 0.001 gan_ae -0.000
+global step 535000   step-time 0.59s  loss 22.703 ppl 7.98  disc 0.035 gen -0.018 gan_ae 0.001
+global step 535100   step-time 0.59s  loss 22.716 ppl 7.98  disc 0.024 gen 0.006 gan_ae 0.001
+global step 535200   step-time 0.59s  loss 22.696 ppl 7.95  disc 0.028 gen -0.007 gan_ae 0.001
+global step 535300   step-time 0.59s  loss 22.889 ppl 8.02  disc 0.032 gen -0.004 gan_ae -0.006
+global step 535400   step-time 0.59s  loss 22.937 ppl 8.08  disc 0.038 gen -0.012 gan_ae -0.010
+global step 535500   step-time 0.59s  loss 22.832 ppl 8.05  disc 0.023 gen 0.002 gan_ae 0.006
+global step 535600   step-time 0.59s  loss 22.599 ppl 7.92  disc 0.029 gen -0.021 gan_ae 0.014
+global step 535700   step-time 0.59s  loss 22.969 ppl 8.07  disc 0.031 gen 0.001 gan_ae -0.004
+global step 535800   step-time 0.59s  loss 22.734 ppl 8.01  disc 0.039 gen -0.034 gan_ae 0.006
+global step 535900   step-time 0.59s  loss 22.652 ppl 7.98  disc 0.018 gen 0.018 gan_ae 0.002
+global step 536000   step-time 0.59s  loss 22.992 ppl 8.20  disc 0.028 gen -0.003 gan_ae 0.000
+global step 536100   step-time 0.59s  loss 23.038 ppl 8.16  disc 0.026 gen -0.003 gan_ae 0.004
+global step 536200   step-time 0.59s  loss 22.820 ppl 8.06  disc 0.027 gen -0.005 gan_ae 0.005
+global step 536300   step-time 0.61s  loss 22.994 ppl 8.07  disc 0.031 gen -0.017 gan_ae 0.008
+global step 536400   step-time 0.59s  loss 22.966 ppl 8.16  disc 0.019 gen 0.008 gan_ae 0.008
+global step 536500   step-time 0.59s  loss 22.870 ppl 8.04  disc 0.030 gen 0.004 gan_ae -0.007
+global step 536600   step-time 0.59s  loss 22.883 ppl 8.07  disc 0.033 gen 0.004 gan_ae -0.012
+global step 536700   step-time 0.59s  loss 22.774 ppl 7.93  disc 0.039 gen -0.004 gan_ae -0.015
+global step 536800   step-time 0.59s  loss 22.894 ppl 8.03  disc 0.027 gen -0.004 gan_ae 0.003
+global step 536900   step-time 0.59s  loss 22.705 ppl 8.03  disc 0.027 gen 0.001 gan_ae -0.001
+global step 537000   step-time 0.59s  loss 23.003 ppl 8.17  disc 0.029 gen -0.003 gan_ae -0.001
+load eval model.
+eval  ppl 17.70
+answer:  one day , i was driving the van down to the store .
+predict:  i was driving to work one day when i saw a van pull over .
+answer:  she bought some new shelves .
+predict:  she bought a bunch of books .
+answer:  he was given a set of tickets .
+predict:  he bought some music .
+answer:  his friends agree that 's a great idea .
+predict:  billy and his friends decide to go to the lake .
+answer:  after starting a fire in the kitchen , chance has a babysitter again .
+predict:  his mom was so happy she gave him a big hug .
+answer:  alicia looked at her house .
+predict:  alicia had a very dirty house .
+answer:  she searched everywhere but could n't find it .
+predict:  she needed one .
+answer:  when the cast was announced , she was left disappointed .
+predict:  she was nervous about the audition .
+BLEU = 4.28, 32.4/6.2/2.4/1.1 (BP=0.908, ratio=0.912, hyp_len=89054, ref_len=97637)
+
+distinc1: 0.03792
+distinc2: 0.23805
+infer done.
+global step 537100   step-time 0.59s  loss 22.918 ppl 8.02  disc 0.032 gen -0.015 gan_ae 0.003
+global step 537200   step-time 0.59s  loss 22.992 ppl 8.22  disc 0.019 gen 0.003 gan_ae 0.016
+global step 537300   step-time 0.59s  loss 22.991 ppl 8.16  disc 0.036 gen -0.015 gan_ae -0.005
+global step 537400   step-time 0.59s  loss 22.815 ppl 8.00  disc 0.031 gen -0.000 gan_ae -0.006
+global step 537500   step-time 0.59s  loss 23.011 ppl 8.16  disc 0.034 gen -0.010 gan_ae -0.005
+global step 537600   step-time 0.59s  loss 22.673 ppl 7.94  disc 0.028 gen -0.007 gan_ae 0.005
+global step 537700   step-time 0.59s  loss 22.937 ppl 8.13  disc 0.034 gen -0.022 gan_ae 0.003
+global step 537800   step-time 0.59s  loss 22.946 ppl 8.12  disc 0.025 gen -0.005 gan_ae 0.010
+global step 537900   step-time 0.59s  loss 22.816 ppl 8.04  disc 0.029 gen -0.006 gan_ae -0.000
+global step 538000   step-time 0.59s  loss 22.864 ppl 8.03  disc 0.029 gen -0.006 gan_ae 0.001
+global step 538100   step-time 0.59s  loss 22.715 ppl 7.92  disc 0.036 gen -0.018 gan_ae -0.003
+global step 538200   step-time 0.59s  loss 22.681 ppl 7.89  disc 0.024 gen 0.006 gan_ae -0.001
+global step 538300   step-time 0.59s  loss 22.833 ppl 7.94  disc 0.025 gen -0.004 gan_ae 0.007
+global step 538400   step-time 0.59s  loss 22.711 ppl 7.95  disc 0.028 gen -0.010 gan_ae 0.005
+global step 538500   step-time 0.59s  loss 22.888 ppl 8.05  disc 0.028 gen -0.004 gan_ae 0.001
+global step 538600   step-time 0.59s  loss 22.655 ppl 7.95  disc 0.033 gen -0.007 gan_ae -0.006
+global step 538700   step-time 0.59s  loss 22.776 ppl 7.96  disc 0.032 gen -0.007 gan_ae -0.002
+global step 538800   step-time 0.59s  loss 23.077 ppl 8.09  disc 0.029 gen -0.005 gan_ae 0.002
+global step 538900   step-time 0.59s  loss 22.680 ppl 7.86  disc 0.030 gen -0.006 gan_ae 0.000
+global step 539000   step-time 0.59s  loss 23.011 ppl 8.09  disc 0.031 gen -0.014 gan_ae 0.005
+global step 539100   step-time 0.59s  loss 23.054 ppl 8.19  disc 0.030 gen -0.006 gan_ae -0.000
+global step 539200   step-time 0.59s  loss 22.863 ppl 8.05  disc 0.031 gen -0.006 gan_ae -0.002
+global step 539300   step-time 0.59s  loss 23.001 ppl 8.19  disc 0.028 gen -0.002 gan_ae 0.001
+global step 539400   step-time 0.59s  loss 22.845 ppl 8.10  disc 0.039 gen -0.027 gan_ae 0.000
+global step 539500   step-time 0.59s  loss 22.750 ppl 7.99  disc 0.016 gen 0.018 gan_ae 0.005
+global step 539600   step-time 0.60s  loss 22.946 ppl 8.09  disc 0.034 gen -0.010 gan_ae -0.004
+global step 539700   step-time 0.59s  loss 23.440 ppl 8.40  disc 0.030 gen -0.018 gan_ae 0.009
+global step 539800   step-time 0.59s  loss 22.730 ppl 7.93  disc 0.033 gen -0.013 gan_ae 0.002
+global step 539900   step-time 0.59s  loss 22.613 ppl 7.90  disc 0.028 gen -0.007 gan_ae 0.004
+global step 540000   step-time 0.59s  loss 22.744 ppl 8.00  disc 0.031 gen -0.010 gan_ae 0.001
+load eval model.
+eval  ppl 17.72
+answer:  one day , i was driving the van down to the store .
+predict:  i was driving to work one day when i got a flat tire .
+answer:  she bought some new shelves .
+predict:  she found tons of books .
+answer:  he was given a set of tickets .
+predict:  he found some music .
+answer:  his friends agree that 's a great idea .
+predict:  billy goes to the lake and goes fishing .
+answer:  after starting a fire in the kitchen , chance has a babysitter again .
+predict:  his mom was so upset she did n't even notice .
+answer:  alicia looked at her house .
+predict:  alicia was in a bad mood .
+answer:  she searched everywhere but could n't find it .
+predict:  she needed one for her school 's test .
+answer:  when the cast was announced , she was left disappointed .
+predict:  but when she got there , she was nervous .
+BLEU = 4.31, 31.2/5.9/2.2/1.0 (BP=0.966, ratio=0.967, hyp_len=94406, ref_len=97637)
+
+distinc1: 0.03397
+distinc2: 0.22705
+infer done.
+global step 540100   step-time 0.59s  loss 22.843 ppl 8.07  disc 0.021 gen 0.005 gan_ae 0.008
+global step 540200   step-time 0.59s  loss 23.077 ppl 8.21  disc 0.033 gen -0.012 gan_ae -0.001
+global step 540300   step-time 0.59s  loss 23.077 ppl 8.22  disc 0.029 gen -0.003 gan_ae 0.000
+global step 540400   step-time 0.59s  loss 22.667 ppl 7.97  disc 0.035 gen -0.014 gan_ae -0.003
+global step 540500   step-time 0.59s  loss 22.671 ppl 7.97  disc 0.026 gen 0.001 gan_ae 0.002
+global step 540600   step-time 0.59s  loss 22.920 ppl 8.06  disc 0.026 gen 0.003 gan_ae 0.000
+global step 540700   step-time 0.59s  loss 22.878 ppl 8.09  disc 0.037 gen -0.017 gan_ae -0.004
+global step 540800   step-time 0.59s  loss 23.063 ppl 8.23  disc 0.028 gen 0.001 gan_ae -0.002
+global step 540900   step-time 0.59s  loss 23.005 ppl 8.14  disc 0.020 gen 0.001 gan_ae 0.014
+global step 541000   step-time 0.59s  loss 22.942 ppl 8.01  disc 0.024 gen 0.001 gan_ae 0.004
+global step 541100   step-time 0.59s  loss 22.896 ppl 8.10  disc 0.040 gen -0.010 gan_ae -0.013
+global step 541200   step-time 0.59s  loss 23.140 ppl 8.18  disc 0.026 gen -0.000 gan_ae 0.001
+global step 541300   step-time 0.59s  loss 22.819 ppl 8.08  disc 0.030 gen 0.000 gan_ae -0.005
+global step 541400   step-time 0.59s  loss 22.764 ppl 7.98  disc 0.030 gen -0.007 gan_ae 0.001
+global step 541500   step-time 0.59s  loss 22.952 ppl 8.11  disc 0.031 gen -0.017 gan_ae 0.006
+global step 541600   step-time 0.59s  loss 22.927 ppl 8.09  disc 0.027 gen -0.009 gan_ae 0.007
+global step 541700   step-time 0.59s  loss 22.473 ppl 7.84  disc 0.033 gen -0.005 gan_ae -0.006
+global step 541800   step-time 0.59s  loss 22.939 ppl 8.12  disc 0.030 gen -0.006 gan_ae -0.001
+global step 541900   step-time 0.59s  loss 22.907 ppl 8.07  disc 0.031 gen -0.008 gan_ae -0.001
+global step 542000   step-time 0.59s  loss 22.869 ppl 8.09  disc 0.027 gen -0.000 gan_ae 0.001
+global step 542100   step-time 0.59s  loss 22.809 ppl 8.02  disc 0.026 gen 0.005 gan_ae -0.002
+global step 542200   step-time 0.59s  loss 23.053 ppl 8.15  disc 0.034 gen -0.014 gan_ae -0.001
+global step 542300   step-time 0.59s  loss 22.639 ppl 7.95  disc 0.025 gen -0.009 gan_ae 0.013
+global step 542400   step-time 0.59s  loss 22.648 ppl 7.99  disc 0.023 gen 0.008 gan_ae 0.002
+global step 542500   step-time 0.59s  loss 22.559 ppl 7.89  disc 0.040 gen -0.025 gan_ae -0.004
+global step 542600   step-time 0.59s  loss 22.911 ppl 8.04  disc 0.021 gen 0.009 gan_ae 0.004
+global step 542700   step-time 0.59s  loss 22.691 ppl 8.00  disc 0.028 gen -0.011 gan_ae 0.006
+global step 542800   step-time 0.61s  loss 22.819 ppl 8.04  disc 0.026 gen 0.006 gan_ae -0.004
+global step 542900   step-time 0.59s  loss 22.897 ppl 8.06  disc 0.029 gen -0.008 gan_ae 0.001
+global step 543000   step-time 0.59s  loss 23.130 ppl 8.18  disc 0.027 gen -0.003 gan_ae 0.002
+load eval model.
+eval  ppl 17.74
+answer:  one day , i was driving the van down to the store .
+predict:  i bought a new van last week .
+answer:  she bought some new shelves .
+predict:  she bought some new books .
+answer:  he was given a set of tickets .
+predict:  he bought a new radio .
+answer:  his friends agree that 's a great idea .
+predict:  billy gets all of his friends together and takes them fishing .
+answer:  after starting a fire in the kitchen , chance has a babysitter again .
+predict:  his mom was so happy that she gave him a big hug .
+answer:  alicia looked at her house .
+predict:  alicia was cleaning her house .
+answer:  she searched everywhere but could n't find it .
+predict:  she had been saving up for a year .
+answer:  when the cast was announced , she was left disappointed .
+predict:  but she was n't sure if she 'd make it .
+BLEU = 4.31, 32.1/6.1/2.3/1.0 (BP=0.926, ratio=0.929, hyp_len=90668, ref_len=97637)
+
+distinc1: 0.03719
+distinc2: 0.24058
+infer done.
+global step 543100   step-time 0.59s  loss 22.711 ppl 7.90  disc 0.035 gen -0.015 gan_ae -0.003
+global step 543200   step-time 0.59s  loss 22.787 ppl 7.98  disc 0.029 gen -0.000 gan_ae -0.005
+global step 543300   step-time 0.59s  loss 22.714 ppl 7.91  disc 0.026 gen -0.003 gan_ae 0.006
+global step 543400   step-time 0.59s  loss 22.785 ppl 8.02  disc 0.031 gen -0.012 gan_ae 0.001
+global step 543500   step-time 0.59s  loss 22.443 ppl 7.79  disc 0.030 gen -0.005 gan_ae -0.001
+global step 543600   step-time 0.59s  loss 22.811 ppl 7.96  disc 0.030 gen -0.010 gan_ae 0.002
+global step 543700   step-time 0.59s  loss 22.716 ppl 8.01  disc 0.022 gen 0.002 gan_ae 0.008
+global step 543800   step-time 0.59s  loss 22.739 ppl 8.04  disc 0.034 gen -0.020 gan_ae 0.003
+global step 543900   step-time 0.59s  loss 23.235 ppl 8.25  disc 0.028 gen 0.005 gan_ae -0.005
+global step 544000   step-time 0.59s  loss 22.887 ppl 8.02  disc 0.032 gen -0.009 gan_ae -0.002
+global step 544100   step-time 0.59s  loss 22.667 ppl 7.99  disc 0.023 gen 0.009 gan_ae -0.001
+global step 544200   step-time 0.59s  loss 22.790 ppl 8.07  disc 0.030 gen -0.014 gan_ae 0.005
+global step 544300   step-time 0.59s  loss 23.269 ppl 8.20  disc 0.029 gen -0.002 gan_ae -0.002
+global step 544400   step-time 0.59s  loss 22.851 ppl 8.07  disc 0.028 gen -0.009 gan_ae 0.007
+global step 544500   step-time 0.59s  loss 22.781 ppl 7.95  disc 0.032 gen -0.014 gan_ae 0.002
+global step 544600   step-time 0.59s  loss 22.808 ppl 7.95  disc 0.024 gen 0.008 gan_ae -0.003
+global step 544700   step-time 0.59s  loss 22.897 ppl 8.03  disc 0.032 gen -0.013 gan_ae 0.001
+global step 544800   step-time 0.59s  loss 22.982 ppl 8.09  disc 0.030 gen -0.007 gan_ae -0.000
+global step 544900   step-time 0.59s  loss 22.749 ppl 7.95  disc 0.025 gen 0.005 gan_ae -0.001
+global step 545000   step-time 0.59s  loss 22.896 ppl 8.07  disc 0.035 gen -0.015 gan_ae -0.002
+global step 545100   step-time 0.59s  loss 22.768 ppl 8.04  disc 0.025 gen -0.001 gan_ae 0.004
+global step 545200   step-time 0.59s  loss 22.708 ppl 7.94  disc 0.024 gen 0.006 gan_ae 0.003
+global step 545300   step-time 0.59s  loss 22.761 ppl 7.97  disc 0.031 gen -0.006 gan_ae -0.001
+global step 545400   step-time 0.59s  loss 22.575 ppl 7.91  disc 0.035 gen -0.004 gan_ae -0.010
+global step 545500   step-time 0.59s  loss 22.804 ppl 8.01  disc 0.026 gen -0.002 gan_ae 0.003
+global step 545600   step-time 0.59s  loss 23.217 ppl 8.29  disc 0.033 gen -0.016 gan_ae 0.000
+global step 545700   step-time 0.59s  loss 22.757 ppl 8.06  disc 0.023 gen 0.002 gan_ae 0.004
+global step 545800   step-time 0.59s  loss 22.973 ppl 8.12  disc 0.026 gen -0.010 gan_ae 0.009
+global step 545900   step-time 0.59s  loss 22.531 ppl 7.94  disc 0.031 gen -0.006 gan_ae -0.002
+global step 546000   step-time 0.59s  loss 22.863 ppl 8.00  disc 0.028 gen 0.007 gan_ae -0.008
+load eval model.
+eval  ppl 17.72
+answer:  one day , i was driving the van down to the store .
+predict:  i went to the van dealership to buy a new truck .
+answer:  she bought some new shelves .
+predict:  she bought a big collection of books .
+answer:  he was given a set of tickets .
+predict:  he found a few music .
+answer:  his friends agree that 's a great idea .
+predict:  billy and his friends go to the lake .
+answer:  after starting a fire in the kitchen , chance has a babysitter again .
+predict:  his mom was so happy to see him eat it .
+answer:  alicia looked at her house .
+predict:  alicia had a really bad day .
+answer:  she searched everywhere but could n't find it .
+predict:  she needed to buy one .
+answer:  when the cast was announced , she was left disappointed .
+predict:  she did n't know how to do it .
+BLEU = 3.85, 32.2/5.8/2.0/0.9 (BP=0.892, ratio=0.898, hyp_len=87647, ref_len=97637)
+
+distinc1: 0.03281
+distinc2: 0.21062
+infer done.
+global step 546100   step-time 0.59s  loss 22.823 ppl 8.03  disc 0.031 gen 0.002 gan_ae -0.007
+global step 546200   step-time 0.59s  loss 22.895 ppl 7.99  disc 0.028 gen -0.011 gan_ae 0.005
+global step 546300   step-time 0.59s  loss 22.673 ppl 7.92  disc 0.033 gen -0.020 gan_ae 0.004
+global step 546400   step-time 0.59s  loss 22.717 ppl 7.99  disc 0.023 gen 0.001 gan_ae 0.008
+global step 546500   step-time 0.59s  loss 22.920 ppl 8.06  disc 0.034 gen -0.024 gan_ae 0.008
+global step 546600   step-time 0.59s  loss 22.757 ppl 7.98  disc 0.028 gen 0.001 gan_ae -0.002
+global step 546700   step-time 0.59s  loss 22.888 ppl 8.09  disc 0.030 gen -0.010 gan_ae 0.002
+global step 546800   step-time 0.59s  loss 23.510 ppl 8.51  disc 0.027 gen 0.002 gan_ae -0.002
+global step 546900   step-time 0.59s  loss 23.143 ppl 8.19  disc 0.029 gen -0.005 gan_ae 0.002
+global step 547000   step-time 0.59s  loss 22.742 ppl 7.96  disc 0.035 gen -0.014 gan_ae -0.006
+global step 547100   step-time 0.59s  loss 23.086 ppl 8.21  disc 0.029 gen -0.006 gan_ae 0.000
+global step 547200   step-time 0.59s  loss 22.744 ppl 7.98  disc 0.032 gen -0.018 gan_ae 0.005
+global step 547300   step-time 0.59s  loss 22.564 ppl 7.88  disc 0.028 gen -0.011 gan_ae 0.006
+global step 547400   step-time 0.59s  loss 22.969 ppl 8.11  disc 0.029 gen -0.012 gan_ae 0.006
+global step 547500   step-time 0.59s  loss 22.912 ppl 8.08  disc 0.028 gen -0.004 gan_ae 0.001
+global step 547600   step-time 0.59s  loss 22.664 ppl 7.86  disc 0.042 gen -0.025 gan_ae -0.006
+global step 547700   step-time 0.59s  loss 22.919 ppl 8.09  disc 0.022 gen 0.014 gan_ae -0.002
+global step 547800   step-time 0.59s  loss 22.549 ppl 7.90  disc 0.031 gen -0.012 gan_ae 0.003
+global step 547900   step-time 0.59s  loss 22.598 ppl 7.92  disc 0.033 gen -0.022 gan_ae 0.005
+global step 548000   step-time 0.59s  loss 22.730 ppl 8.01  disc 0.026 gen -0.001 gan_ae 0.002
+global step 548100   step-time 0.59s  loss 23.098 ppl 8.14  disc 0.030 gen -0.014 gan_ae 0.006
+global step 548200   step-time 0.59s  loss 22.789 ppl 8.07  disc 0.029 gen -0.006 gan_ae 0.001
+global step 548300   step-time 0.59s  loss 22.658 ppl 7.97  disc 0.032 gen -0.014 gan_ae 0.004
+global step 548400   step-time 0.59s  loss 22.849 ppl 8.04  disc 0.025 gen -0.001 gan_ae 0.006
+global step 548500   step-time 0.59s  loss 23.128 ppl 8.11  disc 0.036 gen -0.010 gan_ae -0.007
+global step 548600   step-time 0.59s  loss 23.028 ppl 8.15  disc 0.028 gen -0.010 gan_ae 0.006
+global step 548700   step-time 0.59s  loss 22.935 ppl 8.04  disc 0.028 gen -0.004 gan_ae 0.001
+global step 548800   step-time 0.59s  loss 22.701 ppl 7.98  disc 0.032 gen -0.008 gan_ae -0.002
+global step 548900   step-time 0.59s  loss 22.781 ppl 8.00  disc 0.031 gen -0.007 gan_ae -0.003
+global step 549000   step-time 0.59s  loss 22.752 ppl 8.01  disc 0.028 gen -0.007 gan_ae 0.004
+load eval model.
+eval  ppl 17.78
+answer:  one day , i was driving the van down to the store .
+predict:  i was driving my van to work one day .
+answer:  she bought some new shelves .
+predict:  she bought a new set of books .
+answer:  he was given a set of tickets .
+predict:  he saw a band .
+answer:  his friends agree that 's a great idea .
+predict:  billy gets a idea and gets ready to go fishing .
+answer:  after starting a fire in the kitchen , chance has a babysitter again .
+predict:  the bread was spoiled , but he was n't so hungry anymore .
+answer:  alicia looked at her house .
+predict:  alicia had a very dirty house .
+answer:  she searched everywhere but could n't find it .
+predict:  she needed a new one .
+answer:  when the cast was announced , she was left disappointed .
+predict:  but she was n't sure if she would get the part .
+BLEU = 4.27, 32.2/6.1/2.3/1.0 (BP=0.927, ratio=0.929, hyp_len=90712, ref_len=97637)
+
+distinc1: 0.03778
+distinc2: 0.24212
+infer done.
+global step 549100   step-time 0.59s  loss 22.433 ppl 7.82  disc 0.030 gen -0.014 gan_ae 0.004
+global step 549200   step-time 0.59s  loss 22.778 ppl 7.93  disc 0.030 gen -0.009 gan_ae 0.002
+global step 549300   step-time 0.59s  loss 22.886 ppl 8.08  disc 0.029 gen -0.009 gan_ae 0.002
+global step 549400   step-time 0.59s  loss 22.653 ppl 7.88  disc 0.030 gen -0.013 gan_ae 0.005
+global step 549500   step-time 0.59s  loss 22.628 ppl 7.99  disc 0.028 gen -0.008 gan_ae 0.007
+global step 549600   step-time 0.59s  loss 23.091 ppl 8.14  disc 0.028 gen -0.007 gan_ae 0.004
+global step 549700   step-time 0.59s  loss 22.881 ppl 8.06  disc 0.025 gen 0.001 gan_ae 0.003
+global step 549800   step-time 0.59s  loss 22.920 ppl 8.07  disc 0.027 gen -0.001 gan_ae -0.001
+global step 549900   step-time 0.59s  loss 22.504 ppl 7.84  disc 0.029 gen -0.010 gan_ae 0.004
+global step 550000   step-time 0.59s  loss 22.768 ppl 7.98  disc 0.023 gen 0.004 gan_ae 0.007
+global step 550100   step-time 0.59s  loss 22.828 ppl 8.08  disc 0.025 gen 0.008 gan_ae -0.001
+global step 550200   step-time 0.59s  loss 22.826 ppl 8.00  disc 0.040 gen -0.016 gan_ae -0.008
+global step 550300   step-time 0.59s  loss 22.448 ppl 7.81  disc 0.033 gen 0.002 gan_ae -0.012
+global step 550400   step-time 0.59s  loss 22.815 ppl 7.96  disc 0.028 gen -0.002 gan_ae -0.003
+global step 550500   step-time 0.59s  loss 22.935 ppl 8.06  disc 0.032 gen -0.012 gan_ae -0.001
+global step 550600   step-time 0.59s  loss 22.811 ppl 8.05  disc 0.032 gen -0.007 gan_ae -0.000
+global step 550700   step-time 0.59s  loss 22.654 ppl 7.94  disc 0.024 gen -0.001 gan_ae 0.009
+global step 550800   step-time 0.59s  loss 22.884 ppl 8.11  disc 0.031 gen -0.003 gan_ae -0.006
+global step 550900   step-time 0.59s  loss 22.922 ppl 8.05  disc 0.034 gen -0.005 gan_ae -0.007
+global step 551000   step-time 0.59s  loss 22.726 ppl 7.98  disc 0.028 gen -0.003 gan_ae 0.002
+global step 551100   step-time 0.59s  loss 22.755 ppl 8.06  disc 0.032 gen -0.006 gan_ae -0.004
+global step 551200   step-time 0.59s  loss 22.486 ppl 7.84  disc 0.030 gen -0.010 gan_ae 0.002
+global step 551300   step-time 0.59s  loss 22.833 ppl 8.03  disc 0.030 gen -0.001 gan_ae -0.004
+global step 551400   step-time 0.59s  loss 22.949 ppl 8.09  disc 0.030 gen -0.016 gan_ae 0.008
+global step 551500   step-time 0.59s  loss 22.936 ppl 8.06  disc 0.032 gen -0.013 gan_ae -0.000
+global step 551600   step-time 0.59s  loss 22.931 ppl 8.05  disc 0.026 gen 0.003 gan_ae -0.001
+global step 551700   step-time 0.59s  loss 22.779 ppl 7.92  disc 0.029 gen -0.006 gan_ae 0.002
+global step 551800   step-time 0.59s  loss 22.913 ppl 8.13  disc 0.029 gen -0.011 gan_ae 0.003
+global step 551900   step-time 0.59s  loss 22.850 ppl 8.07  disc 0.027 gen -0.000 gan_ae 0.001
+global step 552000   step-time 0.59s  loss 22.683 ppl 7.95  disc 0.034 gen -0.015 gan_ae -0.001
+load eval model.
+eval  ppl 17.73
+answer:  one day , i was driving the van down to the store .
+predict:  i was driving my van to my new job in a new location .
+answer:  she bought some new shelves .
+predict:  she found a large stack of old books .
+answer:  he was given a set of tickets .
+predict:  he saw a couple music music .
+answer:  his friends agree that 's a great idea .
+predict:  billy gets out his boat and starts to drive to the lake .
+answer:  after starting a fire in the kitchen , chance has a babysitter again .
+predict:  he was so hungry he did n't care and did n't mind .
+answer:  alicia looked at her house .
+predict:  alicia was cleaning out her house .
+answer:  she searched everywhere but could n't find it .
+predict:  she had to go to the store to buy one .
+answer:  when the cast was announced , she was left disappointed .
+predict:  she was nervous about it .
+BLEU = 3.69, 30.6/5.2/1.8/0.7 (BP=0.966, ratio=0.967, hyp_len=94397, ref_len=97637)
+
+distinc1: 0.03029
+distinc2: 0.20015
+infer done.
+global step 552100   step-time 0.59s  loss 23.158 ppl 8.19  disc 0.024 gen 0.005 gan_ae 0.001
+global step 552200   step-time 0.59s  loss 22.657 ppl 7.93  disc 0.033 gen -0.013 gan_ae -0.002
+global step 552300   step-time 0.59s  loss 22.911 ppl 8.06  disc 0.035 gen -0.014 gan_ae -0.003
+global step 552400   step-time 0.59s  loss 22.810 ppl 7.96  disc 0.023 gen 0.009 gan_ae 0.000
+global step 552500   step-time 0.59s  loss 22.734 ppl 7.97  disc 0.033 gen -0.006 gan_ae -0.005
+global step 552600   step-time 0.59s  loss 22.870 ppl 8.12  disc 0.027 gen -0.003 gan_ae 0.001
+global step 552700   step-time 0.59s  loss 22.585 ppl 7.94  disc 0.030 gen -0.007 gan_ae 0.000
+global step 552800   step-time 0.59s  loss 22.773 ppl 8.08  disc 0.027 gen -0.007 gan_ae 0.006
+global step 552900   step-time 0.59s  loss 22.747 ppl 7.89  disc 0.032 gen -0.011 gan_ae 0.001
+global step 553000   step-time 0.59s  loss 22.875 ppl 8.04  disc 0.025 gen 0.000 gan_ae 0.003
+global step 553100   step-time 0.59s  loss 22.697 ppl 7.95  disc 0.036 gen -0.013 gan_ae -0.007
+global step 553200   step-time 0.59s  loss 22.737 ppl 7.97  disc 0.027 gen -0.006 gan_ae 0.004
+global step 553300   step-time 0.59s  loss 22.786 ppl 7.97  disc 0.029 gen -0.007 gan_ae -0.001
+global step 553400   step-time 0.59s  loss 22.344 ppl 7.80  disc 0.029 gen -0.002 gan_ae -0.002
+global step 553500   step-time 0.59s  loss 22.790 ppl 7.98  disc 0.034 gen -0.016 gan_ae 0.001
+global step 553600   step-time 0.59s  loss 22.882 ppl 8.12  disc 0.028 gen -0.001 gan_ae -0.001
+global step 553700   step-time 0.59s  loss 22.828 ppl 8.04  disc 0.030 gen -0.010 gan_ae 0.003
+global step 553800   step-time 0.59s  loss 22.827 ppl 7.99  disc 0.028 gen -0.014 gan_ae 0.009
+global step 553900   step-time 0.59s  loss 22.730 ppl 7.99  disc 0.030 gen -0.000 gan_ae -0.005
+global step 554000   step-time 0.59s  loss 22.875 ppl 8.08  disc 0.030 gen -0.012 gan_ae 0.004
+global step 554100   step-time 0.59s  loss 22.796 ppl 7.98  disc 0.027 gen 0.000 gan_ae -0.001
+global step 554200   step-time 0.59s  loss 22.914 ppl 8.04  disc 0.031 gen -0.003 gan_ae -0.006
+global step 554300   step-time 0.59s  loss 22.578 ppl 7.90  disc 0.028 gen -0.006 gan_ae 0.002
+global step 554400   step-time 0.59s  loss 22.717 ppl 7.97  disc 0.032 gen -0.013 gan_ae 0.003
+global step 554500   step-time 0.59s  loss 22.653 ppl 7.94  disc 0.025 gen -0.004 gan_ae 0.008
+global step 554600   step-time 0.59s  loss 22.656 ppl 8.00  disc 0.032 gen -0.001 gan_ae -0.007
+global step 554700   step-time 0.59s  loss 24.074 ppl 9.02  disc 0.020 gen 0.007 gan_ae 0.009
+global step 554800   step-time 0.59s  loss 33.618 ppl 21.45  disc 0.029 gen -0.013 gan_ae 0.006
+global step 554900   step-time 0.59s  loss 24.277 ppl 9.21  disc 0.027 gen -0.000 gan_ae -0.001
+global step 555000   step-time 0.59s  loss 23.168 ppl 8.30  disc 0.029 gen -0.014 gan_ae 0.009
+load eval model.
+eval  ppl 17.64
+answer:  one day , i was driving the van down to the store .
+predict:  i was driving my van to work one morning .
+answer:  she bought some new shelves .
+predict:  she bought a new set of books .
+answer:  he was given a set of tickets .
+predict:  he bought some music .
+answer:  his friends agree that 's a great idea .
+predict:  billy and his friends decide to go to the lake .
+answer:  after starting a fire in the kitchen , chance has a babysitter again .
+predict:  the toast was so delicious he decided to eat it .
+answer:  alicia looked at her house .
+predict:  alicia was cleaning her house .
+answer:  she searched everywhere but could n't find it .
+predict:  she decided to go shopping .
+answer:  when the cast was announced , she was left disappointed .
+predict:  she was nervous about it .
+BLEU = 4.33, 32.1/6.2/2.3/1.1 (BP=0.922, ratio=0.925, hyp_len=90290, ref_len=97637)
+
+distinc1: 0.03806
+distinc2: 0.23734
+infer done.
+global step 555100   step-time 0.59s  loss 22.938 ppl 8.12  disc 0.028 gen -0.005 gan_ae 0.005
+global step 555200   step-time 0.59s  loss 23.154 ppl 8.24  disc 0.027 gen 0.002 gan_ae -0.000
+global step 555300   step-time 0.61s  loss 23.031 ppl 8.18  disc 0.030 gen -0.008 gan_ae -0.000
+global step 555400   step-time 0.59s  loss 23.115 ppl 8.22  disc 0.027 gen 0.007 gan_ae -0.004
+global step 555500   step-time 0.59s  loss 22.964 ppl 8.12  disc 0.030 gen -0.007 gan_ae 0.000
+global step 555600   step-time 0.59s  loss 22.828 ppl 8.09  disc 0.028 gen -0.007 gan_ae 0.002
+global step 555700   step-time 0.59s  loss 22.964 ppl 8.15  disc 0.026 gen 0.004 gan_ae -0.002
+global step 555800   step-time 0.59s  loss 22.884 ppl 8.04  disc 0.036 gen -0.023 gan_ae 0.000
+global step 555900   step-time 0.59s  loss 22.861 ppl 8.00  disc 0.025 gen 0.004 gan_ae 0.001
+global step 556000   step-time 0.59s  loss 23.097 ppl 8.18  disc 0.029 gen -0.004 gan_ae -0.001
+global step 556100   step-time 0.59s  loss 23.132 ppl 8.17  disc 0.030 gen -0.000 gan_ae -0.004
+global step 556200   step-time 0.59s  loss 23.056 ppl 8.16  disc 0.033 gen -0.002 gan_ae -0.007
+global step 556300   step-time 0.59s  loss 22.792 ppl 8.05  disc 0.029 gen -0.005 gan_ae 0.000
+global step 556400   step-time 0.59s  loss 22.785 ppl 8.04  disc 0.034 gen -0.013 gan_ae -0.002
+global step 556500   step-time 0.59s  loss 22.673 ppl 7.99  disc 0.034 gen -0.010 gan_ae -0.004
+global step 556600   step-time 0.59s  loss 22.844 ppl 8.06  disc 0.033 gen -0.019 gan_ae 0.001
+global step 556700   step-time 0.59s  loss 22.741 ppl 7.96  disc 0.028 gen 0.002 gan_ae -0.003
+global step 556800   step-time 0.59s  loss 22.884 ppl 8.06  disc 0.030 gen -0.017 gan_ae 0.008
+global step 556900   step-time 0.59s  loss 22.957 ppl 8.08  disc 0.034 gen -0.021 gan_ae 0.004
+global step 557000   step-time 0.59s  loss 22.875 ppl 8.05  disc 0.027 gen 0.004 gan_ae -0.003
+global step 557100   step-time 0.59s  loss 22.789 ppl 8.03  disc 0.031 gen -0.011 gan_ae 0.002
+global step 557200   step-time 0.59s  loss 22.625 ppl 8.01  disc 0.033 gen -0.023 gan_ae 0.006
+global step 557300   step-time 0.59s  loss 22.542 ppl 7.85  disc 0.032 gen -0.019 gan_ae 0.006
+global step 557400   step-time 0.59s  loss 22.637 ppl 7.99  disc 0.027 gen 0.001 gan_ae 0.001
+global step 557500   step-time 0.59s  loss 22.417 ppl 7.81  disc 0.034 gen -0.004 gan_ae -0.009
+global step 557600   step-time 0.59s  loss 22.749 ppl 7.99  disc 0.030 gen -0.008 gan_ae 0.002
+global step 557700   step-time 0.59s  loss 22.887 ppl 8.06  disc 0.031 gen -0.009 gan_ae 0.000
+global step 557800   step-time 0.59s  loss 22.724 ppl 7.99  disc 0.029 gen 0.001 gan_ae -0.004
+global step 557900   step-time 0.59s  loss 22.742 ppl 7.91  disc 0.032 gen -0.020 gan_ae 0.005
+global step 558000   step-time 0.59s  loss 23.144 ppl 8.14  disc 0.030 gen -0.022 gan_ae 0.014
+load eval model.
+eval  ppl 17.69
+answer:  one day , i was driving the van down to the store .
+predict:  i was driving to work one morning when i saw a van pull over .
+answer:  she bought some new shelves .
+predict:  she had a bunch of books that she had been building .
+answer:  he was given a set of tickets .
+predict:  he bought some radio station music .
+answer:  his friends agree that 's a great idea .
+predict:  billy and his friends decide to go to the lake .
+answer:  after starting a fire in the kitchen , chance has a babysitter again .
+predict:  his mom was so grateful she gave him a big hug .
+answer:  alicia looked at her house .
+predict:  alicia was cleaning her house .
+answer:  she searched everywhere but could n't find it .
+predict:  she needed one .
+answer:  when the cast was announced , she was left disappointed .
+predict:  she was nervous about her audition .
+BLEU = 4.32, 32.4/6.2/2.3/1.1 (BP=0.910, ratio=0.914, hyp_len=89263, ref_len=97637)
+
+distinc1: 0.03857
+distinc2: 0.24562
+infer done.
+global step 558100   step-time 0.59s  loss 22.732 ppl 8.01  disc 0.025 gen -0.001 gan_ae 0.003
+global step 558200   step-time 0.59s  loss 22.656 ppl 7.97  disc 0.025 gen 0.000 gan_ae 0.004
+global step 558300   step-time 0.59s  loss 23.077 ppl 8.13  disc 0.027 gen -0.000 gan_ae 0.001
+global step 558400   step-time 0.59s  loss 22.544 ppl 7.85  disc 0.031 gen -0.003 gan_ae -0.004
+global step 558500   step-time 0.60s  loss 23.046 ppl 8.12  disc 0.033 gen -0.012 gan_ae -0.002
+global step 558600   step-time 0.59s  loss 22.734 ppl 7.94  disc 0.029 gen -0.009 gan_ae 0.004
+global step 558700   step-time 0.59s  loss 22.577 ppl 7.93  disc 0.027 gen 0.006 gan_ae -0.005
+global step 558800   step-time 0.59s  loss 22.777 ppl 8.01  disc 0.032 gen -0.016 gan_ae 0.002
+global step 558900   step-time 0.59s  loss 22.898 ppl 8.13  disc 0.027 gen -0.005 gan_ae 0.006
+global step 559000   step-time 0.59s  loss 22.644 ppl 7.91  disc 0.029 gen -0.011 gan_ae 0.006
+global step 559100   step-time 0.59s  loss 22.768 ppl 8.05  disc 0.027 gen -0.001 gan_ae 0.002
+global step 559200   step-time 0.59s  loss 22.941 ppl 8.04  disc 0.027 gen -0.007 gan_ae 0.006
+global step 559300   step-time 0.59s  loss 22.995 ppl 8.09  disc 0.034 gen 0.001 gan_ae -0.013
+global step 559400   step-time 0.59s  loss 22.904 ppl 8.06  disc 0.024 gen 0.005 gan_ae 0.000
+global step 559500   step-time 0.59s  loss 22.763 ppl 8.00  disc 0.033 gen -0.010 gan_ae -0.004
+global step 559600   step-time 0.59s  loss 22.689 ppl 7.94  disc 0.029 gen -0.003 gan_ae -0.002
+global step 559700   step-time 0.59s  loss 22.704 ppl 8.00  disc 0.028 gen -0.005 gan_ae 0.002
+global step 559800   step-time 0.59s  loss 22.791 ppl 7.98  disc 0.033 gen -0.013 gan_ae 0.000
+global step 559900   step-time 0.59s  loss 22.981 ppl 8.08  disc 0.031 gen -0.003 gan_ae -0.004
+global step 560000   step-time 0.59s  loss 22.870 ppl 8.07  disc 0.031 gen -0.009 gan_ae -0.000
+global step 560100   step-time 0.59s  loss 22.819 ppl 8.03  disc 0.028 gen -0.009 gan_ae 0.004
+global step 560200   step-time 0.59s  loss 22.707 ppl 7.96  disc 0.029 gen -0.012 gan_ae 0.008
+global step 560300   step-time 0.59s  loss 22.876 ppl 8.02  disc 0.029 gen 0.006 gan_ae -0.006
+global step 560400   step-time 0.59s  loss 22.746 ppl 7.96  disc 0.032 gen -0.018 gan_ae 0.003
+global step 560500   step-time 0.59s  loss 22.698 ppl 7.96  disc 0.029 gen -0.004 gan_ae 0.001
+global step 560600   step-time 0.59s  loss 22.894 ppl 8.01  disc 0.027 gen -0.003 gan_ae -0.000
+global step 560700   step-time 0.59s  loss 22.705 ppl 7.92  disc 0.027 gen -0.002 gan_ae -0.001
+global step 560800   step-time 0.59s  loss 22.841 ppl 7.95  disc 0.027 gen 0.005 gan_ae -0.003
+global step 560900   step-time 0.59s  loss 22.890 ppl 8.01  disc 0.037 gen -0.021 gan_ae -0.003
+global step 561000   step-time 0.59s  loss 22.967 ppl 8.06  disc 0.025 gen 0.005 gan_ae -0.002
+load eval model.
+eval  ppl 17.89
+answer:  one day , i was driving the van down to the store .
+predict:  i was driving to work one day when i saw a sign on the side .
+answer:  she bought some new shelves .
+predict:  she bought a new set of books .
+answer:  he was given a set of tickets .
+predict:  he bought some new speakers .
+answer:  his friends agree that 's a great idea .
+predict:  billy gets up and gets ready to go fishing .
+answer:  after starting a fire in the kitchen , chance has a babysitter again .
+predict:  his mom was so mad that she ran to the kitchen and gave him a big hug .
+answer:  alicia looked at her house .
+predict:  alicia was having a bad day .
+answer:  she searched everywhere but could n't find it .
+predict:  she had saved up her money for a year .
+answer:  when the cast was announced , she was left disappointed .
+predict:  but she was n't good enough to make the lead role .
+BLEU = 4.22, 32.2/6.1/2.2/1.0 (BP=0.926, ratio=0.929, hyp_len=90690, ref_len=97637)
+
+distinc1: 0.03749
+distinc2: 0.23741
+infer done.
+global step 561100   step-time 0.59s  loss 22.945 ppl 8.03  disc 0.025 gen -0.003 gan_ae 0.005
+global step 561200   step-time 0.59s  loss 22.794 ppl 7.99  disc 0.036 gen -0.027 gan_ae 0.005
+global step 561300   step-time 0.59s  loss 22.805 ppl 8.06  disc 0.017 gen 0.013 gan_ae 0.006
+global step 561400   step-time 0.59s  loss 22.991 ppl 8.09  disc 0.030 gen -0.004 gan_ae -0.002
+global step 561500   step-time 0.59s  loss 22.679 ppl 7.96  disc 0.024 gen 0.005 gan_ae 0.001
+global step 561600   step-time 0.59s  loss 22.738 ppl 7.96  disc 0.032 gen -0.023 gan_ae 0.009
+global step 561700   step-time 0.59s  loss 22.957 ppl 8.13  disc 0.028 gen 0.006 gan_ae -0.007
+global step 561800   step-time 0.61s  loss 23.165 ppl 8.16  disc 0.029 gen -0.002 gan_ae -0.003
+global step 561900   step-time 0.59s  loss 22.738 ppl 7.97  disc 0.030 gen 0.003 gan_ae -0.008
+global step 562000   step-time 0.59s  loss 22.685 ppl 7.89  disc 0.035 gen -0.018 gan_ae -0.000
+global step 562100   step-time 0.59s  loss 22.955 ppl 8.04  disc 0.031 gen -0.005 gan_ae -0.004
+global step 562200   step-time 0.59s  loss 22.718 ppl 8.00  disc 0.028 gen -0.001 gan_ae -0.002
+global step 562300   step-time 0.59s  loss 22.874 ppl 8.04  disc 0.029 gen -0.007 gan_ae 0.001
+global step 562400   step-time 0.59s  loss 23.090 ppl 8.16  disc 0.034 gen -0.019 gan_ae 0.002
+global step 562500   step-time 0.59s  loss 22.689 ppl 7.99  disc 0.031 gen -0.010 gan_ae 0.002
+global step 562600   step-time 0.59s  loss 22.618 ppl 7.92  disc 0.028 gen -0.004 gan_ae 0.000
+global step 562700   step-time 0.59s  loss 22.842 ppl 8.06  disc 0.027 gen -0.001 gan_ae 0.001
+global step 562800   step-time 0.59s  loss 23.068 ppl 8.20  disc 0.031 gen -0.010 gan_ae 0.000
+global step 562900   step-time 0.59s  loss 22.788 ppl 8.00  disc 0.027 gen -0.008 gan_ae 0.006
+global step 563000   step-time 0.59s  loss 22.814 ppl 7.99  disc 0.028 gen -0.003 gan_ae -0.001
+global step 563100   step-time 0.59s  loss 22.919 ppl 8.10  disc 0.030 gen -0.003 gan_ae -0.002
+global step 563200   step-time 0.59s  loss 22.743 ppl 7.94  disc 0.029 gen -0.005 gan_ae 0.001
+global step 563300   step-time 0.59s  loss 22.913 ppl 8.08  disc 0.029 gen -0.015 gan_ae 0.007
+global step 563400   step-time 0.59s  loss 22.725 ppl 7.91  disc 0.032 gen -0.003 gan_ae -0.005
+global step 563500   step-time 0.59s  loss 22.671 ppl 7.94  disc 0.029 gen -0.004 gan_ae 0.000
+global step 563600   step-time 0.59s  loss 23.030 ppl 8.15  disc 0.033 gen -0.009 gan_ae -0.005
+global step 563700   step-time 0.59s  loss 22.883 ppl 8.02  disc 0.023 gen 0.004 gan_ae 0.003
+global step 563800   step-time 0.59s  loss 22.644 ppl 7.93  disc 0.028 gen -0.011 gan_ae 0.008
+global step 563900   step-time 0.59s  loss 22.688 ppl 7.91  disc 0.026 gen 0.005 gan_ae -0.003
+global step 564000   step-time 0.59s  loss 23.064 ppl 8.23  disc 0.029 gen -0.004 gan_ae 0.001
+load eval model.
+eval  ppl 17.79
+answer:  one day , i was driving the van down to the store .
+predict:  i was driving to work one day when i heard a loud noise .
+answer:  she bought some new shelves .
+predict:  she bought a bunch of books .
+answer:  he was given a set of tickets .
+predict:  he tried to make music .
+answer:  his friends agree that 's a great idea .
+predict:  billy decides to go fishing .
+answer:  after starting a fire in the kitchen , chance has a babysitter again .
+predict:  his mom was so happy she gave him a big hug .
+answer:  alicia looked at her house .
+predict:  alicia had been working all day .
+answer:  she searched everywhere but could n't find it .
+predict:  she needed a new one .
+answer:  when the cast was announced , she was left disappointed .
+predict:  she was nervous about it .
+BLEU = 4.04, 32.4/6.1/2.2/1.0 (BP=0.897, ratio=0.902, hyp_len=88045, ref_len=97637)
+
+distinc1: 0.03787
+distinc2: 0.24414
+infer done.
+global step 564100   step-time 0.59s  loss 22.928 ppl 8.06  disc 0.031 gen 0.004 gan_ae -0.007
+global step 564200   step-time 0.59s  loss 22.738 ppl 7.96  disc 0.034 gen -0.020 gan_ae 0.002
+global step 564300   step-time 0.59s  loss 22.845 ppl 8.07  disc 0.030 gen -0.002 gan_ae -0.004
+global step 564400   step-time 0.59s  loss 22.671 ppl 7.88  disc 0.034 gen -0.013 gan_ae -0.004
+global step 564500   step-time 0.59s  loss 22.580 ppl 7.87  disc 0.025 gen 0.006 gan_ae -0.001
+global step 564600   step-time 0.59s  loss 22.689 ppl 7.98  disc 0.031 gen -0.022 gan_ae 0.011
+global step 564700   step-time 0.59s  loss 22.600 ppl 7.92  disc 0.021 gen 0.008 gan_ae 0.004
+global step 564800   step-time 0.59s  loss 22.793 ppl 8.05  disc 0.032 gen -0.007 gan_ae -0.003
+global step 564900   step-time 0.59s  loss 22.931 ppl 8.10  disc 0.024 gen 0.002 gan_ae 0.004
+global step 565000   step-time 0.61s  loss 22.845 ppl 8.06  disc 0.037 gen -0.014 gan_ae -0.009
+global step 565100   step-time 0.59s  loss 22.508 ppl 7.84  disc 0.027 gen 0.005 gan_ae -0.003
+global step 565200   step-time 0.59s  loss 22.786 ppl 8.01  disc 0.032 gen -0.009 gan_ae -0.001
+global step 565300   step-time 0.59s  loss 22.864 ppl 8.01  disc 0.027 gen 0.009 gan_ae -0.008
+global step 565400   step-time 0.59s  loss 22.768 ppl 8.02  disc 0.032 gen -0.009 gan_ae -0.001
+global step 565500   step-time 0.59s  loss 23.112 ppl 8.16  disc 0.025 gen -0.001 gan_ae 0.007
+global step 565600   step-time 0.59s  loss 23.303 ppl 8.42  disc 0.031 gen -0.010 gan_ae 0.002
+global step 565700   step-time 0.59s  loss 23.869 ppl 8.83  disc 0.033 gen -0.009 gan_ae -0.003
+global step 565800   step-time 0.59s  loss 22.902 ppl 8.14  disc 0.026 gen -0.001 gan_ae 0.004
+global step 565900   step-time 0.59s  loss 22.592 ppl 7.85  disc 0.033 gen -0.010 gan_ae -0.003
+global step 566000   step-time 0.59s  loss 22.764 ppl 8.01  disc 0.023 gen -0.000 gan_ae 0.010
+global step 566100   step-time 0.59s  loss 22.830 ppl 8.09  disc 0.034 gen -0.013 gan_ae -0.002
+global step 566200   step-time 0.59s  loss 22.679 ppl 8.03  disc 0.033 gen -0.014 gan_ae -0.001
+global step 566300   step-time 0.59s  loss 26.320 ppl 11.05  disc 0.022 gen 0.007 gan_ae 0.003
+global step 566400   step-time 0.59s  loss 66.616 ppl 446.96  disc 0.026 gen -0.001 gan_ae 0.003
+global step 566500   step-time 0.59s  loss 66.027 ppl 415.03  disc 0.036 gen -0.020 gan_ae 0.000
+global step 566600   step-time 0.59s  loss 65.915 ppl 407.50  disc 0.018 gen 0.018 gan_ae 0.001
+global step 566700   step-time 0.59s  loss 65.936 ppl 411.53  disc 0.025 gen 0.002 gan_ae 0.002
+global step 566800   step-time 0.59s  loss 65.747 ppl 405.33  disc 0.027 gen 0.007 gan_ae -0.004
+global step 566900   step-time 0.59s  loss 65.682 ppl 406.54  disc 0.031 gen -0.011 gan_ae -0.001
+global step 567000   step-time 0.59s  loss 65.387 ppl 406.08  disc 0.027 gen 0.007 gan_ae -0.007
+load eval model.
+eval  ppl 392.23
+answer:  one day , i was driving the van down to the store .
+predict:  . . . . . . . . . . . . . . . . . . . . . . . .
+answer:  she bought some new shelves .
+predict:  . . . . . . . . . . . . . . . . . . . . . . . .
+answer:  he was given a set of tickets .
+predict:  . . . . . . . . . . . . . . . . . . . . . . . .
+answer:  his friends agree that 's a great idea .
+predict:  . . . . . . . . . . . . . . . . . . . . . . . .
+answer:  after starting a fire in the kitchen , chance has a babysitter again .
+predict:  . . . . . . . . . . . . . . . . . . . . . . . .
+answer:  alicia looked at her house .
+predict:  . . . . . . . . . . . . . . . . . . . . . . . .
+answer:  she searched everywhere but could n't find it .
+predict:  . . . . . . . . . . . . . . . . . . . . . . . .
+answer:  when the cast was announced , she was left disappointed .
+predict:  . . . . . . . . . . . . . . . . . . . . . . . .
+BLEU = 0.00, 4.0/0.0/0.0/0.0 (BP=1.000, ratio=2.407, hyp_len=235008, ref_len=97637)
+
+distinc1: 0.00000
+distinc2: 0.00000
+infer done.
+global step 567100   step-time 0.59s  loss 66.015 ppl 405.92  disc 0.036 gen -0.020 gan_ae -0.001
+global step 567200   step-time 0.59s  loss 65.740 ppl 405.73  disc 0.025 gen 0.005 gan_ae 0.001
+global step 567300   step-time 0.59s  loss 65.785 ppl 400.08  disc 0.025 gen 0.006 gan_ae -0.000
+global step 567400   step-time 0.59s  loss 65.644 ppl 408.52  disc 0.027 gen -0.006 gan_ae 0.008
+global step 567500   step-time 0.59s  loss 65.604 ppl 402.61  disc 0.042 gen -0.041 gan_ae 0.010
+global step 567600   step-time 0.59s  loss 66.105 ppl 407.80  disc 0.019 gen 0.012 gan_ae 0.004
+global step 567700   step-time 0.59s  loss 65.813 ppl 403.70  disc 0.028 gen 0.010 gan_ae -0.010
+global step 567800   step-time 0.59s  loss 65.843 ppl 407.50  disc 0.033 gen -0.000 gan_ae -0.011
+global step 567900   step-time 0.59s  loss 65.648 ppl 404.94  disc 0.032 gen -0.003 gan_ae -0.008
+global step 568000   step-time 0.59s  loss 66.089 ppl 407.48  disc 0.027 gen 0.003 gan_ae -0.003
+global step 568100   step-time 0.59s  loss 65.959 ppl 411.54  disc 0.028 gen -0.001 gan_ae -0.001
+global step 568200   step-time 0.59s  loss 66.019 ppl 405.81  disc 0.028 gen -0.003 gan_ae 0.000
+global step 568300   step-time 0.61s  loss 65.814 ppl 409.96  disc 0.034 gen -0.007 gan_ae -0.008
+global step 568400   step-time 0.59s  loss 65.652 ppl 407.13  disc 0.025 gen 0.002 gan_ae 0.001
+global step 568500   step-time 0.59s  loss 66.058 ppl 407.14  disc 0.028 gen -0.002 gan_ae -0.002
+global step 568600   step-time 0.59s  loss 66.096 ppl 410.37  disc 0.032 gen -0.007 gan_ae -0.005
+global step 568700   step-time 0.59s  loss 66.076 ppl 413.01  disc 0.031 gen -0.009 gan_ae 0.002
+global step 568800   step-time 0.59s  loss 66.319 ppl 417.41  disc 0.028 gen -0.007 gan_ae 0.004
+global step 568900   step-time 0.59s  loss 65.934 ppl 412.62  disc 0.030 gen -0.006 gan_ae 0.000
+global step 569000   step-time 0.59s  loss 66.096 ppl 407.59  disc 0.033 gen -0.014 gan_ae -0.001
+global step 569100   step-time 0.59s  loss 66.138 ppl 413.41  disc 0.031 gen -0.005 gan_ae -0.002
+global step 569200   step-time 0.59s  loss 66.069 ppl 412.31  disc 0.029 gen -0.007 gan_ae 0.002
+global step 569300   step-time 0.59s  loss 66.074 ppl 402.30  disc 0.031 gen -0.014 gan_ae 0.005
+global step 569400   step-time 0.59s  loss 66.133 ppl 411.17  disc 0.028 gen 0.005 gan_ae -0.006
+global step 569500   step-time 0.59s  loss 65.107 ppl 403.25  disc 0.031 gen -0.011 gan_ae 0.003
+global step 569600   step-time 0.59s  loss 65.689 ppl 408.16  disc 0.024 gen 0.000 gan_ae 0.004
+global step 569700   step-time 0.59s  loss 65.759 ppl 400.18  disc 0.032 gen -0.003 gan_ae -0.007
+global step 569800   step-time 0.59s  loss 65.852 ppl 408.98  disc 0.032 gen -0.006 gan_ae -0.004
+global step 569900   step-time 0.59s  loss 65.423 ppl 401.61  disc 0.026 gen -0.009 gan_ae 0.007
+global step 570000   step-time 0.59s  loss 65.872 ppl 407.02  disc 0.028 gen -0.007 gan_ae 0.003
+load eval model.
+eval  ppl 394.26
+answer:  one day , i was driving the van down to the store .
+predict:  
+answer:  she bought some new shelves .
+predict:  
+answer:  he was given a set of tickets .
+predict:  
+answer:  his friends agree that 's a great idea .
+predict:  
+answer:  after starting a fire in the kitchen , chance has a babysitter again .
+predict:  
+answer:  alicia looked at her house .
+predict:  
+answer:  she searched everywhere but could n't find it .
+predict:  
+answer:  when the cast was announced , she was left disappointed .
+predict:  
+Traceback (most recent call last):
+  File "multi_bleu.py", line 47, in <module>
+    bleu, addition = corpus_bleu(hyp_data, ref_data)
+  File "/import/home/sdiaoaa/new_dir/new_dir/Dec_23_1/T-CVAE/bleu.py", line 81, in corpus_bleu
+    brevity_penalty = math.exp(1 - total_len_ref/total_len_hyp)
+ZeroDivisionError: division by zero
+
+error when evaluation BLEU, skip ... 
+distinc1: 0.00010
+Traceback (most recent call last):
+  File "train.py", line 388, in <module>
+    tf.app.run()
+  File "/home/sdiaoaa/.conda/envs/py36wavelet/lib/python3.6/site-packages/tensorflow/python/platform/app.py", line 125, in run
+    _sys.exit(main(argv))
+  File "train.py", line 377, in main
+    train(hparams)
+  File "train.py", line 341, in train
+    print("distinc2: %.5f" % float(distinc2 / all2))
+ZeroDivisionError: division by zero

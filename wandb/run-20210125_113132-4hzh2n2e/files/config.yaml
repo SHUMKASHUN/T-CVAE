@@ -1,0 +1,85 @@
+wandb_version: 1
+
+_wandb:
+  desc: null
+  value:
+    cli_version: 0.10.9
+    framework: torch
+    is_jupyter_run: false
+    is_kaggle_kernel: false
+    python_version: 3.6.12
+batch_size:
+  desc: null
+  value: 64
+data_dir:
+  desc: null
+  value: data/
+dropout_rate:
+  desc: null
+  value: 0.15
+emb_dim:
+  desc: null
+  value: 300
+epoch_num:
+  desc: null
+  value: 100
+from_vocab:
+  desc: null
+  value: data/vocab_20000
+from_vocab_size:
+  desc: null
+  value: 20000
+gpu_device:
+  desc: null
+  value: '2'
+latent_dim:
+  desc: null
+  value: 64
+learning_rate:
+  desc: null
+  value: 1
+learning_rate_decay_factor:
+  desc: null
+  value: 0.5
+max_gradient_norm:
+  desc: null
+  value: 3.0
+max_train_data_size:
+  desc: null
+  value: 0
+model_dir:
+  desc: null
+  value: model/
+num_heads:
+  desc: null
+  value: 8
+num_layers:
+  desc: null
+  value: 6
+num_units:
+  desc: null
+  value: 512
+out_dir:
+  desc: null
+  value: output/
+output_dir:
+  desc: null
+  value: tfm/
+test_data:
+  desc: null
+  value: test
+to_vocab:
+  desc: null
+  value: data/vocab_20000
+to_vocab_size:
+  desc: null
+  value: 20000
+train_data:
+  desc: null
+  value: training
+train_dir:
+  desc: null
+  value: t-cvae/
+valid_data:
+  desc: null
+  value: dev
